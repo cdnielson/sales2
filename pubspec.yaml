@@ -1,6 +1,6 @@
-name: Sales2
+name: sales2
 version: 0.0.1
-description: An Angular 2 and Polymer Dart application -- Tic-Tac-Toe! Two-player only.
+description: An Angular 2 and Polymer Dart application -- Sales 2.0
 
 environment:
   sdk: '>=1.13.0 <2.0.0'

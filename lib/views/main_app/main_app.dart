@@ -13,9 +13,9 @@ import 'package:polymer_elements/paper_dialog.dart';
 import 'package:polymer_elements/paper_dialog_scrollable.dart';
 
 // TODO remove
-import '../../model/ttt_board.dart';
-import '../board_view/board_view.dart';
-import '../message_bar/message_bar.dart';
+//import '../../model/ttt_board.dart';
+//import '../board_view/board_view.dart';
+//import '../message_bar/message_bar.dart';
 // undo remove
 
 import 'dart:html';
@@ -34,8 +34,7 @@ import '../../utils/filters.dart' show StringToInt;*/
 
 @Component(selector: 'main-app',
     encapsulation: ViewEncapsulation.Native,
-    templateUrl: 'main_app.html',
-    directives: const [BoardView, MessageBar]
+    templateUrl: 'main_app.html'
 )
 class MainApp {
   final Logger log;

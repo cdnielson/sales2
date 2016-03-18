@@ -6,12 +6,12 @@ import 'package:polymer/polymer.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/bootstrap.dart';
 
-import 'package:Sales2/views/main_app/main_app.dart';
-import 'package:Sales2/services/logger.dart';
+import 'package:sales2/views/main_app/main_app.dart';
+import 'package:sales2/services/logger.dart';
 
 import 'package:logging/logging.dart';
 
-const String APP_NAME = "tic_tac_toe";
+const String APP_NAME = "Sales";
 
 final AppMode appMode = window.location.host.contains('localhost') ? AppMode.Develop : AppMode.Production;
 
