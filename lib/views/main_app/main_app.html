@@ -27,14 +27,16 @@
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
         <div class="layout horizontal center-justified flex wrap">
-            <div *ngFor="#ring of ringsDisplayed" style="width: 200px;" (click)="addRing(ring.id)">
+            <div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
-                Category:{{ring.category}}<br>
-                SKU:{{ring.SKU}}<br>
-                Finish:{{ring.finish}}<br>
-                Price:${{ring.price}} ({{ring.tier}} - {{ring.id}})<br>
-                {{ring?.combo}} {{ring?.combo2}}
-                {{ring?.notes}}
+                <div class="horizontal layout center-justified" [id]="ring.id">
+                    Category:{{ring.category}}<br>
+                    SKU:{{ring.SKU}}<br>
+                    Finish:{{ring.finish}}<br>
+                    Price:${{ring.price}} ({{ring.tier}} - {{ring.id}})<br>
+                    {{ring?.combo}} {{ring?.combo2}}
+                    {{ring?.notes}}
+                </div>
             </div>
         </div>
     </div>
@@ -74,12 +76,6 @@
                     </paper-button>
                 </div>
 
-
-                <!--<div horizontal layout center-justified center  class="otherbuttons" hidden?="{{hideCloseSignatureButton}}">
-                    <paper-button raised recenteringTouch="true" on-click="{{cancelSig}}">Cancel</paper-button>
-                    <paper-button raised recenteringTouch="true" on-click="{{closeSignature}}">Submit</paper-button>
-
-                </div>-->
                 <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser}}</h3>
                 <div [hidden]="hideMenus">
                     <!--main menu on the left (or right) for selecting view-->
