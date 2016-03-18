@@ -1,0 +1,163 @@
+<style>
+    .content {
+        padding: 15px;
+    }
+
+    .app-title {
+        text-align: center;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    message-bar {
+        margin-bottom: 10px;
+    }
+
+    paper-header-panel {
+        height: 100%;
+    }
+
+    .menu-item {
+        font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
+    }
+</style>
+
+<div class="layout horizontal left" style="height:100%;">
+
+    <div id="main-window" style="overflow:scroll; height: 100%;">
+        <!--move to ring component-->
+        SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
+        <div class="layout horizontal center-justified flex wrap">
+            <div *ngFor="#ring of ringsDisplayed" style="width: 200px;" (click)="addRing(ring.id)">
+                <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
+                Category:{{ring.category}}<br>
+                SKU:{{ring.SKU}}<br>
+                Finish:{{ring.finish}}<br>
+                Price:${{ring.price}} ({{ring.tier}} - {{ring.id}})<br>
+                {{ring?.combo}} {{ring?.combo2}}
+                {{ring?.notes}}
+            </div>
+        </div>
+    </div>
+    <div id="menu" style="width: 400px; border-left: 1px solid black">
+
+        <paper-header-panel id="headerPanel" mode="scroll" navigation flex>
+            <paper-toolbar id="drawer-header" style="background-color: #003053;" horizontal layout center-justified>
+                <img [src]="pathToImages + 'lashbrook.jpg'" style="width: 150px;"/>
+            </paper-toolbar>
+            <!--button section-->
+            <div id="menuContent">
+                <div horizontal layout center-justified center class="otherbuttons">
+                    <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton"
+                                  ngDefaultControl>Review
+                    </paper-button>
+                </div>
+                <div horizontal layout center-justified center class="otherbuttons" [hidden]="hideButtons">
+                    <paper-button raised (click)="cancelSubmit" ngDefaultControl>Back</paper-button>
+                    <paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>
+                </div>
+                <div horizontal layout center-justified center class="otherbuttons" [hidden]="hideOtherButtons">
+                    <paper-button raised recenteringTouch="true" (click)="back()" ngDefaultControl>Back</paper-button>
+                    <paper-button raised recenteringTouch="true" (click)="signatureSubmit()" ngDefaultControl>Submit and
+                        Sign Order
+                    </paper-button>
+                </div>
+                <div style="margin-top: 7px; margin-bottom: 5px;" horizontal layout center-justified>
+                    <textarea class="customerinfo" rows="4" cols="30" placeholder="Notes" id="notes"
+                              (keyup)="handleOrderNotes()"></textarea>
+                </div>
+                <div style="border-top: 1px solid black; padding-top: 5px;" horizontal layout around-justified>
+                    <paper-button raised recenteringTouch="true" style="font-size: small;" [hidden]="hideSaveButton"
+                                  (click)="openSaveOrderDialog" ngDefaultControl>Save Order
+                    </paper-button>
+                    <paper-button raised recenteringTouch="true" (click)="loadFromPHP()" style="font-size: small;"
+                                  [hidden]="hideLoadButton" type="button" ngDefaultControl>Load Order
+                    </paper-button>
+                </div>
+
+
+                <!--<div horizontal layout center-justified center  class="otherbuttons" hidden?="{{hideCloseSignatureButton}}">
+                    <paper-button raised recenteringTouch="true" on-click="{{cancelSig}}">Cancel</paper-button>
+                    <paper-button raised recenteringTouch="true" on-click="{{closeSignature}}">Submit</paper-button>
+
+                </div>-->
+                <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser}}</h3>
+                <div [hidden]="hideMenus">
+                    <!--main menu on the left (or right) for selecting view-->
+                    <div class="menu-item">
+                        <h3 icon="" label="Barcode Scan">Barcode Scan</h3>
+                        <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
+                            <input id="barcodeinput" (keyup.enter)="searchForBarcode(barcodeFieldData)" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                            {{barcodedata}}
+                        </div>
+                    </div>
+                </div>
+                <div class="vertical layout">
+                    <paper-button raised (click)="openAddATier()">ADD A TIER</paper-button>
+                    <paper-button raised (click)="openAddACombo()">ADD A COLLECTION</paper-button>
+                </div>
+
+                <!--Order Data-->
+                <div *ngFor="#ring of orderList" style="padding-left:10px;">
+                    <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                </div>
+                <h3>
+                    Subtotal: ${{subTotal}}
+                </h3>
+            </div>
+        </paper-header-panel>
+
+    </div>
+    <paper-dialog [opened]="addATierOpened" modal>
+        <paper-dialog-scrollable>
+            <h2>Select the Tier you want to add</h2>
+            <div class="horizontal layout center-justified">
+
+                <paper-button raised (click)="addTier(1)">Tier 1</paper-button>
+                <paper-button raised (click)="addTier(2)">Tier 2</paper-button>
+                <paper-button raised (click)="addTier(3)">Tier 3</paper-button>
+                <paper-button raised (click)="addTier(4)">Tier 4</paper-button>
+                <paper-button raised (click)="addTier(5)">Tier 4 Guarantee*</paper-button>
+            </div>
+            <div class="horizontal layout center-justified">
+                <paper-button raised dialog-dismiss>Cancel</paper-button>
+            </div>
+            <div>
+
+                <h2>Guaranteed Sale Program</h2>
+                <p><b>Offer:</b>
+                <p>1. If a store purchases a Tier 4 and The Knot, Lashbrook will guarantee at least a one-time turn of the investment during the first year that they have the product in the case.  If the store fails to sell $15,000, at wholesale, from the case and/or in special orders, Lashbrook will buy back product in an amount equal to the shortfall.
+                    <br>2. Total Investment:   $14,997
+                    <br>3. 30/60/90 (Three payments of $4999)
+                    <br>4. No substitutions to the Tier 4.
+                    <br>5. No stock balancing, unless initiated by Lashbrook, during the first year.</p>
+
+                <p><b>The following requirements must be met in order to qualify for buyback:</b>
+                    <br>1. Payment terms must be met within a 10 day grace period.
+                    <br>2. Store personnel must do Lashbrook training within 30 days of receipt of merchandise.
+                    <br>3. Store must provide the information necessary for proper Knot promotion within ten business days of each request.
+                    <br>4. Product must be properly displayed.
+                    <br>5. Store will have 60 days from end of 12 month period to notify us that they want a buyback.</p>
+
+                <p><b>Lashbrook buyback commitment:</b>
+                    <br>1. If conditions are met, Lashbrook will buy back the Lashbrook product that the jeweler chooses, also with 30/60/90 terms.  For example, if a jeweler sells only $9,000 at wholesale during the first year, he may choose $6000 of product to sell back and Lashbrook will pay $2000/month for three months.</p>
+            </div>
+        </paper-dialog-scrollable>
+
+    </paper-dialog>
+    <paper-dialog [opened]="addAComboOpened">
+            <h2>Select the Collection you want to add</h2>
+        <p>Note: This will add the collection rings individually.<br>
+            To add a single combo item use the barcode scan ID or search for the single item.</p>
+            <div class="horizontal layout center-justified">
+                <paper-button raised (click)="addCombo('core_collection')">Core Collection</paper-button>
+                <paper-button raised (click)="addCombo('basics_a')">Basics A</paper-button>
+                <paper-button raised (click)="addCombo('basics_b')">Basics B</paper-button>
+                <paper-button raised (click)="addCombo('engraved_set_a')">Engraved Set A</paper-button>
+                <paper-button raised (click)="addCombo('hardwood_10')">Hardwood 10</paper-button>
+                <paper-button raised (click)="addCombo('elysium')">Elysium 8</paper-button>
+                <paper-button raised (click)="addCombo('elysium2')">Elysium 5</paper-button>
+            </div>
+    </paper-dialog>
+</div>
+
+

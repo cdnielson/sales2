@@ -1,0 +1,8 @@
+[
+  {"id":"0","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"10","tier":"0","image":"cc7dge-angle-satin-polish.jpg","combo":"basics_a"},
+  {"id":"1","category":["Accessories"],"SKU":"RING 1","finish":"BLACK/GRAY","price":"10","tier":"1","image":"cc7dge-angle-satin-polish.jpg","combo":"basics_b"},
+  {"id":"2","category":["Accessories"],"SKU":"RING 2","finish":"BLACK/GRAY","price":"10","tier":"1","image":"cc7dge-angle-satin-polish.jpg","combo":"basics_a", "combo2":"core_collection"},
+  {"id":"3","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"10","tier":"2","image":"cc7dge-angle-satin-polish.jpg","combo":"core_collection"},
+  {"id":"4","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"10","tier":"3","image":"cc7dge-angle-satin-polish.jpg","combo":""},
+  {"id":"5","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"10","tier":"4","image":"cc7dge-angle-satin-polish.jpg","combo":""}
+]
