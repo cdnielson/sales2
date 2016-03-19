@@ -40,14 +40,16 @@ class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
   String get pathToRingsData => "data/rings.json";
+  String get pathToLoginData => "data/users.json";
   String get logoPath => "images/lbrook.jpg";
   String get pathToImages => "images/";
   String get pathToThumbnails => "images/";
   List<Ring> orderList = [];
   List<Ring> tierData = [];
+  List<User> loginData = [];
   bool openLoading = true;
-  bool openLogIn = true;
-  String currentUser = "";
+  bool hideLogIn = false;
+  User currentUser;
   bool hideMenus = false;
   String barcodedata = "";
   String barcodeFieldData = "";
@@ -58,8 +60,9 @@ class MainApp {
   bool addAComboOpened = false;
   bool guaranteed = false;
 
+
   //buttons
-  bool hideSubmitButton = true;
+  bool hideSubmitButton = false;
   bool hideOtherButtons = true;
   bool hideCloseSignatureButton = true;
   bool hideSaveButton = true;
@@ -78,6 +81,7 @@ class MainApp {
     log.info("$runtimeType()");
 
     HttpRequest.getString(pathToRingsData).then(ringsLoaded);
+    HttpRequest.getString(pathToLoginData).then(setLogins);
   }
 
   void ringsLoaded(data) {
@@ -90,9 +94,14 @@ class MainApp {
     }
     ringsDisplayed = tierData;
     openLoading = false;
-    openLogIn = true;
     // TODO figure this out
     // Timer.run(barcodeinput.nativeElement.focus());
+  }
+
+  void setLogins(data) {
+    print("test");
+    var mapList = JSON.decode(data);
+    loginData = mapList((Map element) => new User.fromMap(element)).toList();
   }
 
   void searchForBarcode(String data) {
@@ -176,6 +185,20 @@ class MainApp {
     }
     calculateOrderTotal();
     addAComboOpened = false;
+  }
+
+  login() {
+    hideLogIn = true;
+  }
+
+  handlePin(pin) {
+    print(pin);
+    for (User user in loginData) {
+      if(pin == user.pin) {
+        currentUser = user;
+        login();
+      }
+    }
   }
 }
 
