@@ -1,19 +1,3 @@
 [
-  {"id":"0","category":"Accessories","SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"display_1.jpg","combo":""},
-  {"id":"1","category":"Accessories","SKU":"DISPLAY CASE WB","finish":"WHITE/BLUE","price":"0","tier":"22","image":"display_2.jpg","combo":""},
-  {"id":"2","category":"Accessories","SKU":"DISPLAY CASE WD","finish":"WHITE/CHARCOAL","price":"0","tier":"22","image":"display_3.jpg","combo":""},
-  {"id":"3","category":"Accessories","SKU":"DISPLAY CASE BT","finish":"BLACK/TAN","price":"0","tier":"22","image":"display_4.jpg","combo":""},
-  {"id":"11","category":"Accessories","SKU":"DISPLAY CASE ELYSIUM","finish":"BLACK","price":"0","tier":"22","image":"display_elysium.jpg","combo":""},
-  {"id":"4","category":"Accessories","SKU":"NO DISPLAY CASE","finish":"NONE","price":"0","tier":"22","image":"display_no.jpg","combo":""},
-  {"id":"5","category":"Accessories","SKU":"RING SIZER","finish":"","price":"250","tier":"22","image":"Lashbrook_Ring_Sizers.jpg","combo":""},
-  {"id":"6","category":"Accessories","SKU":"RING SIZER FREE","finish":"","price":"0","tier":"22","image":"Lashbrook_Ring_Sizers.jpg","combo":""},
-  {"id":"7","category":"Accessories","SKU":"THE KNOT - 1YR FREE","finish":"","price":"0","tier":"22","image":"the_knot.jpg","combo":""},
-  {"id":"8","category":"Accessories","SKU":"THE KNOT - 1YR","finish":"","price":"1500","tier":"22","image":"the_knot.jpg","combo":""},
-  {"id":"9","category":"Accessories","SKU":"DISPLAY CASE TW","finish":"TAN/WHITE","price":"0","tier":"22","image":"display_tanwhite.jpg","combo":""},
-  {"id":"10","category":"Accessories","SKU":"CUSTOM DISPLAY","finish":"CUSTOM","price":"299","tier":"22","image":"display_custom.jpg","combo":""},
-  {"id":"101","category":"Camo","SKU":"8B15(NS)/RTMAX4","finish":"Polish","price":"139","tier":"1","image":"Camo8B15_Max4.jpg","combo":""},
-  {"id":"102","category":"Camo","SKU":"CC5F13/MOCPBU","finish":"Polish","price":"199","tier":"2","image":"CC5F13-MOCPBU_POLISH.jpg","combo":""},
-  {"id":"103","category":"King's Camo","SKU":"Z8FGE15/KINGSFIELD","finish":"Polish","price":"169","tier":"3","image":"Z8FGE15KINGSFIELDPOL.jpg","combo":""},
-  {"id":"159","category":"Damascus","SKU":"D6B","finish":"Acid","price":"159","tier":"0","image":"D6B.jpg","combo":""}
-
+  {"id":"0","category":"Accessories","SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"cc7dge-angle-satin-polish.jpg","combo":""}
 ]

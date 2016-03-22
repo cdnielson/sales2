@@ -105,6 +105,8 @@ class MainApp {
   bool openCustomSku = false;
   bool openStockBalances = false;
 
+  Ring lastScanned;
+
   DateTime date = new DateTime.now();
 
   ngAfterViewInit() {
@@ -125,6 +127,7 @@ class MainApp {
   void ringsLoaded(data) {
     List<Map> mapList = JSON.decode(data);
     tierData = mapList.map((Map element) => new Ring.fromMap(element)).toList();
+    print("here");
     log.info(tierData);
     /*for (var t in tierData) {
       t.cleared = !t.cleared;
@@ -147,11 +150,10 @@ class MainApp {
 
   }
 
-  void searchForBarcode(String data) {
-    log.info(data);
-    barcodedata = data;
-    int ring = int.parse(data);
+  void searchForBarcode() {
+    int ring = int.parse(barcodeFieldData);
     addRing(ring);
+    lastScanned = tierData.where((Ring element) => element.id == int.parse(barcodeFieldData)).first;
     barcodeFieldData = "";
   }
 
@@ -404,6 +406,10 @@ class MainApp {
       'price' : price
     });
     openStockBalances = false;
+  }
+
+  killSb(id) {
+    stockBalances.removeWhere((Map element) => element['id'] == id);
   }
 
   changeView() {

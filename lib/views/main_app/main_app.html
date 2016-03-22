@@ -85,10 +85,14 @@
                 <div [hidden]="hideMenus">
                     <!--main menu on the left (or right) for selecting view-->
                     <div class="menu-item">
-                        <h3 icon="" label="Barcode Scan">Barcode Scan</h3>
+                        <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
+                        <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
                         <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
-                            <input id="barcodeinput" (keyup.enter)="searchForBarcode(barcodeFieldData)" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
-                            {{barcodedata}}
+                            <input id="barcodeinput" placeholder="barcode scan" (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                        </div>
+                        <div class="vertical layout center-justified">
+                            <span>{{lastScanned?.SKU}} - {{lastScanned?.finish}} - ${{lastScanned?.price}}</span>
+                            <img [src]="lastScanned?.image"/>
                         </div>
                     </div>
                 </div>
@@ -184,7 +188,7 @@
     <paper-dialog [opened]="openStockBalances">
         <h2>Add a Stock Balance</h2>
         <form is="iron-form" id="sbForm" method="post">
-            <paper-input alwaysFloatLabel="true" required="true" type="text" #sb label="Amount" ngDefaultControls></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" type="text" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)"></paper-input>
             <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
         </form>
     </paper-dialog>
