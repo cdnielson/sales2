@@ -104,6 +104,7 @@ class MainApp {
   bool showSignature = false;
   bool openCustomSku = false;
   bool openStockBalances = false;
+  String pin;
 
   Ring lastScanned;
 
@@ -266,13 +267,20 @@ class MainApp {
     hideMain = false;
   }
 
-  handlePin(pin) {
+  handlePin() {
     for (User user in loginData) {
       if(pin == user.pin) {
         currentUser = user;
         login();
       }
     }
+    if(pin.length == 3) {
+      pin = "";
+    }
+  }
+
+  handleLoginButton(String data) {
+    pin = pin + data;
   }
 
   submitOrder() {

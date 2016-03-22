@@ -2,12 +2,28 @@
     .menu-item {
         font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
     }
+    .loginButton {
+        width: 100px;
+        height: 100px;
+    }
 </style>
 
-<div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+<div class="layout horizontal" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
     <paper-dialog opened="true" class="vertical layout center-justified">
         <h2>Please Enter Your PIN</h2>
-        <input #pin type="password" (keyup)="handlePin(pin.value)"/>
+        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()"/>
+        <div class="layout horizontal wrap" style="width: 350px;">
+            <paper-button (click)="handleLoginButton('7')" class="loginButton">7</paper-button>
+            <paper-button (click)="handleLoginButton('8')" class="loginButton">8</paper-button>
+            <paper-button (click)="handleLoginButton('9')" class="loginButton">9</paper-button>
+            <paper-button (click)="handleLoginButton('4')" class="loginButton">4</paper-button>
+            <paper-button (click)="handleLoginButton('5')" class="loginButton">5</paper-button>
+            <paper-button (click)="handleLoginButton('6')" class="loginButton">6</paper-button>
+            <paper-button (click)="handleLoginButton('3')" class="loginButton">3</paper-button>
+            <paper-button (click)="handleLoginButton('2')" class="loginButton">2</paper-button>
+            <paper-button (click)="handleLoginButton('1')" class="loginButton">1</paper-button>
+            <paper-button (click)="handleLoginButton('0')" class="loginButton">0</paper-button>
+        </div>
     </paper-dialog>
 </div>
 
