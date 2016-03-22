@@ -21,7 +21,13 @@
     }
 </style>
 
-<div class="layout horizontal left" style="height:100%;">
+<div class="layout horizontal left" style="height: 100%; width 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+    <paper-dialog opened="true">
+        <h2>Please Enter Your PIN</h2>
+        <input #pin type="password" (keyup)="handlePin(pin.value)"/>
+    </paper-dialog>
+</div>
+<div class="layout horizontal left" style="height:100%;" [hidden]="!hideLogIn">
 
     <div id="main-window" style="overflow:scroll; height: 100%;">
         <!--move to ring component-->
@@ -76,7 +82,7 @@
                     </paper-button>
                 </div>
 
-                <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser}}</h3>
+                <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser?.username}}</h3>
                 <div [hidden]="hideMenus">
                     <!--main menu on the left (or right) for selecting view-->
                     <div class="menu-item">
@@ -93,12 +99,16 @@
                 </div>
 
                 <!--Order Data-->
-                <div *ngFor="#ring of orderList" style="padding-left:10px;">
-                    <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                <div style="margin-top:10px; border-top: 1px dotted lightblue">
+                    Order:
+                    <div *ngFor="#ring of orderList" style="padding-left:10px;">
+                        <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                    </div>
+
+                    <h3>
+                        Subtotal: ${{subTotal}}
+                    </h3>
                 </div>
-                <h3>
-                    Subtotal: ${{subTotal}}
-                </h3>
             </div>
         </paper-header-panel>
 
