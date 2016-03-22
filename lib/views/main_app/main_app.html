@@ -7,7 +7,7 @@
 <div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
     <paper-dialog opened="true" class="vertical layout center-justified">
         <h2>Please Enter Your PIN</h2>
-        <paper-input #pin ngDefaultControl type="password" (keyup)="handlePin(pin.value)"></paper-input>
+        <input #pin type="password" (keyup)="handlePin(pin.value)"/>
     </paper-dialog>
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
@@ -56,23 +56,23 @@
             </paper-toolbar>
             <!--button section-->
             <div id="menuContent">
-                <div horizontal layout center-justified center class="otherbuttons">
+                <div class="horizontal layout center-justified center">
                     <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton">Review</paper-button>
                 </div>
-                <div horizontal layout center-justified center class="otherbuttons" [hidden]="hideButtons">
+                <div class="horizontal layout center-justified center" [hidden]="hideButtons">
                     <paper-button raised (click)="cancelSubmit" ngDefaultControl>Back</paper-button>
                     <paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>
                 </div>
-                <div horizontal layout center-justified center class="otherbuttons" [hidden]="hideOtherButtons">
+                <div class="horizontal layout center-justified center" [hidden]="hideOtherButtons">
                     <paper-button raised recenteringTouch="true" (click)="back()" ngDefaultControl>Back</paper-button>
                     <paper-button raised recenteringTouch="true" (click)="signatureSubmit()" ngDefaultControl>Submit and
                         Sign Order
                     </paper-button>
                 </div>
-                <div style="margin-top: 7px; margin-bottom: 5px;" horizontal layout center-justified>
-                    <textarea class="customerinfo" rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
+                <div style="margin-top: 7px; margin-bottom: 5px;" class="horizontal layout center-justified">
+                    <textarea rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
                 </div>
-                <div style="border-top: 1px solid black; padding-top: 5px;" horizontal layout around-justified>
+                <div style="border-top: 1px solid black; padding-top: 5px;" class="horizontal layout around-justified">
                     <paper-button raised recenteringTouch="true" style="font-size: small;" [hidden]="hideSaveButton"
                                   (click)="openSaveOrderDialog" ngDefaultControl>Save Order
                     </paper-button>
@@ -105,6 +105,9 @@
                     Order:
                     <div *ngFor="#ring of orderList" style="padding-left:10px;">
                         <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                    </div>
+                    <div *ngFor="#balance of stockBalances">
+                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }} - ${{ balance['price'] }}
                     </div>
 
                     <h3>
@@ -165,6 +168,25 @@
                 <paper-button raised (click)="addCombo('elysium')">Elysium 8</paper-button>
                 <paper-button raised (click)="addCombo('elysium2')">Elysium 5</paper-button>
             </div>
+    </paper-dialog>
+
+    <paper-dialog [opened]="openCustomSku">
+        <h2>Add a Custom SKU</h2>
+        <form is="iron-form" id="customForm" method="post">
+            <!--<paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customSku" label="SKU" ngDefaultControls></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customFinish" label="Finish" ngDefaultControls></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" type="number" [(ngModel)]="customPrice" label="Price" ngDefaultControls></paper-input>
+            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControls></paper-input>-->
+            <paper-button raised (click)="handleCustomSkuForm()">Submit</paper-button>
+        </form>
+    </paper-dialog>
+
+    <paper-dialog [opened]="openStockBalances">
+        <h2>Add a Stock Balance</h2>
+        <form is="iron-form" id="sbForm" method="post">
+            <paper-input alwaysFloatLabel="true" required="true" type="text" #sb label="Amount" ngDefaultControls></paper-input>
+            <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
+        </form>
     </paper-dialog>
 </div>
 
