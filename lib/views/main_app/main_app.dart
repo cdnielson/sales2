@@ -92,10 +92,18 @@ class MainApp {
   List stockBalances = [];
   String orderID = "";
 
+  String customSku = "";
+  String customFinish = "";
+  String customPrice = "";
+  String customNotes = "";
+
   bool hideLogIn = false;
   bool hideMain = true;
   bool hideOrder = false;
   bool hideReview = true;
+
+  bool openCustomSku = false;
+  bool openStockBalances = false;
 
   DateTime date = new DateTime.now();
 
@@ -367,11 +375,35 @@ class MainApp {
     }, onError: (e) => print("error"));
   }
   openAddACustomSku() {
+    openCustomSku = true;
+  }
 
+  handleCustomSkuForm() {
+    typedSkus.add({
+      "SKU": customSku,
+      "finish": customFinish,
+      "price": customPrice,
+      "notes": customNotes
+    });
+
+    customSku = "";
+    customFinish = "";
+    customPrice = "";
+    customNotes = "";
+    openCustomSku = false;
   }
 
   openAddAStockBalance() {
+    openStockBalances = true;
+  }
 
+  handleStockBalanceForm(price) {
+    int sbId = stockBalances.length + 1;
+    stockBalances.add({
+      'id' : sbId,
+      'price' : price
+    });
+    openStockBalances = false;
   }
 
   changeView() {
