@@ -1,28 +1,11 @@
 <style>
-    .content {
-        padding: 15px;
-    }
-
-    .app-title {
-        text-align: center;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    message-bar {
-        margin-bottom: 10px;
-    }
-
-    paper-header-panel {
-        height: 100%;
-    }
-
     .menu-item {
         font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
     }
 </style>
 
 <div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
-    <paper-dialog opened="true" (iron-overlay-opened)="overlayOpened()">
+    <paper-dialog opened="true">
         <h2>Please Enter Your PIN</h2>
         <input #pin type="password" (keyup)="handlePin(pin.value)"/>
     </paper-dialog>

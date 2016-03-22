@@ -71,7 +71,7 @@ class MainApp {
   bool hideLoadButton = false;
   bool hideButtons = true;
 
-  String order_name = "";
+  String order_name = "Test Order";
   String store_name = "";
   String last_name = "";
   String first_name = "";
@@ -285,24 +285,25 @@ class MainApp {
 
     var data =
     {
-      "completed" : completed,
-      "date" : dateadd,
-      "customer_info" : customerInfo,
-      "order_data" : orderData,
-      "order_name" : order_name,
-      "tier" : tier,
-      "rings_removed" : removedFromTier,
-      "rings_added" : added,
-      "accessories" : accessories,
-      "customrings" : typedSkus,
-      "stockbalances" : stockBalances,
-      "rep" : currentUser,
-      "new" : 1,
+
       "display" : customDisplay
     };
 
-    var datasend = "";
-//    JSON.encode(data);
+    /*"completed" : completed,
+  "date" : dateadd,
+  "customer_info" : customerInfo,
+  "order_data" : orderData,
+  "order_name" : order_name,
+  "tier" : tier,
+  "rings_removed" : removedFromTier,
+  "rings_added" : added,
+  "accessories" : accessories,
+  "customrings" : typedSkus,
+  "stockbalances" : stockBalances,
+  "rep" : currentUser,
+  "new" : 1,*/
+
+    var datasend = JSON.encode(data);
 
     HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
       //print(obj);
@@ -310,8 +311,6 @@ class MainApp {
       //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
       orderID = JSON.decode(val.responseText);
-
-
     }, onError: (e) => print("error"));
   }
 }
