@@ -16,3 +16,5 @@ pubspec.lock
 *.js.map
 .packages
 js/
+users.json
+*.php
