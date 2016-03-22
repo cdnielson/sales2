@@ -40,6 +40,7 @@ class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
   String get pathToRingsData => "data/rings.json";
+  String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
   String get logoPath => "images/lbrook.jpg";
@@ -197,6 +198,8 @@ class MainApp {
   List<Ring> getTier(tier) {
     List<Ring> tierList;
     switch (tier) {
+      case 0: tierList = [];
+      break;
       case 1: tierList = tierData.where((Ring element) => element.tier == 1).toList();
       break;
       case 2: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
@@ -242,12 +245,64 @@ class MainApp {
   }
 
   submitOrder() {
-    hideOrder = true;
-    hideReview = false;
-    saveOrderToPHP();
+    if (orderList.isNotEmpty) {
+      hideOrder = true;
+      hideReview = false;
+      setUpOrderToSend();
+    } else {
+      // TODO create a message
+    }
   }
 
-  void saveOrderToPHP() {
+  setUpOrderToSend() {
+
+    for (Ring r in orderList) {
+      print("Test");
+      if (r.tier == 22) {
+        accessories.add({
+          "SKU" : r.SKU,
+          "finish" : r.finish,
+          "price" : r.price,
+          "notes" : r.notes
+        });
+      }
+
+      if (r.tier != 22) {
+        added.add({
+          "SKU" : r.SKU,
+          "finish" : r.finish,
+          "price" : r.price,
+          "notes" : r.notes
+        });
+      }
+    }
+    List<Ring> tierList = getTier(tier);
+    for (Ring r in tierList) {
+      Ring missing = checkIfMissing(r);
+      if (missing != null) {
+        removedFromTier.add({
+          "SKU" : missing.SKU,
+          "finish" : missing.finish,
+          "price" : missing.price
+        });
+      }
+    }
+
+    log.info("accessories $accessories");
+    log.info("added $added");
+    log.info("removed from tier $removedFromTier");
+  }
+
+  Ring checkIfMissing(ring) {
+    for (Ring r in orderList) {
+      if (r.SKU == ring.SKU && r.finish == ring.finish) {
+        return null;
+      }
+    }
+    return ring;
+  }
+
+  void saveOrderToPhp() {
     bool completed = true;
     Map customerInfo;
     Map orderData;
@@ -296,13 +351,12 @@ class MainApp {
       "accessories" : accessories,
       "customrings" : typedSkus,
       "stockbalances" : stockBalances,
-      "rep" : currentUser,
+      "rep" : currentUser.username,
       "new" : 1,
       "display" : customDisplay
     };
 
-    var datasend = "";
-//    JSON.encode(data);
+    var datasend = JSON.encode(data);
 
     HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
       //print(obj);
@@ -310,9 +364,18 @@ class MainApp {
       //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
       orderID = JSON.decode(val.responseText);
-
-
     }, onError: (e) => print("error"));
+  }
+  openAddACustomSku() {
+
+  }
+
+  openAddAStockBalance() {
+
+  }
+
+  changeView() {
+
   }
 }
 

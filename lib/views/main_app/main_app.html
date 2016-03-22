@@ -1,36 +1,34 @@
 <style>
-    .content {
-        padding: 15px;
-    }
-
-    .app-title {
-        text-align: center;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    message-bar {
-        margin-bottom: 10px;
-    }
-
-    paper-header-panel {
-        height: 100%;
-    }
-
     .menu-item {
         font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
     }
 </style>
 
 <div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
-    <paper-dialog opened="true" (iron-overlay-opened)="overlayOpened()">
+    <paper-dialog opened="true" class="vertical layout center-justified">
         <h2>Please Enter Your PIN</h2>
-        <input #pin type="password" (keyup)="handlePin(pin.value)"/>
+        <paper-input #pin ngDefaultControl type="password" (keyup)="handlePin(pin.value)"></paper-input>
     </paper-dialog>
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
-        This is the review page
-        ETc.
+        <div *ngFor="#ring of orderList">
+            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}}
+        </div>
+        <div class="layout vertical">
+            <paper-input alwaysFloatLabel="true" required="true" label="Order Name" [(ngModel)]="order_name" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Store Name" [(ngModel)]="store_name" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Last Name" [(ngModel)]="last_name" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="First Name" [(ngModel)]="first_name" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Address" [(ngModel)]="address" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="City" [(ngModel)]="city" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="State" [(ngModel)]="state" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Zip" [(ngModel)]="zip" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Phone" [(ngModel)]="phone" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Email" [(ngModel)]="email" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" label="Terms" [(ngModel)]="terms" ngDefaultControl></paper-input>
+            <paper-button (click)="saveOrderToPhp()">Submit and Sign Order</paper-button>
+        </div>
     </div>
 
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
@@ -39,13 +37,13 @@
         <div class="layout horizontal center-justified flex wrap">
             <div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
-                <div class="horizontal layout center-justified" [id]="ring.id">
+                <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
                     SKU:{{ring.SKU}}<br>
                     Finish:{{ring.finish}}<br>
                     Price:${{ring.price}} ({{ring.tier}} - {{ring.id}})<br>
                     {{ring?.combo}} {{ring?.combo2}}
-                    {{ring?.notes}}
+                    <paper-input [(ngModel)]="ring.notes" ngDefaultControl label="Notes"></paper-input>
                 </div>
             </div>
         </div>
@@ -72,8 +70,7 @@
                     </paper-button>
                 </div>
                 <div style="margin-top: 7px; margin-bottom: 5px;" horizontal layout center-justified>
-                    <textarea class="customerinfo" rows="4" cols="30" placeholder="Notes" id="notes"
-                              (keyup)="handleOrderNotes()"></textarea>
+                    <textarea class="customerinfo" rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
                 </div>
                 <div style="border-top: 1px solid black; padding-top: 5px;" horizontal layout around-justified>
                     <paper-button raised recenteringTouch="true" style="font-size: small;" [hidden]="hideSaveButton"
@@ -98,6 +95,9 @@
                 <div class="vertical layout">
                     <paper-button raised (click)="openAddATier()">ADD A TIER</paper-button>
                     <paper-button raised (click)="openAddACombo()">ADD A COLLECTION</paper-button>
+                    <paper-button raised (click)="openAddACustomSku()">ADD A CUSTOM SKU</paper-button>
+                    <paper-button raised (click)="openAddAStockBalance()">ADD A STOCK BALANCE</paper-button>
+                    <paper-button raised (click)="changeView()">CHANGE VIEW</paper-button>
                 </div>
 
                 <!--Order Data-->
