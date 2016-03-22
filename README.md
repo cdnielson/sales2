@@ -1,4 +1,4 @@
-Tic-Tac-Toe
+Lashbrook Sales App v2.0
 ======
 
-An implementation of the classic game built with Dart, Angular 2, and Polymer. This version requires two human players.
+Lashbrook Sales App with Dart, Angular 2 (beta ^.11), and Polymer (1.x).
