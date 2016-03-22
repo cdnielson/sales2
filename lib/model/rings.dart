@@ -26,7 +26,7 @@ class Ring{
   bool cleared = false;
   String added = "Remove";
   String icon = "clear";
-  String notes;
+  String notes = "";
 }
 
 
