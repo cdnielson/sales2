@@ -10,6 +10,11 @@
         <input #pin type="password" (keyup)="handlePin(pin.value)"/>
     </paper-dialog>
 </div>
+
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
+    <iframe id="iframe" width="100%" height="{{height}}" _src="../../../web/signature/sign.php?id={{orderID}}" seamless="true"></iframe>
+
+</div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
         <div *ngFor="#ring of orderList">
@@ -88,11 +93,12 @@
                         <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
                         <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
                         <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
-                            <input id="barcodeinput" placeholder="barcode scan" (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                            <input id="barcodeinput" placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
                         </div>
-                        <div class="vertical layout center-justified">
-                            <span>{{lastScanned?.SKU}} - {{lastScanned?.finish}} - ${{lastScanned?.price}}</span>
-                            <img [src]="pathToImages + 'rings/thumbnails/' + lastScanned?.image"/>
+                        <div [hidden]="hideBarcodeLastScanned" class="vertical layout center-justified">
+                            <span style="font-size: small;">recently added from barcode scan:</span>
+                            <span style="font-size: small;">{{lastScanned?.SKU}} - {{lastScanned?.finish}} - ${{lastScanned?.price}}</span>
+                            <img [src]="lastScannedImage" style="width: 100%;"/>
                         </div>
                     </div>
                 </div>
@@ -112,6 +118,9 @@
                     </div>
                     <div *ngFor="#balance of stockBalances">
                         <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }} - ${{ balance['price'] }}
+                    </div>
+                    <div *ngFor="#item of typedSkus">
+                        <span (click)="killCustom(item['SKU'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
                     </div>
 
                     <h3>
@@ -177,10 +186,10 @@
     <paper-dialog [opened]="openCustomSku">
         <h2>Add a Custom SKU</h2>
         <form is="iron-form" id="customForm" method="post">
-            <!--<paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customSku" label="SKU" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customFinish" label="Finish" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" required="true" type="number" [(ngModel)]="customPrice" label="Price" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControls></paper-input>-->
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customSku" label="SKU" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customFinish" label="Finish" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customPrice" label="Price" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>
             <paper-button raised (click)="handleCustomSkuForm()">Submit</paper-button>
         </form>
     </paper-dialog>
@@ -188,7 +197,7 @@
     <paper-dialog [opened]="openStockBalances">
         <h2>Add a Stock Balance</h2>
         <form is="iron-form" id="sbForm" method="post">
-            <paper-input alwaysFloatLabel="true" required="true" type="text" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)"></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)"></paper-input>
             <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
         </form>
     </paper-dialog>

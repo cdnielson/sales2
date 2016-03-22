@@ -95,19 +95,23 @@ class MainApp {
   String customSku = "";
   String customFinish = "";
   String customPrice = "";
-  String customNotes = "";
+  String customNote = "";
 
   bool hideLogIn = false;
   bool hideMain = true;
   bool hideOrder = false;
   bool hideReview = true;
-
+  bool showSignature = false;
   bool openCustomSku = false;
   bool openStockBalances = false;
 
   Ring lastScanned;
 
+  bool hideBarcodeLastScanned = true;
+
   DateTime date = new DateTime.now();
+
+  String lastScannedImage = "";
 
   ngAfterViewInit() {
     // viewChild is set
@@ -154,6 +158,8 @@ class MainApp {
     int ring = int.parse(barcodeFieldData);
     addRing(ring);
     lastScanned = tierData.where((Ring element) => element.id == int.parse(barcodeFieldData)).first;
+    lastScannedImage = pathToImages + "rings/thumbnails/" + lastScanned.image;
+    hideBarcodeLastScanned = false;
     barcodeFieldData = "";
   }
 
@@ -166,6 +172,7 @@ class MainApp {
     }
     log.info(orderList);
     calculateOrderTotal();
+    hideBarcodeLastScanned = true;
   }
 
   void filterSearchData(data) {
@@ -181,6 +188,20 @@ class MainApp {
     if(guaranteed) {
       subTotal += 844;
     }
+
+    // add the custom SKUs prices
+    int price = 0;
+    for (Map item in typedSkus) {
+      price += int.parse(item["price"]);
+    }
+    subTotal += price;
+
+    // add the SB prices
+    price = 0;
+    for (Map item in stockBalances) {
+      price += int.parse(item["price"]);
+    }
+    subTotal += price;
   }
 
   void openAddATier() {
@@ -374,6 +395,8 @@ class MainApp {
       //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
       orderID = JSON.decode(val.responseText);
+      showSignature = true;
+      hideMain = true;
     }, onError: (e) => print("error"));
   }
   openAddACustomSku() {
@@ -385,14 +408,15 @@ class MainApp {
       "SKU": customSku,
       "finish": customFinish,
       "price": customPrice,
-      "notes": customNotes
+      "notes": customNote
     });
 
     customSku = "";
     customFinish = "";
     customPrice = "";
-    customNotes = "";
+    customNote = "";
     openCustomSku = false;
+    calculateOrderTotal();
   }
 
   openAddAStockBalance() {
@@ -406,10 +430,17 @@ class MainApp {
       'price' : price
     });
     openStockBalances = false;
+    calculateOrderTotal();
   }
 
   killSb(id) {
     stockBalances.removeWhere((Map element) => element['id'] == id);
+    calculateOrderTotal();
+  }
+
+  killCustom(sku, finish) {
+    typedSkus.removeWhere((Map element) => element['SKU'] == sku && element['finish'] == finish);
+    calculateOrderTotal();
   }
 
   changeView() {
