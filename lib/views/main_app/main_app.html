@@ -21,15 +21,18 @@
     }
 </style>
 
-<div class="layout horizontal left" style="height: 100%; width 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
-    <paper-dialog opened="true">
+<div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+    <paper-dialog opened="true" (iron-overlay-openend)="overlayOpened()">
         <h2>Please Enter Your PIN</h2>
         <input #pin type="password" (keyup)="handlePin(pin.value)"/>
     </paper-dialog>
 </div>
-<div class="layout horizontal left" style="height:100%;" [hidden]="!hideLogIn">
+<div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
+    <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
+        This is the review page
+    </div>
 
-    <div id="main-window" style="overflow:scroll; height: 100%;">
+    <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
         <div class="layout horizontal center-justified flex wrap">
@@ -46,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div id="menu" style="width: 400px; border-left: 1px solid black">
+    <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
 
         <paper-header-panel id="headerPanel" mode="scroll" navigation flex>
             <paper-toolbar id="drawer-header" style="background-color: #003053;" horizontal layout center-justified>
@@ -55,9 +58,7 @@
             <!--button section-->
             <div id="menuContent">
                 <div horizontal layout center-justified center class="otherbuttons">
-                    <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton"
-                                  ngDefaultControl>Review
-                    </paper-button>
+                    <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton">Review</paper-button>
                 </div>
                 <div horizontal layout center-justified center class="otherbuttons" [hidden]="hideButtons">
                     <paper-button raised (click)="cancelSubmit" ngDefaultControl>Back</paper-button>

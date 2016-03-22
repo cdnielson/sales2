@@ -41,6 +41,7 @@ class MainApp {
   @ViewChild("barcodeinput") var barcodeInput;
   String get pathToRingsData => "data/rings.json";
   String get pathToLoginData => "data/users.json";
+  String get pathToPhpAdd => "data/salesadd.php";
   String get logoPath => "images/lbrook.jpg";
   String get pathToImages => "images/";
   String get pathToThumbnails => "images/";
@@ -48,17 +49,18 @@ class MainApp {
   List<Ring> tierData = [];
   List<User> loginData = [];
   bool openLoading = true;
-  bool hideLogIn = false;
+
   User currentUser;
   bool hideMenus = false;
   String barcodedata = "";
   String barcodeFieldData = "";
   String searchData = "";
-  List<Ring> ringsDisplayed;
+  List<Ring> ringsDisplayed = [];
   int subTotal = 0;
   bool addATierOpened = false;
   bool addAComboOpened = false;
   bool guaranteed = false;
+  int tier = 0;
 
 
   //buttons
@@ -69,13 +71,40 @@ class MainApp {
   bool hideLoadButton = false;
   bool hideButtons = true;
 
+  String order_name = "";
+  String store_name = "";
+  String last_name = "";
+  String first_name = "";
+  String address = "";
+  String city = "";
+  String state = "";
+  String zip = "";
+  String phone = "";
+  String email = "";
+  String terms = "";
+  String notes = "";
 
+  List removedFromTier = [];
+  List added = [];
+  List accessories = [];
+  List typedSkus = [];
+  List stockBalances = [];
+  String orderID = "";
 
+  bool hideLogIn = false;
+  bool hideMain = true;
+  bool hideOrder = false;
+  bool hideReview = true;
+
+  DateTime date = new DateTime.now();
 
   ngAfterViewInit() {
     // viewChild is set
   }
 
+  overlayOpened() {
+    barcodeInput.nativeElement.focus();
+  }
 
   MainApp(Logger this.log) {
     log.info("$runtimeType()");
@@ -85,27 +114,32 @@ class MainApp {
   }
 
   void ringsLoaded(data) {
-    var mapList = JSON.decode(data);
+    List<Map> mapList = JSON.decode(data);
     tierData = mapList.map((Map element) => new Ring.fromMap(element)).toList();
-    for (var t in tierData) {
+    log.info(tierData);
+    /*for (var t in tierData) {
       t.cleared = !t.cleared;
       t.added = "Add";
       t.icon = "add";
-    }
+    }*/
     ringsDisplayed = tierData;
+    log.info(ringsDisplayed);
     openLoading = false;
     // TODO figure this out
     // Timer.run(barcodeinput.nativeElement.focus());
   }
 
   void setLogins(data) {
-    print("test");
-    var mapList = JSON.decode(data);
-    loginData = mapList((Map element) => new User.fromMap(element)).toList();
+
+    List<Map> mapList = JSON.decode(data);
+
+    loginData = mapList.map((Map element) => new User.fromMap(element)).toList();
+    log.info(loginData);
+
   }
 
   void searchForBarcode(String data) {
-    print(data);
+    log.info(data);
     barcodedata = data;
     int ring = int.parse(data);
     addRing(ring);
@@ -146,31 +180,37 @@ class MainApp {
     addAComboOpened = true;
   }
 
-  void addTier(int tier) {
+  void addTier(int tierSelected) {
     orderList.removeWhere((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4);
     guaranteed = false;
+    tier = tierSelected;
 
-    List<Ring> tierList;
-    switch (tier) {
-      case 1: tierList = tierData.where((Ring element) => element.tier == 1).toList();
-        break;
-      case 2: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
-        break;
-      case 3: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList();
-        break;
-      case 4: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
-        guaranteed = false;
-        break;
-      case 5: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
-        guaranteed = true;
-        break;
-    }
+    List<Ring> tierList = getTier(tier);
 
     for (Ring ring in tierList) {
       orderList.add(ring);
     }
     calculateOrderTotal();
     addATierOpened = false;
+  }
+
+  List<Ring> getTier(tier) {
+    List<Ring> tierList;
+    switch (tier) {
+      case 1: tierList = tierData.where((Ring element) => element.tier == 1).toList();
+      break;
+      case 2: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
+      break;
+      case 3: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList();
+      break;
+      case 4: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
+      guaranteed = false;
+      break;
+      case 5: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
+      guaranteed = true;
+      break;
+    }
+    return tierList;
   }
 
   void addCombo(String combo) {
@@ -189,16 +229,90 @@ class MainApp {
 
   login() {
     hideLogIn = true;
+    hideMain = false;
   }
 
   handlePin(pin) {
-    print(pin);
     for (User user in loginData) {
       if(pin == user.pin) {
         currentUser = user;
         login();
       }
     }
+  }
+
+  submitOrder() {
+    hideOrder = true;
+    hideReview = false;
+    saveOrderToPHP();
+  }
+
+  void saveOrderToPHP() {
+    bool completed = true;
+    Map customerInfo;
+    Map orderData;
+    String dateadd;
+
+    customerInfo = {
+      "client_idx" : "none",
+      "checked" : "new",
+      "storeName" : store_name,
+      "lastName" : last_name,
+      "firstName" : first_name,
+      "address" : address,
+      "city" : city,
+      "state" : state,
+      "zip" : zip,
+      "phone" : phone,
+      "email" : email
+    };
+    orderData = {
+      "terms" : terms,
+      "notes" : notes
+    };
+
+    dateadd = date.toString();
+
+    Map customDisplay = {};
+    //print("Last Name that will be uploaded is:" + customerInfo["lastName"]);
+    /*if (customDisplayAdded == true) {
+      customDisplay = {
+        "top" : topSwatch,
+        "side" : sideSwatch,
+        "acrylic" : acrylic
+      };
+    }*/
+
+    var data =
+    {
+      "completed" : completed,
+      "date" : dateadd,
+      "customer_info" : customerInfo,
+      "order_data" : orderData,
+      "order_name" : order_name,
+      "tier" : tier,
+      "rings_removed" : removedFromTier,
+      "rings_added" : added,
+      "accessories" : accessories,
+      "customrings" : typedSkus,
+      "stockbalances" : stockBalances,
+      "rep" : currentUser,
+      "new" : 1,
+      "display" : customDisplay
+    };
+
+    var datasend = "";
+//    JSON.encode(data);
+
+    HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
+      //print(obj);
+    }).then((HttpRequest val) {
+      //print('The response that gets the ID is: ${val.responseText}');
+      print(val.responseText);
+      orderID = JSON.decode(val.responseText);
+
+
+    }, onError: (e) => print("error"));
   }
 }
 
