@@ -1,16 +1,22 @@
 <dom-module id="ring-view">
     <template>
-
-
-        [[ringData.0.SKU]]
-
-            <iron-list items="[[ringData]]" as="ring" id="myList" style="height: 100%; width: 100%;">
+        <style>
+        </style>
+            <iron-list items="[[ringData]]" as="ring" id="myList" style="height: 100vh">
                 <template>
-                    <div>
-                        Name: [[ring.SKU]]
+                    <div class="horziontal layout" style="border-bottom: 1px solid black">
+                        <img src="[[pathToImages]][[ring.image]]" style="width: 150px"/>
+                        [[ring.SKU]]
+                        [[ring.finish]]
+                        $[[ring.price]]
+                        [[ring.tier]]
+                        [[ring.id]]
+                        [[ring.combo]]
+                        [[ring.combo2]]
                     </div>
                 </template>
             </iron-list>
+
 
 
     </template>
