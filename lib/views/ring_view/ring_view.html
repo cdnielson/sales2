@@ -1,0 +1,21 @@
+<dom-module id="ring-view">
+    <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+        </style>
+
+        [[ringData.0.SKU]]
+
+            <iron-list items="[[ringData]]" as="ring">
+                <template>
+                    <div>
+                        Name: [[ring.SKU]]
+                    </div>
+                </template>
+            </iron-list>
+
+
+    </template>
+</dom-module>

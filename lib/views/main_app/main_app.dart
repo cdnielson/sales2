@@ -11,12 +11,7 @@ import 'package:polymer_elements/paper_toolbar.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 import 'package:polymer_elements/paper_dialog.dart';
 import 'package:polymer_elements/paper_dialog_scrollable.dart';
-
-// TODO remove
-//import '../../model/ttt_board.dart';
-//import '../board_view/board_view.dart';
-//import '../message_bar/message_bar.dart';
-// undo remove
+import '../../views/ring_view/ring_view.dart';
 
 import 'dart:html';
 import 'dart:convert';
@@ -39,7 +34,7 @@ import '../../utils/filters.dart' show StringToInt;*/
 class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
-  String get pathToRingsData => "data/rings.json";
+  String get pathToRingsData => "data/rings2.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
@@ -104,7 +99,7 @@ class MainApp {
   bool showSignature = false;
   bool openCustomSku = false;
   bool openStockBalances = false;
-  String pin;
+  String pin = "";
 
   Ring lastScanned;
 
@@ -113,6 +108,10 @@ class MainApp {
   DateTime date = new DateTime.now();
 
   String lastScannedImage = "";
+
+  int length;
+  double pages;
+  List pagination = [];
 
   ngAfterViewInit() {
     // viewChild is set
@@ -133,14 +132,10 @@ class MainApp {
     List<Map> mapList = JSON.decode(data);
     tierData = mapList.map((Map element) => new Ring.fromMap(element)).toList();
     print("here");
-    log.info(tierData);
-    /*for (var t in tierData) {
-      t.cleared = !t.cleared;
-      t.added = "Add";
-      t.icon = "add";
-    }*/
+
     ringsDisplayed = tierData;
-    log.info(ringsDisplayed);
+    //print(ringsDisplayed);
+
     openLoading = false;
     // TODO figure this out
     // Timer.run(barcodeinput.nativeElement.focus());
@@ -274,13 +269,14 @@ class MainApp {
         login();
       }
     }
-    if(pin.length == 3) {
+    if(pin.length == 4) {
       pin = "";
     }
   }
 
   handleLoginButton(String data) {
     pin = pin + data;
+    handlePin();
   }
 
   submitOrder() {

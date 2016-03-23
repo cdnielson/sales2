@@ -5,26 +5,33 @@
     .loginButton {
         width: 100px;
         height: 100px;
+        background: transparent;
+        color: white;
+        box-shadow: 3px 3px 3px grey;
+        padding:5px;
+        border: none;
+        border-radius: 10px;
+        font-size: x-large;
     }
 </style>
 
-<div class="layout horizontal" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
-    <paper-dialog opened="true" class="vertical layout center-justified">
-        <h2>Please Enter Your PIN</h2>
-        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()"/>
-        <div class="layout horizontal wrap" style="width: 350px;">
-            <paper-button (click)="handleLoginButton('7')" class="loginButton">7</paper-button>
-            <paper-button (click)="handleLoginButton('8')" class="loginButton">8</paper-button>
-            <paper-button (click)="handleLoginButton('9')" class="loginButton">9</paper-button>
-            <paper-button (click)="handleLoginButton('4')" class="loginButton">4</paper-button>
-            <paper-button (click)="handleLoginButton('5')" class="loginButton">5</paper-button>
-            <paper-button (click)="handleLoginButton('6')" class="loginButton">6</paper-button>
-            <paper-button (click)="handleLoginButton('3')" class="loginButton">3</paper-button>
-            <paper-button (click)="handleLoginButton('2')" class="loginButton">2</paper-button>
-            <paper-button (click)="handleLoginButton('1')" class="loginButton">1</paper-button>
-            <paper-button (click)="handleLoginButton('0')" class="loginButton">0</paper-button>
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+    <div class="layout vertical center">
+        <h2 class="center-justified">Please Enter Your PIN</h2>
+        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
+        <div class="layout horizontal wrap center-justified" style="width: 350px;">
+            <button (click)="handleLoginButton('7')" class="loginButton">7</button>
+            <button (click)="handleLoginButton('8')" class="loginButton">8</button>
+            <button (click)="handleLoginButton('9')" class="loginButton">9</button>
+            <button (click)="handleLoginButton('4')" class="loginButton">4</button>
+            <button (click)="handleLoginButton('5')" class="loginButton">5</button>
+            <button (click)="handleLoginButton('6')" class="loginButton">6</button>
+            <button (click)="handleLoginButton('3')" class="loginButton">3</button>
+            <button (click)="handleLoginButton('2')" class="loginButton">2</button>
+            <button (click)="handleLoginButton('1')" class="loginButton">1</button>
+            <button (click)="handleLoginButton('0')" class="loginButton">0</button>
         </div>
-    </paper-dialog>
+    </div>
 </div>
 
 <div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
@@ -56,7 +63,7 @@
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
         <div class="layout horizontal center-justified flex wrap">
-            <div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
+            <!--<div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -66,7 +73,11 @@
                     {{ring?.combo}} {{ring?.combo2}}
                     <paper-input [(ngModel)]="ring.notes" ngDefaultControl label="Notes"></paper-input>
                 </div>
-            </div>
+            </div>-->
+
+            <ring-view [ringData]="ringsDisplayed"></ring-view>
+
+
         </div>
     </div>
     <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
