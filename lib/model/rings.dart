@@ -1,15 +1,16 @@
 library rings;
+import 'package:polymer/polymer.dart';
 
-class Ring{
-  List category;
-  final String SKU;
-  final String finish;
-  num price;
-  final String image;
-  int tier;
-  int id;
-  final String combo;
-  final String combo2;
+class Ring extends JsProxy{
+  @reflectable List category;
+  @reflectable final String SKU;
+  @reflectable final String finish;
+  @reflectable num price;
+  @reflectable final String image;
+  @reflectable int tier;
+  @reflectable int id;
+  @reflectable final String combo;
+  @reflectable final String combo2;
 
 
   Ring(List this.category, String this.SKU, String this.finish, String _price, String this.image, String _tier, String _id, String this.combo, String this.combo2)
@@ -23,10 +24,10 @@ class Ring{
 
   @override String toString() => "$SKU";
 
-  bool cleared = false;
-  String added = "Remove";
-  String icon = "clear";
-  String notes = "";
+  @reflectable bool cleared = false;
+  @reflectable String added = "Remove";
+  @reflectable String icon = "clear";
+  @reflectable String notes = "";
 }
 
 
