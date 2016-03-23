@@ -23,6 +23,8 @@ import '../../model/users.dart';
 import '../../model/combos.dart';
 import '../../model/clients.dart';
 
+import 'package:polymer/polymer.dart';
+
 // TODO not working
 /*import 'package:lawndart/lawndart.dart';
 import '../../utils/filters.dart' show StringToInt;*/
@@ -110,9 +112,12 @@ class MainApp {
 
   String lastScannedImage = "";
 
-  int length;
-  double pages;
-  List pagination = [];
+  @reflectable
+  List testData = [
+    {"SKU":"15"},
+    {"SKU":"25"},
+    {"SKU":"35"}
+  ];
 
   ngAfterViewInit() {
     // viewChild is set

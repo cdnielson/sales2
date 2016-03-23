@@ -15,10 +15,11 @@ class RingView extends PolymerElement {
 //  @property List data;
   @Property(observer: 'ringDataUpdated') List ringData; // = [
 
-//    {"SKU":"1"},
-//    {"SKU":"2"},
-//    {"SKU":"3"}
-//  ];
+  @property List ringDataTest = [
+    {"SKU":"1"},
+    {"SKU":"2"},
+    {"SKU":"3"}
+  ];
 
   RingView.created() : super.created();
 
@@ -27,7 +28,7 @@ class RingView extends PolymerElement {
   }
 
   @reflectable
-  void ringDataUpdate(List NewData, List OldData) {
+  void ringDataUpdated(List NewData, List OldData) {
     set('ringData', ringData);
   }
 
