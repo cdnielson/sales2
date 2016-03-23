@@ -11,12 +11,7 @@ import 'package:polymer_elements/paper_toolbar.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 import 'package:polymer_elements/paper_dialog.dart';
 import 'package:polymer_elements/paper_dialog_scrollable.dart';
-
-// TODO remove
-//import '../../model/ttt_board.dart';
-//import '../board_view/board_view.dart';
-//import '../message_bar/message_bar.dart';
-// undo remove
+import '../../views/ring_view/ring_view.dart';
 
 import 'dart:html';
 import 'dart:convert';
@@ -27,6 +22,8 @@ import '../../model/swatches.dart';
 import '../../model/users.dart';
 import '../../model/combos.dart';
 import '../../model/clients.dart';
+
+import 'package:polymer/polymer.dart';
 
 // TODO not working
 /*import 'package:lawndart/lawndart.dart';
@@ -46,6 +43,7 @@ class MainApp {
   String get logoPath => "images/lbrook.jpg";
   String get pathToImages => "images/";
   String get pathToThumbnails => "images/";
+  String get pathToSignature => "signature/";
   List<Ring> orderList = [];
   List<Ring> tierData = [];
   List<User> loginData = [];
@@ -95,17 +93,27 @@ class MainApp {
   String customSku = "";
   String customFinish = "";
   String customPrice = "";
-  String customNotes = "";
+  String customNote = "";
 
   bool hideLogIn = false;
   bool hideMain = true;
   bool hideOrder = false;
   bool hideReview = true;
-
+  bool showSignature = false;
   bool openCustomSku = false;
   bool openStockBalances = false;
+  String pin = "";
+
+  Ring lastScanned;
+
+  bool hideBarcodeLastScanned = true;
 
   DateTime date = new DateTime.now();
+
+  String lastScannedImage = "";
+
+  @reflectable
+  bool fireIronResize = false;
 
   ngAfterViewInit() {
     // viewChild is set
@@ -125,14 +133,11 @@ class MainApp {
   void ringsLoaded(data) {
     List<Map> mapList = JSON.decode(data);
     tierData = mapList.map((Map element) => new Ring.fromMap(element)).toList();
-    log.info(tierData);
-    /*for (var t in tierData) {
-      t.cleared = !t.cleared;
-      t.added = "Add";
-      t.icon = "add";
-    }*/
+    print("here");
+
     ringsDisplayed = tierData;
-    log.info(ringsDisplayed);
+    //print(ringsDisplayed);
+
     openLoading = false;
     // TODO figure this out
     // Timer.run(barcodeinput.nativeElement.focus());
@@ -147,11 +152,12 @@ class MainApp {
 
   }
 
-  void searchForBarcode(String data) {
-    log.info(data);
-    barcodedata = data;
-    int ring = int.parse(data);
+  void searchForBarcode() {
+    int ring = int.parse(barcodeFieldData);
     addRing(ring);
+    lastScanned = tierData.where((Ring element) => element.id == int.parse(barcodeFieldData)).first;
+    lastScannedImage = pathToImages + "rings/thumbnails/" + lastScanned.image;
+    hideBarcodeLastScanned = false;
     barcodeFieldData = "";
   }
 
@@ -164,6 +170,7 @@ class MainApp {
     }
     log.info(orderList);
     calculateOrderTotal();
+    hideBarcodeLastScanned = true;
   }
 
   void filterSearchData(data) {
@@ -179,6 +186,20 @@ class MainApp {
     if(guaranteed) {
       subTotal += 844;
     }
+
+    // add the custom SKUs prices
+    int price = 0;
+    for (Map item in typedSkus) {
+      price += int.parse(item["price"]);
+    }
+    subTotal += price;
+
+    // add the SB prices
+    price = 0;
+    for (Map item in stockBalances) {
+      price += int.parse(item["price"]);
+    }
+    subTotal += price;
   }
 
   void openAddATier() {
@@ -241,15 +262,24 @@ class MainApp {
   login() {
     hideLogIn = true;
     hideMain = false;
+    fireIronResize = true;
   }
 
-  handlePin(pin) {
+  handlePin() {
     for (User user in loginData) {
       if(pin == user.pin) {
         currentUser = user;
         login();
       }
     }
+    if(pin.length == 4) {
+      pin = "";
+    }
+  }
+
+  handleLoginButton(String data) {
+    pin = pin + data;
+    handlePin();
   }
 
   submitOrder() {
@@ -371,7 +401,9 @@ class MainApp {
     }).then((HttpRequest val) {
       //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
-      orderID = JSON.decode(val.responseText);
+      showSignature = true;
+      hideMain = true;
+      orderID = JSON.decode(val.responseText).toString();
     }, onError: (e) => print("error"));
   }
   openAddACustomSku() {
@@ -383,14 +415,15 @@ class MainApp {
       "SKU": customSku,
       "finish": customFinish,
       "price": customPrice,
-      "notes": customNotes
+      "notes": customNote
     });
 
     customSku = "";
     customFinish = "";
     customPrice = "";
-    customNotes = "";
+    customNote = "";
     openCustomSku = false;
+    calculateOrderTotal();
   }
 
   openAddAStockBalance() {
@@ -404,11 +437,23 @@ class MainApp {
       'price' : price
     });
     openStockBalances = false;
+    calculateOrderTotal();
+  }
+
+  killSb(id) {
+    stockBalances.removeWhere((Map element) => element['id'] == id);
+    calculateOrderTotal();
+  }
+
+  killCustom(sku, finish) {
+    typedSkus.removeWhere((Map element) => element['SKU'] == sku && element['finish'] == finish);
+    calculateOrderTotal();
   }
 
   changeView() {
 
   }
+
 }
 
 

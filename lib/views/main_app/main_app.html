@@ -2,13 +2,41 @@
     .menu-item {
         font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
     }
+    .loginButton {
+        width: 100px;
+        height: 100px;
+        background: transparent;
+        color: white;
+        box-shadow: 3px 3px 3px grey;
+        padding:5px;
+        border: none;
+        border-radius: 10px;
+        font-size: x-large;
+    }
 </style>
 
-<div class="layout horizontal left" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
-    <paper-dialog opened="true" class="vertical layout center-justified">
-        <h2>Please Enter Your PIN</h2>
-        <input #pin type="password" (keyup)="handlePin(pin.value)"/>
-    </paper-dialog>
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+    <div class="layout vertical center">
+        <h2 class="center-justified">Please Enter Your PIN</h2>
+        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
+        <div class="layout horizontal wrap center-justified" style="width: 350px;">
+            <button (click)="handleLoginButton('7')" class="loginButton">7</button>
+            <button (click)="handleLoginButton('8')" class="loginButton">8</button>
+            <button (click)="handleLoginButton('9')" class="loginButton">9</button>
+            <button (click)="handleLoginButton('4')" class="loginButton">4</button>
+            <button (click)="handleLoginButton('5')" class="loginButton">5</button>
+            <button (click)="handleLoginButton('6')" class="loginButton">6</button>
+            <button (click)="handleLoginButton('3')" class="loginButton">3</button>
+            <button (click)="handleLoginButton('2')" class="loginButton">2</button>
+            <button (click)="handleLoginButton('1')" class="loginButton">1</button>
+            <button (click)="handleLoginButton('0')" class="loginButton">0</button>
+        </div>
+    </div>
+</div>
+
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
+    <iframe id="iframe" width="100%" height="100%" [src]="pathToSignature + 'sign.php?id=' + orderID" seamless="true"></iframe>
+
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
@@ -34,8 +62,8 @@
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
-        <div class="layout horizontal center-justified flex wrap">
-            <div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
+        <!--<div class="layout horizontal center-justified flex wrap">-->
+            <!--<div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -45,8 +73,12 @@
                     {{ring?.combo}} {{ring?.combo2}}
                     <paper-input [(ngModel)]="ring.notes" ngDefaultControl label="Notes"></paper-input>
                 </div>
-            </div>
-        </div>
+            </div>-->
+
+            <ring-view [ringData]="ringsDisplayed" [fireUpdate]="fireIronResize" style="width: 100%;"></ring-view>
+
+
+        <!--</div>-->
     </div>
     <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
 
@@ -85,10 +117,15 @@
                 <div [hidden]="hideMenus">
                     <!--main menu on the left (or right) for selecting view-->
                     <div class="menu-item">
-                        <h3 icon="" label="Barcode Scan">Barcode Scan</h3>
+                        <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
+                        <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
                         <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
-                            <input id="barcodeinput" (keyup.enter)="searchForBarcode(barcodeFieldData)" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
-                            {{barcodedata}}
+                            <input id="barcodeinput" placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                        </div>
+                        <div [hidden]="hideBarcodeLastScanned" class="vertical layout center-justified">
+                            <span style="font-size: small;">recently added from barcode scan:</span>
+                            <span style="font-size: small;">{{lastScanned?.SKU}} - {{lastScanned?.finish}} - ${{lastScanned?.price}}</span>
+                            <img [src]="lastScannedImage" style="width: 100%;"/>
                         </div>
                     </div>
                 </div>
@@ -108,6 +145,9 @@
                     </div>
                     <div *ngFor="#balance of stockBalances">
                         <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }} - ${{ balance['price'] }}
+                    </div>
+                    <div *ngFor="#item of typedSkus">
+                        <span (click)="killCustom(item['SKU'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
                     </div>
 
                     <h3>
@@ -173,10 +213,10 @@
     <paper-dialog [opened]="openCustomSku">
         <h2>Add a Custom SKU</h2>
         <form is="iron-form" id="customForm" method="post">
-            <!--<paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customSku" label="SKU" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" required="true" type="text" [(ngModel)]="customFinish" label="Finish" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" required="true" type="number" [(ngModel)]="customPrice" label="Price" ngDefaultControls></paper-input>
-            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControls></paper-input>-->
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customSku" label="SKU" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customFinish" label="Finish" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customPrice" label="Price" ngDefaultControl></paper-input>
+            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>
             <paper-button raised (click)="handleCustomSkuForm()">Submit</paper-button>
         </form>
     </paper-dialog>
@@ -184,7 +224,7 @@
     <paper-dialog [opened]="openStockBalances">
         <h2>Add a Stock Balance</h2>
         <form is="iron-form" id="sbForm" method="post">
-            <paper-input alwaysFloatLabel="true" required="true" type="text" #sb label="Amount" ngDefaultControls></paper-input>
+            <paper-input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)"></paper-input>
             <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
         </form>
     </paper-dialog>
