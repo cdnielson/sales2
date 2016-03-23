@@ -13,16 +13,16 @@ import '../../model/rings.dart';
 class RingView extends PolymerElement {
 
 //  @property List data;
-  @Property(observer: 'dataChanged') List ringData;
+  @property List ringData; // = [
+//    {"SKU":"1"},
+//    {"SKU":"2"},
+//    {"SKU":"3"}
+//  ];
 
   RingView.created() : super.created();
 
   void ready() {
     print(ringData);
-  }
-
-  void dataChanged(List newData, List oldData) {
-    print(newData);
   }
 
   /*@reflectable

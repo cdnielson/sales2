@@ -35,7 +35,7 @@
 </div>
 
 <div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
-    <iframe id="iframe" width="100%" height="{{height}}" _src="../../../web/signature/sign.php?id={{orderID}}" seamless="true"></iframe>
+    <iframe id="iframe" width="100%" height="100%" [src]="pathToSignature + 'sign.php?id=' + orderID" seamless="true"></iframe>
 
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">

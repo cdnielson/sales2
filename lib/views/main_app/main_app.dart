@@ -34,13 +34,14 @@ import '../../utils/filters.dart' show StringToInt;*/
 class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
-  String get pathToRingsData => "data/rings2.json";
+  String get pathToRingsData => "data/rings.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
   String get logoPath => "images/lbrook.jpg";
   String get pathToImages => "images/";
   String get pathToThumbnails => "images/";
+  String get pathToSignature => "signature/";
   List<Ring> orderList = [];
   List<Ring> tierData = [];
   List<User> loginData = [];
@@ -398,9 +399,9 @@ class MainApp {
     }).then((HttpRequest val) {
       //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
-      orderID = JSON.decode(val.responseText);
       showSignature = true;
       hideMain = true;
+      orderID = JSON.decode(val.responseText).toString();
     }, onError: (e) => print("error"));
   }
   openAddACustomSku() {
