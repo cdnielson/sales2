@@ -13,7 +13,8 @@ import '../../model/rings.dart';
 class RingView extends PolymerElement {
 
 //  @property List data;
-  @Property(observer: 'ringDataUpdated') List ringData; // = [
+  @Property(observer: 'ringDataUpdated') List ringData;
+  @Property(observer: 'updateIronList') bool fireUpdate;
 
   @property List ringDataTest = [
     {"SKU":"1"},
@@ -30,6 +31,13 @@ class RingView extends PolymerElement {
   @reflectable
   void ringDataUpdated(List NewData, List OldData) {
     set('ringData', ringData);
+    print(ringData);
+  }
+
+  @reflectable
+  void updateIronList(bool olddata, bool newdata) {
+    $['myList'].fire('iron-resize');
+    print("test fired iron input");
   }
 
   /*@reflectable

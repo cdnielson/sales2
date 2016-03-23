@@ -113,11 +113,7 @@ class MainApp {
   String lastScannedImage = "";
 
   @reflectable
-  List testData = [
-    {"SKU":"15"},
-    {"SKU":"25"},
-    {"SKU":"35"}
-  ];
+  bool fireIronResize = false;
 
   ngAfterViewInit() {
     // viewChild is set
@@ -266,6 +262,7 @@ class MainApp {
   login() {
     hideLogIn = true;
     hideMain = false;
+    fireIronResize = true;
   }
 
   handlePin() {
@@ -456,6 +453,7 @@ class MainApp {
   changeView() {
 
   }
+
 }
 
 

@@ -1,3 +1,10 @@
 [
-  {"id":"0","category":"Accessories","SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"cc7dge-angle-satin-polish.jpg","combo":""}
+  {"id":"0","category":"Accessories","SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"cc7dge-angle-satin-polish.jpg","combo":""},
+  {"id":"303","category":"Cobalt Chrome","SKU":"CC7D21W/14KYMIL","finish":"Hammer/Polish","price":"294","tier":"1","image":"CC7D21W_14KYMIL.jpg","combo":""},
+  {"id":"304","category":"Cobalt Chrome","SKU":"CC7DGE","finish":"Angle Satin/Polish","price":"109","tier":"1","image":"025_CC7DGE.jpg","combo":""},
+  {"id":"305","category":"Cobalt Chrome","SKU":"CC8DB","finish":"Satin/Polish","price":"99","tier":"1","image":"CC8DB.jpg","combo":"basics_b"},
+  {"id":"306","category":"Cobalt Chrome","SKU":"CC8DBASEBALLA","finish":"Red Ant/Bead","price":"149","tier":"1","image":"CC8DBASEBALLA.jpg","combo":""},
+  {"id":"307","category":"Cobalt Chrome","SKU":"CC8FGE","finish":"Cross Satin/Polish","price":"99","tier":"1","image":"CC8FGECROSSPOL.jpg","combo":"basics_b"},
+  {"id":"308","category":"Cobalt Chrome","SKU":"CC8HB/LCVFINGERPRINT","finish":"Satin/Polish","price":"174","tier":"1","image":"CC8HB_LCVFINGERPRINTS_SATIN-POLISH.jpg","combo":""}
+
 ]
