@@ -62,8 +62,8 @@
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
-        <!--<div class="layout horizontal center-justified flex wrap">-->
-            <!--<div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
+        <div class="layout horizontal center-justified flex wrap">
+            <div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -73,12 +73,12 @@
                     {{ring?.combo}} {{ring?.combo2}}
                     <paper-input [(ngModel)]="ring.notes" ngDefaultControl label="Notes"></paper-input>
                 </div>
-            </div>-->
+            </div>
 
-            <ring-view [ringData]="ringsDisplayed" [fireUpdate]="fireIronResize" style="width: 100%;"></ring-view>
+            <!--<ring-view [ringData]="ringsDisplayed" [fireUpdate]="fireIronResize" style="width: 100%;"></ring-view>-->
 
 
-        <!--</div>-->
+        </div>
     </div>
     <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
 

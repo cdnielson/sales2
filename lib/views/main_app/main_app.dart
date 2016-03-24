@@ -36,7 +36,7 @@ import '../../utils/filters.dart' show StringToInt;*/
 class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
-  String get pathToRingsData => "data/rings.json";
+  String get pathToRingsData => "data/rings2.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
@@ -115,6 +115,8 @@ class MainApp {
   @reflectable
   bool fireIronResize = false;
 
+  List<List<Ring>> paginationList = [];
+
   ngAfterViewInit() {
     // viewChild is set
   }
@@ -137,10 +139,39 @@ class MainApp {
 
     ringsDisplayed = tierData;
     //print(ringsDisplayed);
+    setUpPagination();
 
     openLoading = false;
     // TODO figure this out
     // Timer.run(barcodeinput.nativeElement.focus());
+  }
+
+  void setUpPagination() {
+    var ringListLength = tierData.length;
+    var numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
+    print("numberOfLists $numberOfLists");
+    var start = 0;
+    var end = 19;
+
+    for (var n = 0; n < numberOfLists; n++) {
+      print(n);
+      List<Ring> theList = [];
+      for (var i = start; i > end; i++) {
+        theList.add(tierData[i]);
+      }
+      paginationList.add(theList);
+      if (end <= ringListLength + 20) {
+        start += 20;
+        end += 20;
+      } else {
+        // TODO deal with remainer
+      }
+    }
+    for (List p in paginationList) {
+      for (Ring i in p) {
+        print(i.SKU);
+      }
+    }
   }
 
   void setLogins(data) {
