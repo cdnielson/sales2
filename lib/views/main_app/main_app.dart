@@ -39,6 +39,8 @@ import '../../utils/filters.dart' show StringToInt;*/
 class MainApp {
   final Logger log;
   @ViewChild("barcodeinput") var barcodeInput;
+  @ViewChild("pininput") var pinInput;
+  @ViewChild("thepage") var thePage;
   String get pathToRingsData => "data/rings2.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
@@ -125,10 +127,6 @@ class MainApp {
     // viewChild is set
   }
 
-  overlayOpened() {
-    barcodeInput.nativeElement.focus();
-  }
-
   MainApp(Logger this.log) {
     log.info("$runtimeType()");
 
@@ -142,10 +140,9 @@ class MainApp {
     ringsDisplayed = tierData;
     //print(ringsDisplayed);
     setUpPagination();
+    pinInput.nativeElement.focus();
 
     openLoading = false;
-    // TODO figure this out
-    // Timer.run(barcodeinput.nativeElement.focus());
   }
 
   void setUpPagination() {
@@ -153,31 +150,27 @@ class MainApp {
     int numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
     int start = 0;
     int end = 19;
-    if (ringListLength - (numberOfLists * 20) > 0) {
+    int ringsInListMinusRemainder = numberOfLists * 20;
+    if (ringListLength - (ringsInListMinusRemainder) > 0) {
       numberOfLists += 1;
     }
+    print(numberOfLists);
 
-    for (int n = 0; n < numberOfLists; n++) {
+    for (int n = 0; n < numberOfLists ; n++) {
       List<Ring> theList = [];
-      for (int i = start; i < end; i++) {
+      for (int i = start; i <= end ; i++) {
         theList.add(ringsDisplayed[i]);
       }
-      //print(theList);
       paginationList.add(theList);
-      if (end <= ringListLength + 20) {
+
+      if (end <= ringsInListMinusRemainder - 20) {
         start += 20;
         end += 20;
       } else {
-        start = numberOfLists * 20;
-        end = ringListLength;
+        start = ringsInListMinusRemainder;
+        end = ringListLength -1;
       }
     }
-    for (List listOfLists in paginationList) {
-      for (Ring ring in listOfLists) {
-        print(ring.SKU);
-      }
-    }
-
     currentPage = 0;
     paginationList.removeWhere((List element) => element.isEmpty);
   }
@@ -302,6 +295,8 @@ class MainApp {
     hideLogIn = true;
     hideMain = false;
     fireIronResize = true;
+    // TODO not working. Figure it out.
+    barcodeInput.nativeElement.focus();
   }
 
   handlePin() {
@@ -495,18 +490,21 @@ class MainApp {
 
   changePage(direction) {
     if (direction == "prev") {
-      currentPage -= 1;
+      if (currentPage > 0) {
+        currentPage -= 1;
+      }
     }
     if  (direction == "next") {
-      currentPage += 1;
-      print(currentPage);
+      if (currentPage < paginationList.length - 1) {
+        currentPage += 1;
+      }
     }
+    thePage.nativeElement.selected = currentPage;
   }
 
   goToPage(page) {
     currentPage = page;
   }
-
 }
 
 

@@ -1,5 +1,4 @@
-[
-  {"id":"0","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"display_1.jpg","combo":""},
+[{"id":"0","category":["Accessories"],"SKU":"DISPLAY CASE BG","finish":"BLACK/GRAY","price":"0","tier":"22","image":"display_1.jpg","combo":""},
   {"id":"1","category":["Accessories"],"SKU":"DISPLAY CASE WB","finish":"WHITE/BLUE","price":"0","tier":"22","image":"display_2.jpg","combo":""},
   {"id":"2","category":["Accessories"],"SKU":"DISPLAY CASE WD","finish":"WHITE/CHARCOAL","price":"0","tier":"22","image":"display_3.jpg","combo":""},
   {"id":"3","category":["Accessories"],"SKU":"DISPLAY CASE BT","finish":"BLACK/TAN","price":"0","tier":"22","image":"display_4.jpg","combo":""},
@@ -219,7 +218,6 @@
   {"id":"30015","category":["Cobalt Chrome"],"SKU":"CC8B14-14KR(NS)","finish":"Polish","price":"339","tier":"0","image":"CC8B14_14KR(NS).jpg","combo":""},
   {"id":"30016","category":["Cobalt Chrome"],"SKU":"CC8D13-M14KRSH","finish":"Satin","price":"379","tier":"0","image":"CC8D13_M14KRSH.jpg","combo":""},
   {"id":"30017","category":["Cobalt Chrome"],"SKU":"CC8DB-LCVSOUNDWAVE_","finish":"Satin/Polish","price":"199","tier":"0","image":"CC8DB_LCVSOUNDWAVE.jpg","combo":""},
-
   {"id":"30019","category":["Cobalt Chrome"],"SKU":"CC8DCYCLESPINNER","finish":"Sand/Satin","price":"199","tier":"0","image":"CC8DCYCLESPINNER.jpg","combo":""},
   {"id":"30020","category":["Cobalt Chrome"],"SKU":"CC8DGE","finish":"Hammer/Polish","price":"99","tier":"0","image":"CC8DGE.jpg","combo":""},
   {"id":"30021","category":["Cobalt Chrome"],"SKU":"CC8D-LCVCELTIC16","finish":"Satin","price":"149","tier":"0","image":"CC8D_LCVCELTIC16.jpg","combo":""},
@@ -263,7 +261,6 @@
   {"id":"30073","category":["Cobalt Chrome"],"SKU":"CC8FGESQETERNITYSAPPHIRE","finish":"Cross Satin/Polish","price":"1199","tier":"0","image":"CC8FGESQETERNITYSAPPHIRE.jpg","combo":""},
   {"id":"30074","category":["Cobalt Chrome"],"SKU":"CC8FGESTRIPES","finish":"Cross Satin/Polish","price":"149","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"30075","category":["Cobalt Chrome"],"SKU":"CC8REFDBSTRIPE","finish":"Cross Satin/Polish","price":"149","tier":"0","image":"CC8REFDBSTRIPE.jpg","combo":""},
-
   {"id":"30077","category":["Cobalt Chrome"],"SKU":"CC6D/LCVCOORDINATES","finish":"Hammer","price":"164","tier":"0","image":"CC6DLCVCOORDINATES_HAMMER.jpg","combo":""},
   {"id":"30078","category":["Cobalt Chrome"],"SKU":"CC6D21W/14KYMIL","finish":"Hammer/Polish","price":"294","tier":"0","image":"CC6D21W-14KYMIL_HAMMER_POLISH.jpg","combo":""},
   {"id":"30080","category":["Cobalt Chrome"],"SKU":"CC8B14/SS","finish":"Hammer Satin/Polish","price":"189","tier":"0","image":"CC8B14-SS.jpg","combo":""},
@@ -360,7 +357,6 @@
   {"id":"30218","category":["Cobalt Chrome"],"SKU":"CC9BSQLOVERSKNOT","finish":"Satin/Polish","price":"149","tier":"0","image":"CC9BSQLOVERSKNOT.jpg","combo":""},
   {"id":"30219","category":["Cobalt Chrome"],"SKU":"CC9REC/LCVCELTIC18 ","finish":"Cross Satin/Polish","price":"149","tier":"0","image":"CC9REC-LCVCELTIC18_CROSS_SATIN_POLISH.jpg","combo":""},
   {"id":"30220","category":["Cobalt Chrome"],"SKU":"CC8FGG","finish":"Hammer Satin/Polish","price":"114","tier":"0","image":"CC8FGG_Hammer_Satin-Polish.jpg","combo":""},
-
   {"id":"30222","category":["Cobalt Chrome"],"SKU":"CC8FGE","finish":"Satin/Polish","price":"99","tier":"0","image":"CC8FGE_SATIN.jpg","combo":""},
   {"id":"30223","category":["Cobalt Chrome"],"SKU":"CC8FGE","finish":"Angle Satin/Polish","price":"109","tier":"0","image":"CC8FGE_ANGLESATIN.jpg","combo":""},
   {"id":"30224","category":["Cobalt Chrome"],"SKU":"CC8FGE","finish":"Angle Stone/Polish","price":"99","tier":"0","image":"CC8FGE_ANGLESTONE.jpg","combo":""},
@@ -567,7 +563,6 @@
   {"id":"40030","category":["Damascus"],"SKU":"D8DFLATTWIST","finish":"Acid","price":"199","tier":"0","image":"D8DFLATTWIST.jpg","combo":""},
   {"id":"40032","category":["Damascus"],"SKU":"D8DSQTIGER","finish":"Acid","price":"265","tier":"0","image":"D8DSQTIGER_Acid.jpg","combo":""},
   {"id":"40033","category":["Damascus"],"SKU":"D8DSQZEBRA","finish":"Acid","price":"199","tier":"0","image":"D8DSQZEBRA.jpg","combo":""},
-
   {"id":"40035","category":["Damascus"],"SKU":"D8FSQZEBRA_","finish":"Polish","price":"199","tier":"0","image":"D8FSQZEBRA.jpg","combo":""},
   {"id":"40038","category":["Damascus"],"SKU":"D8DSQ2.5FLATTWIST","finish":"Acid/Bead","price":"199","tier":"0","image":"D8DSQ2_5FLATTWIST.jpg","combo":""},
   {"id":"40040","category":["Damascus"],"SKU":"D8D1.5","finish":"Acid/Polish","price":"159","tier":"0","image":"D8D1_5_2.jpg","combo":""},
@@ -597,7 +592,6 @@
   {"id":"40067","category":["Damascus"],"SKU":"D8DBZEBRA","finish":"Polish","price":"199","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"40069","category":["Damascus"],"SKU":"D8F11/14KWPRNDIA.10BG","finish":"Polish","price":"438","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"40070","category":["Damascus"],"SKU":"D8F15/MSSPD","finish":"Polish","price":"509","tier":"0","image":"noimage.jpg","combo":""},
-
   {"id":"40072","category":["Damascus"],"SKU":"D8FSQ","finish":"Polish","price":"209","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"40073","category":["Damascus"],"SKU":"D8FSQBASKET","finish":"Polish","price":"199","tier":"0","image":"D8FSQBASKET.jpg","combo":""},
   {"id":"40075","category":["Damascus"],"SKU":"D8RED_","finish":"Polish","price":"159","tier":"0","image":"D8RED.jpg","combo":""},
@@ -743,7 +737,6 @@
   {"id":"60033","category":["Titanium"],"SKU":"8REF11/14KR2UMIL","finish":"Bead/Polish","price":"149","tier":"0","image":"8REF11_14KR2UMIL.jpg","combo":""},
   {"id":"60034","category":["Titanium"],"SKU":"8REF13/14KY","finish":"Stone/Polish","price":"279","tier":"0","image":"8REF13_14KY.jpg","combo":""},
   {"id":"60035","category":["Titanium"],"SKU":"8RSPCG","finish":"Stone/Polish","price":"40","tier":"0","image":"8RSPCG.jpg","combo":""},
-
   {"id":"60037","category":["Titanium"],"SKU":"9F","finish":"Brown Anodizing/Sand","price":"35","tier":"0","image":"9F.jpg","combo":""},
   {"id":"60038","category":["Titanium"],"SKU":"9F4.5W/SS","finish":"Polish","price":"129","tier":"0","image":"9F4.5W_SS.jpg","combo":""},
   {"id":"60039","category":["Titanium"],"SKU":"9FDEERTRACKANTLER","finish":"Brown Anodizing/Satin","price":"119","tier":"0","image":"9FDEERTRACKANTLER.jpg","combo":""},
@@ -971,7 +964,6 @@
   {"id":"80002","category":["Zirconium"],"SKU":"BZ-8HR(1)4G-RT/AP","finish":"Polish","price":"150","tier":"0","image":"BZ-8HR(1)4G-RT-AP.jpg","combo":""},
   {"id":"80003","category":["Zirconium"],"SKU":"Z10FGE_MARLIN4X","finish":"Silver/Cross Satin Black/Polish","price":"149","tier":"0","image":"Z10FGE_MARLIN4X.jpg","combo":""},
   {"id":"80004","category":["Zirconium"],"SKU":"Z6FCLADDAGHCELTIC_SILVERTOP","finish":"Bead Black/Satin Silver","price":"149","tier":"0","image":"Z6FCLADDAGHCELTIC_SILVERTOP.jpg","combo":""},
-
   {"id":"80006","category":["Zirconium"],"SKU":"Z7B13_M14KRSH","finish":"Satin/Polish","price":"329","tier":"0","image":"Z7B13_M14KRSH.jpg","combo":""},
   {"id":"80007","category":["Zirconium"],"SKU":"Z7RECBLK_0_3X8B","finish":"Polish","price":"662","tier":"0","image":"Z7RECBLK_0_3X8B.jpg","combo":""},
   {"id":"80008","category":["Zirconium"],"SKU":"Z8DBASEBALLA_","finish":"Orange Antiquing/Polish","price":"164","tier":"0","image":"Z8DBASEBALLA.jpg","combo":""},
@@ -1158,8 +1150,6 @@
   {"id":"80234","category":["Zirconium"],"SKU":"Z8D/BASEBALLA","finish":"Red/Polish","price":"149","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"80235","category":["Zirconium"],"SKU":"Z8D15/RTAPSNOW","finish":"Polish","price":"229","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"80236","category":["Zirconium"],"SKU":"Z9F/BMTRTD","finish":"Polish","price":"149","tier":"0","image":"Z9F-BMTRTD_Polish.jpg","combo":""},
-
-
   {"id":"80239","category":["Zirconium"],"SKU":"Z9F/CELTIC5.","finish":"Polish","price":"149","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"80240","category":["Zirconium"],"SKU":"Z8FGE/WLCVFINGERPRINT","finish":"Polish","price":"174","tier":"0","image":"noimage.jpg","combo":""},
   {"id":"80241","category":["Zirconium"],"SKU":"Z8D11A","finish":"Orange Ant/Polish","price":"114","tier":"0","image":"noimage.jpg","combo":""},
@@ -1170,14 +1160,10 @@
   {"id":"90003","category":["Precious Metal"],"SKU":"18KW7B","finish":"Stone/Polish","price":"582","tier":"0","image":"18KW7B.jpg","combo":""},
   {"id":"90004","category":["Stainless Steel"],"SKU":"SFGE","finish":"Cross Satin/Polish","price":"35","tier":"0","image":"SFGE_CROSSSATIN.jpg","combo":""},
   {"id":"90005","category":["Goodyear"],"SKU":"Z10FRASSURANCE","finish":"Bead/Polish","price":"149","tier":"0","image":"Z10FRASSURANCE.jpg","combo":""},
-
-
   {"id":"90008","category":["Elysium"],"SKU":"E8FR ","finish":"Satin/Polish","price":"649","tier":"0","image":"BD_03.jpg","combo":"elysium_8"},
   {"id":"90009","category":["Elysium"],"SKU":"E8D","finish":"Matte","price":"649","tier":"0","image":"BD_04.jpg","combo":"elysium_8"},
   {"id":"90010","category":["Elysium"],"SKU":"E8B","finish":"Polish","price":"649","tier":"0","image":"BD_05.jpg","combo":"elysium_8"},
-
   {"id":"90012","category":["Elysium"],"SKU":"E8BDIA.10GREEN","finish":"Matte/Polish","price":"999","tier":"0","image":"BD_08.jpg","combo":"elysium_8"},
-
   {"id":"90014","category":["Elysium"],"SKU":"E8BDIA.10BLUE","finish":"Matte/Polish","price":"999","tier":"0","image":"ELYSIUM_SN356.jpg","combo":""},
   {"id":"90018","category":["Fable"],"SKU":"BZ-9F-MCT/CROSSES","finish":"Bead Silver/Satin","price":"149","tier":"0","image":"BZ-9F-MCT-CROSSES_Polish.jpg","combo":""},
   {"id":"90019","category":["Fable"],"SKU":"CB-8F1GOCHR","finish":"Hammer Satin/Polish","price":"114","tier":"0","image":"CB-8F1GOCHR_Hammer_Satin-Polish.jpg","combo":""},
@@ -1335,6 +1321,4 @@
   {"id":"80237","category":["Zirconium"],"SKU":"Z8F11OC/14KRMF","finish":"Grooved ","price":"229","tier":"0","image":"Z8F110C_14KRMF.jpg","combo":"","combo2":""},
   {"id":"80246","category":["Zirconium"],"SKU":"Z9FGE21EDGE/14KR","finish":"Bead/Polish","price":"279","tier":"0","image":"Z9FGE21EDGE_14KR.jpg","combo":"","combo2":""},
   {"id":"80238","category":["Zirconium"],"SKU":"Z9FGE21EDGE/14KRBLKDIA.04X16CH","finish":"Bead/Polish","price":"526","tier":"0","image":"Z9FGE21EDGE_14KRBLKDIA_04X16.jpg","combo":"","combo2":""}
-
-
 ]

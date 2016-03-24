@@ -22,7 +22,7 @@
 <div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
     <div class="layout vertical center">
         <h2 class="center-justified">Please Enter Your PIN</h2>
-        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
+        <input #pininput [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
         <div class="layout horizontal wrap center-justified" style="width: 350px;">
             <button (click)="handleLoginButton('7')" class="loginButton">7</button>
             <button (click)="handleLoginButton('8')" class="loginButton">8</button>
@@ -90,7 +90,7 @@
             <div class="layout horizontal center-justified">
 
                 <paper-button (click)="changePage('prev')"><iron-icon icon="chevron-left"></iron-icon>Previous Page</paper-button>
-                <paper-tabs scrollable="true" style="width: 500px;" selected="0" align-bottom>
+                <paper-tabs #thepage scrollable="true" style="width: 500px;" selected="0" align-bottom hideScrollButtons>
                     <paper-tab *ngFor="#page of paginationList; #i = index" (click)="goToPage(i)">
                         {{i + 1}}
                     </paper-tab>
@@ -140,7 +140,7 @@
                         <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
                         <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
                         <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
-                            <input id="barcodeinput" placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                            <input #barcodeinput placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
                         </div>
                         <div [hidden]="hideBarcodeLastScanned" class="vertical layout center-justified">
                             <span style="font-size: small;">recently added from barcode scan:</span>
