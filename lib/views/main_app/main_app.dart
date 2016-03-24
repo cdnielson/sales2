@@ -13,6 +13,7 @@ import 'package:polymer_elements/paper_header_panel.dart';
 import 'package:polymer_elements/paper_toolbar.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 import 'package:polymer_elements/paper_dialog.dart';
+import 'package:polymer_elements/paper_input.dart';
 import 'package:polymer_elements/paper_dialog_scrollable.dart';
 import '../../views/ring_view/ring_view.dart';
 
@@ -41,7 +42,7 @@ class MainApp {
   @ViewChild("barcodeinput") var barcodeInput;
   @ViewChild("pininput") var pinInput;
   @ViewChild("thepage") var thePage;
-  String get pathToRingsData => "data/rings2.json";
+  String get pathToRingsData => "data/rings.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
@@ -107,6 +108,7 @@ class MainApp {
   bool showSignature = false;
   bool openCustomSku = false;
   bool openStockBalances = false;
+  bool openChangeView = false;
   String pin = "";
 
   Ring lastScanned;
@@ -146,6 +148,8 @@ class MainApp {
   }
 
   void setUpPagination() {
+    paginationList = [[]];
+    print(paginationList);
     int ringListLength = ringsDisplayed.length;
     int numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
     int start = 0;
@@ -173,6 +177,7 @@ class MainApp {
     }
     currentPage = 0;
     paginationList.removeWhere((List element) => element.isEmpty);
+    print(paginationList);
   }
 
   void setLogins(data) {
@@ -445,6 +450,7 @@ class MainApp {
   }
 
   handleCustomSkuForm() {
+    print('handling it');
     typedSkus.add({
       "SKU": customSku,
       "finish": customFinish,
@@ -485,7 +491,28 @@ class MainApp {
   }
 
   changeView() {
+    openChangeView = true;
+  }
 
+  handleChangeView(item) {
+    ringsDisplayed.clear;
+    switch(item) {
+      case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); print(ringsDisplayed); break;
+      case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
+      case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
+      case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
+      case "meteorite":
+        for (var t in tierData) {
+          for (var c in t.category) {
+            if (c == "Meteorite") {
+              ringsDisplayed.add(c);
+            }
+          }
+        };
+        break;
+    }
+    setUpPagination();
+    openChangeView = false;
   }
 
   changePage(direction) {

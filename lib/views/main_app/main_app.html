@@ -248,6 +248,15 @@
             <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
         </form>
     </paper-dialog>
+
+    <paper-dialog [opened]="openChangeView">
+        <h2>What items would you like to view</h2>
+            <paper-button raised (click)="handleChangeView('tier1')">Tier 1 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier2')">Tier 2 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier3')">Tier 3 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier4')">Tier 4 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('meteorite')">Meteorite Rings</paper-button>
+    </paper-dialog>
 </div>
 
 
