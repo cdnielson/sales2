@@ -2,9 +2,12 @@ import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:polymer_elements/iron_flex_layout/classes/iron_flex_layout.dart';
 import 'package:polymer_elements/iron_icons.dart';
-import 'package:polymer_elements/paper_menu.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_item.dart';
+import 'package:polymer_elements/paper_icon_button.dart';
+//import 'package:polymer_elements/paper_menu.dart';
+//import 'package:polymer_elements/paper_dropdown_menu.dart';
+//import 'package:polymer_elements/paper_item.dart';
+import 'package:polymer_elements/paper_tab.dart';
+import 'package:polymer_elements/paper_tabs.dart';
 import 'package:polymer_elements/paper_button.dart';
 import 'package:polymer_elements/paper_header_panel.dart';
 import 'package:polymer_elements/paper_toolbar.dart';
@@ -115,7 +118,8 @@ class MainApp {
   @reflectable
   bool fireIronResize = false;
 
-  List<List<Ring>> paginationList = [];
+  List<List<Ring>> paginationList = [[]];
+  int currentPage = 0;
 
   ngAfterViewInit() {
     // viewChild is set
@@ -135,8 +139,6 @@ class MainApp {
   void ringsLoaded(data) {
     List<Map> mapList = JSON.decode(data);
     tierData = mapList.map((Map element) => new Ring.fromMap(element)).toList();
-    print("here");
-
     ringsDisplayed = tierData;
     //print(ringsDisplayed);
     setUpPagination();
@@ -147,31 +149,37 @@ class MainApp {
   }
 
   void setUpPagination() {
-    var ringListLength = tierData.length;
-    var numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
-    print("numberOfLists $numberOfLists");
-    var start = 0;
-    var end = 19;
+    int ringListLength = ringsDisplayed.length;
+    int numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
+    int start = 0;
+    int end = 19;
+    if (ringListLength - (numberOfLists * 20) > 0) {
+      numberOfLists += 1;
+    }
 
-    for (var n = 0; n < numberOfLists; n++) {
-      print(n);
+    for (int n = 0; n < numberOfLists; n++) {
       List<Ring> theList = [];
-      for (var i = start; i > end; i++) {
-        theList.add(tierData[i]);
+      for (int i = start; i < end; i++) {
+        theList.add(ringsDisplayed[i]);
       }
+      //print(theList);
       paginationList.add(theList);
       if (end <= ringListLength + 20) {
         start += 20;
         end += 20;
       } else {
-        // TODO deal with remainer
+        start = numberOfLists * 20;
+        end = ringListLength;
       }
     }
-    for (List p in paginationList) {
-      for (Ring i in p) {
-        print(i.SKU);
+    for (List listOfLists in paginationList) {
+      for (Ring ring in listOfLists) {
+        print(ring.SKU);
       }
     }
+
+    currentPage = 0;
+    paginationList.removeWhere((List element) => element.isEmpty);
   }
 
   void setLogins(data) {
@@ -483,6 +491,20 @@ class MainApp {
 
   changeView() {
 
+  }
+
+  changePage(direction) {
+    if (direction == "prev") {
+      currentPage -= 1;
+    }
+    if  (direction == "next") {
+      currentPage += 1;
+      print(currentPage);
+    }
+  }
+
+  goToPage(page) {
+    currentPage = page;
   }
 
 }
