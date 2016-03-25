@@ -251,11 +251,24 @@
 
     <paper-dialog [opened]="openChangeView">
         <h2>What items would you like to view</h2>
+            <paper-button raised (click)="handleChangeView('all')">All Rings</paper-button>
             <paper-button raised (click)="handleChangeView('tier1')">Tier 1 Rings</paper-button>
             <paper-button raised (click)="handleChangeView('tier2')">Tier 2 Rings</paper-button>
             <paper-button raised (click)="handleChangeView('tier3')">Tier 3 Rings</paper-button>
             <paper-button raised (click)="handleChangeView('tier4')">Tier 4 Rings</paper-button>
-            <paper-button raised (click)="handleChangeView('meteorite')">Meteorite Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Meteorite')">Meteorite Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Camo')">Camo Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Titanium')">Titanium Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Damascus')">Damascus Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Zirconium')">Zirconium Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Hard Wood')">Hard Wood Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Mokume')">Mokume Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Precious Metal')">Precious Metal Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Elysium')">Elysium Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('other')">Other Rings</paper-button>
     </paper-dialog>
 </div>
 

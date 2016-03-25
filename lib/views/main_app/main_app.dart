@@ -148,21 +148,29 @@ class MainApp {
   }
 
   void setUpPagination() {
+    currentPage = 0;
     paginationList = [[]];
     print(paginationList);
     int ringListLength = ringsDisplayed.length;
-    int numberOfLists = int.parse((ringListLength / 20).toStringAsFixed(0));
+    int numberOfLists = int.parse(((ringListLength / 20) - .5).toStringAsFixed(0));
+    if (numberOfLists <= 1) {
+      paginationList.add(ringsDisplayed);
+      paginationList.removeWhere((List element) => element.isEmpty);
+      return;
+    }
     int start = 0;
     int end = 19;
     int ringsInListMinusRemainder = numberOfLists * 20;
     if (ringListLength - (ringsInListMinusRemainder) > 0) {
       numberOfLists += 1;
     }
-    print(numberOfLists);
+    print("number of lists $numberOfLists");
+    print("ringListLength $ringListLength");
 
     for (int n = 0; n < numberOfLists ; n++) {
       List<Ring> theList = [];
       for (int i = start; i <= end ; i++) {
+        print("$i $end $ringsInListMinusRemainder $ringListLength");
         theList.add(ringsDisplayed[i]);
       }
       paginationList.add(theList);
@@ -175,7 +183,7 @@ class MainApp {
         end = ringListLength -1;
       }
     }
-    currentPage = 0;
+
     paginationList.removeWhere((List element) => element.isEmpty);
     print(paginationList);
   }
@@ -495,24 +503,41 @@ class MainApp {
   }
 
   handleChangeView(item) {
-    ringsDisplayed.clear;
+    ringsDisplayed = [];
     switch(item) {
+      case "all": ringsDisplayed = tierData; break;
       case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); print(ringsDisplayed); break;
       case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
       case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
       case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
-      case "meteorite":
-        for (var t in tierData) {
-          for (var c in t.category) {
-            if (c == "Meteorite") {
-              ringsDisplayed.add(c);
-            }
-          }
-        };
-        break;
+      case "other": ringsDisplayed = tierData.where((Ring element) =>
+        element.category[0] == "Fable" ||
+        element.category[0] == "Ceramic" ||
+        element.category[0] == "Ceramic" ||
+        element.category[0] == "Stainless Steel" ||
+        element.category[0] == "MossyOak" ||
+        element.category[0] == "Fable Camo" ||
+        element.category[0] == "Goodyear" ||
+        element.category[0] == "King's Camo"
+      ); break;
+      default: ringsDisplayed.addAll(addRingToDisplay(item));
     }
+    print("rings displayed $ringsDisplayed");
     setUpPagination();
     openChangeView = false;
+  }
+
+  List addRingToDisplay(categoryToAdd) {
+    List<Ring> toAdd = [];
+    for (Ring ring in tierData) {
+      for (String category in ring.category) {
+        if (category == categoryToAdd) {
+          toAdd.add(ring);
+        }
+      }
+    }
+    print('toADd $toAdd');
+    return toAdd;
   }
 
   changePage(direction) {
