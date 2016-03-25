@@ -47,6 +47,13 @@
         <div *ngFor="#ring of orderList">
             {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}}
         </div>
+        <paper-checkbox checked (change)="showHideExistingPartner()">Existing Partner</paper-checkbox>
+        <div [hidden]="hidePartnerSearch">
+            <paper-input (keyup.enter)="findPartners()" [(ngModel)]="partnerSearchData" label="Search for partner" alwaysFloatLabel="true"></paper-input>
+            <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 100%; height: 200px; overflow: scroll;" *ngFor="#partner of partners">
+                <span (click)="partnerSelected(partner.client_idx)">{{ partner.store_name }} - {{ partner.address }}</span>
+            </div>
+        </div>
         <div class="layout vertical">
             <paper-input alwaysFloatLabel="true" required="true" label="Order Name" [(ngModel)]="order_name" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Store Name" [(ngModel)]="store_name" ngDefaultControl></paper-input>
@@ -65,7 +72,7 @@
 
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
-        SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
+        SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><paper-icon-button icon="search" (click)="filterSearchData(searchData)"></paper-icon-button>
 
 
         <div class="layout horizontal center-justified flex wrap">
@@ -268,7 +275,7 @@
             <paper-button raised (click)="handleChangeView('Mokume')">Mokume Rings</paper-button>
             <paper-button raised (click)="handleChangeView('Precious Metal')">Precious Metal Rings</paper-button>
             <paper-button raised (click)="handleChangeView('Elysium')">Elysium Rings</paper-button>
-            <paper-button raised (click)="handleChangeView('other')">Other Rings</paper-button>
+            <!--<paper-button raised (click)="handleChangeView('other')">Other Rings</paper-button>-->
     </paper-dialog>
 </div>
 

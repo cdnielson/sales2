@@ -14,6 +14,7 @@ import 'package:polymer_elements/paper_toolbar.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 import 'package:polymer_elements/paper_dialog.dart';
 import 'package:polymer_elements/paper_input.dart';
+import 'package:polymer_elements/paper_checkbox.dart';
 import 'package:polymer_elements/paper_dialog_scrollable.dart';
 import '../../views/ring_view/ring_view.dart';
 
@@ -44,6 +45,7 @@ class MainApp {
   @ViewChild("thepage") var thePage;
   String get pathToRingsData => "data/rings.json";
   String get pathToRingsDataPhp => "data/tiers.php";
+  String get pathToPartnerData => "data/getClient.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
   String get logoPath => "images/lbrook.jpg";
@@ -124,6 +126,11 @@ class MainApp {
 
   List<List<Ring>> paginationList = [[]];
   int currentPage = 0;
+  bool hideExistingPartners = true;
+  bool hidePartnerSearch = true;
+  String partnerSearchData = "";
+  List<Client> allPartners = [];
+  List<Client> partners = [];
 
   ngAfterViewInit() {
     // viewChild is set
@@ -134,6 +141,7 @@ class MainApp {
 
     HttpRequest.getString(pathToRingsData).then(ringsLoaded);
     HttpRequest.getString(pathToLoginData).then(setLogins);
+    HttpRequest.getString(pathToPartnerData).then(setPartners);
   }
 
   void ringsLoaded(data) {
@@ -150,7 +158,7 @@ class MainApp {
   void setUpPagination() {
     currentPage = 0;
     paginationList = [[]];
-    print(paginationList);
+
     int ringListLength = ringsDisplayed.length;
     int numberOfLists = int.parse(((ringListLength / 20) - .5).toStringAsFixed(0));
     if (numberOfLists <= 1) {
@@ -164,13 +172,11 @@ class MainApp {
     if (ringListLength - (ringsInListMinusRemainder) > 0) {
       numberOfLists += 1;
     }
-    print("number of lists $numberOfLists");
-    print("ringListLength $ringListLength");
+
 
     for (int n = 0; n < numberOfLists ; n++) {
       List<Ring> theList = [];
       for (int i = start; i <= end ; i++) {
-        print("$i $end $ringsInListMinusRemainder $ringListLength");
         theList.add(ringsDisplayed[i]);
       }
       paginationList.add(theList);
@@ -185,16 +191,18 @@ class MainApp {
     }
 
     paginationList.removeWhere((List element) => element.isEmpty);
-    print(paginationList);
+
   }
 
   void setLogins(data) {
-
     List<Map> mapList = JSON.decode(data);
-
     loginData = mapList.map((Map element) => new User.fromMap(element)).toList();
-    log.info(loginData);
+  }
 
+  void setPartners(data) {
+    List<Map> mapList = JSON.decode(data);
+    allPartners = mapList.map((Map element) => new Client.fromMap(element)).toList();
+    print(allPartners);
   }
 
   void searchForBarcode() {
@@ -219,8 +227,11 @@ class MainApp {
   }
 
   void filterSearchData(data) {
+
+    // TODO if it doesn't find anything don't cause an error
     String upData = data.toUpperCase();
     ringsDisplayed = tierData.where((Ring element) => element.id.toString().toUpperCase().contains(upData) || element.SKU.toUpperCase().contains(upData) || element.finish.toUpperCase().contains(upData)).toList();
+    setUpPagination();
   }
 
   void calculateOrderTotal() {
@@ -342,7 +353,7 @@ class MainApp {
   setUpOrderToSend() {
 
     for (Ring r in orderList) {
-      print("Test");
+
       if (r.tier == 22) {
         accessories.add({
           "SKU" : r.SKU,
@@ -458,7 +469,7 @@ class MainApp {
   }
 
   handleCustomSkuForm() {
-    print('handling it');
+
     typedSkus.add({
       "SKU": customSku,
       "finish": customFinish,
@@ -510,19 +521,18 @@ class MainApp {
       case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
       case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
       case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
-      case "other": ringsDisplayed = tierData.where((Ring element) =>
+      /*case "other": ringsDisplayed = tierData.where((Ring element) =>
         element.category[0] == "Fable" ||
-        element.category[0] == "Ceramic" ||
         element.category[0] == "Ceramic" ||
         element.category[0] == "Stainless Steel" ||
         element.category[0] == "MossyOak" ||
         element.category[0] == "Fable Camo" ||
         element.category[0] == "Goodyear" ||
         element.category[0] == "King's Camo"
-      ); break;
+      ); break;*/
       default: ringsDisplayed.addAll(addRingToDisplay(item));
     }
-    print("rings displayed $ringsDisplayed");
+
     setUpPagination();
     openChangeView = false;
   }
@@ -536,7 +546,7 @@ class MainApp {
         }
       }
     }
-    print('toADd $toAdd');
+
     return toAdd;
   }
 
@@ -556,6 +566,28 @@ class MainApp {
 
   goToPage(page) {
     currentPage = page;
+  }
+
+  findPartners() {
+    partners = allPartners.where((Client element) => element.store_name == partnerSearchData).toList();
+  }
+
+  showHideExistingPartner() {
+    hidePartnerSearch = !hidePartnerSearch;
+  }
+
+  partnerSelected(idx) {
+    hideExistingPartners = false;
+    Client currentPartner = allPartners.where((Client element) => element.client_idx == idx).first;
+    store_name = currentPartner.store_name;
+    last_name = currentPartner.last_name;
+    first_name = currentPartner.first_name;
+    address = currentPartner.address;
+    city = currentPartner.city;
+    state = currentPartner.state;
+    zip = currentPartner.zip;
+    phone = currentPartner.phone;
+    email = currentPartner.email;
   }
 }
 
