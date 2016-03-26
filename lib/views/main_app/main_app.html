@@ -16,6 +16,13 @@
         border-radius: 10px;
         font-size: x-large;
     }
+    .not-addded {
+        box-shadow: 3px 3px 3px grey;
+    }
+
+    .added {
+        box-shadow: 3px 3px 3px red;
+    }
 
 </style>
 
@@ -46,8 +53,8 @@
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
         Date: {{ date }}<br>
         <h4>Order:</h4>
-        <paper-button raised (click)="hideImages = !hideImages">Show/Hide Images</paper-button>
-        <br>
+        <paper-button raised (click)="hideImages = !hideImages" style="padding-bottom: 20px;">Show/Hide Images</paper-button>
+
         <div *ngFor="#ring of orderList">
             {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}} <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" [hidden]="hideImages"/>
         </div>
@@ -84,7 +91,7 @@
 
 
         <div class="layout horizontal center-justified flex wrap">
-            <div *ngFor="#ring of paginationList[currentPage]" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
+            <div *ngFor="#ring of paginationList[currentPage]" style="width: 200px; padding:5px;" class="not-added" [class.added]="ring.added" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -152,7 +159,7 @@
                     <h2>Select the order you want to load:</h2>
                     <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; overflow: scroll; height: 200px;">
                         <paper-list-box #listOfOrders *ngFor="#order of orders" attr-for-selected="value">
-                            <paper-item (click)="chooseOrder(order['id'])">{{ order['id'] }} - {{ order['name'] }}</paper-item>
+                            <paper-item (click)="chooseOrder(order.id)">{{ order.id }} - {{ order.name }}</paper-item>
                         </paper-list-box>
                     </div>
                     <paper-button (click)="loadOrder()">Load</paper-button>

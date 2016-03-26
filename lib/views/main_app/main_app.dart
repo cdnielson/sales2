@@ -155,6 +155,7 @@ class MainApp {
 
     // TODO add search icon to search for partners
     // TODO order name not loading with order load
+    // TODO change shadow color of added rings to red
   }
 
   MainApp(Logger this.log) {
@@ -626,7 +627,9 @@ class MainApp {
 
     List<Map> mapList = JSON.decode(data);
     orderNames = mapList.map((Map element) => new Order.fromMap(element)).toList();
+    print(orderNames);
     // TODO can probably simplify this
+//    orderNames.sort((Order a, Order b) => a.id.compareTo(b.id));
     orderNames.sort((Order a, Order b) {
       if (int.parse(a.id) < int.parse(b.id)) {
         return 1;

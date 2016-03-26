@@ -6,7 +6,7 @@ class Order {
 
   Order(String this.id, String this.name);
 
-  Order.fromMap(Map<String, Object> map) : this(map["name"], map["id"]);
+  Order.fromMap(Map<String, Object> map) : this(map["id"], map["name"]);
 
   @override String toString() => "$name";
 
