@@ -2,10 +2,12 @@ import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:polymer_elements/iron_flex_layout/classes/iron_flex_layout.dart';
 import 'package:polymer_elements/iron_icons.dart';
+import 'package:polymer_elements/iron_form.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 //import 'package:polymer_elements/paper_menu.dart';
 //import 'package:polymer_elements/paper_dropdown_menu.dart';
-//import 'package:polymer_elements/paper_item.dart';
+import 'package:polymer_elements/paper_listbox.dart';
+import 'package:polymer_elements/paper_item.dart';
 import 'package:polymer_elements/paper_tab.dart';
 import 'package:polymer_elements/paper_tabs.dart';
 import 'package:polymer_elements/paper_button.dart';
@@ -27,8 +29,10 @@ import '../../model/swatches.dart';
 import '../../model/users.dart';
 import '../../model/combos.dart';
 import '../../model/clients.dart';
+import '../../model/orders.dart';
 
-import 'package:polymer/polymer.dart';
+//import 'package:polymer/polymer.dart';
+import 'package:intl/intl.dart';
 
 // TODO not working
 /*import 'package:lawndart/lawndart.dart';
@@ -43,11 +47,14 @@ class MainApp {
   @ViewChild("barcodeinput") var barcodeInput;
   @ViewChild("pininput") var pinInput;
   @ViewChild("thepage") var thePage;
+  @ViewChild("listOfOrders") var listOfOrders;
   String get pathToRingsData => "data/rings.json";
   String get pathToRingsDataPhp => "data/tiers.php";
   String get pathToPartnerData => "data/getClient.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
+  String get pathToLoadOrders => "data/getOrderList.php";
+  String get pathToLoadOrder => "data/getOrderIdx.php";
   String get logoPath => "images/lbrook.jpg";
   String get pathToImages => "images/";
   String get pathToThumbnails => "images/";
@@ -117,23 +124,37 @@ class MainApp {
 
   bool hideBarcodeLastScanned = true;
 
-  DateTime date = new DateTime.now();
 
+  DateTime now = new DateTime.now();
+  String date;
   String lastScannedImage = "";
 
-  @reflectable
-  bool fireIronResize = false;
+/*  @reflectable
+  bool fireIronResize = false;*/
 
   List<List<Ring>> paginationList = [[]];
   int currentPage = 0;
   bool hideExistingPartners = true;
-  bool hidePartnerSearch = true;
+  bool hidePartnerSearch = false;
   String partnerSearchData = "";
   List<Client> allPartners = [];
   List<Client> partners = [];
 
+  List<Order> orderNames = [];
+  bool hideChooseOrder = true;
+
+  String orderSelected = "";
+  bool hideImages = true;
+  List<Order> orders = [];
+
+  String customerSearchData = "";
+
   ngAfterViewInit() {
     // viewChild is set
+
+
+    // TODO add search icon to search for partners
+    // TODO order name not loading with order load
   }
 
   MainApp(Logger this.log) {
@@ -142,6 +163,9 @@ class MainApp {
     HttpRequest.getString(pathToRingsData).then(ringsLoaded);
     HttpRequest.getString(pathToLoginData).then(setLogins);
     HttpRequest.getString(pathToPartnerData).then(setPartners);
+    DateFormat dateFormatter = new DateFormat("yyyy-MM-dd");
+    date = dateFormatter.format(now);
+
   }
 
   void ringsLoaded(data) {
@@ -202,7 +226,7 @@ class MainApp {
   void setPartners(data) {
     List<Map> mapList = JSON.decode(data);
     allPartners = mapList.map((Map element) => new Client.fromMap(element)).toList();
-    print(allPartners);
+//    print(allPartners);
   }
 
   void searchForBarcode() {
@@ -253,7 +277,7 @@ class MainApp {
     // add the SB prices
     price = 0;
     for (Map item in stockBalances) {
-      price += int.parse(item["price"]);
+      price -= int.parse(item["price"]);
     }
     subTotal += price;
   }
@@ -318,7 +342,7 @@ class MainApp {
   login() {
     hideLogIn = true;
     hideMain = false;
-    fireIronResize = true;
+//    fireIronResize = true;
     // TODO not working. Figure it out.
     barcodeInput.nativeElement.focus();
   }
@@ -344,6 +368,7 @@ class MainApp {
     if (orderList.isNotEmpty) {
       hideOrder = true;
       hideReview = false;
+      hideSubmitButton = true;
       setUpOrderToSend();
     } else {
       // TODO create a message
@@ -402,11 +427,16 @@ class MainApp {
     bool completed = true;
     Map customerInfo;
     Map orderData;
-    String dateadd;
+    String checked;
+    if (hidePartnerSearch) {
+      checked = "new";
+    } else {
+      checked = "existing";
+    }
 
     customerInfo = {
       "client_idx" : "none",
-      "checked" : "new",
+      "checked" : checked,
       "storeName" : store_name,
       "lastName" : last_name,
       "firstName" : first_name,
@@ -422,8 +452,6 @@ class MainApp {
       "notes" : notes
     };
 
-    dateadd = date.toString();
-
     Map customDisplay = {};
     //print("Last Name that will be uploaded is:" + customerInfo["lastName"]);
     /*if (customDisplayAdded == true) {
@@ -437,7 +465,7 @@ class MainApp {
     var data =
     {
       "completed" : completed,
-      "date" : dateadd,
+      "date" : date,
       "customer_info" : customerInfo,
       "order_data" : orderData,
       "order_name" : order_name,
@@ -473,8 +501,7 @@ class MainApp {
     typedSkus.add({
       "SKU": customSku,
       "finish": customFinish,
-      "price": customPrice,
-      "notes": customNote
+      "price": customPrice
     });
 
     customSku = "";
@@ -517,7 +544,7 @@ class MainApp {
     ringsDisplayed = [];
     switch(item) {
       case "all": ringsDisplayed = tierData; break;
-      case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); print(ringsDisplayed); break;
+      case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); break;
       case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
       case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
       case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
@@ -569,7 +596,8 @@ class MainApp {
   }
 
   findPartners() {
-    partners = allPartners.where((Client element) => element.store_name == partnerSearchData).toList();
+    partners = allPartners.where((Client element) => element.store_name.contains(partnerSearchData)).toList();
+    hideExistingPartners = false;
   }
 
   showHideExistingPartner() {
@@ -588,6 +616,108 @@ class MainApp {
     zip = currentPartner.zip;
     phone = currentPartner.phone;
     email = currentPartner.email;
+  }
+
+  loadFromPHP() {
+    HttpRequest.getString(pathToLoadOrders).then(orderLoaded);
+  }
+
+  orderLoaded(data) {
+
+    List<Map> mapList = JSON.decode(data);
+    orderNames = mapList.map((Map element) => new Order.fromMap(element)).toList();
+    // TODO can probably simplify this
+    orderNames.sort((Order a, Order b) {
+      if (int.parse(a.id) < int.parse(b.id)) {
+        return 1;
+      }
+      else if (int.parse(a.id) > int.parse(b.id)) {
+        return -1;
+      }
+      return 0;
+    });
+    orders = orderNames;
+    hideChooseOrder = false;
+  }
+
+  chooseOrder(id) {
+    orderSelected = id;
+  }
+
+  loadOrder() {
+    var data = JSON.encode(orderSelected);
+    HttpRequest.request(pathToLoadOrder, method: 'POST', mimeType: 'application/json', sendData: data).catchError((obj) {
+      //print(obj);
+    }).then((HttpRequest val) {
+      //print('response: ${val.responseText}');
+      var order = JSON.decode(val.responseText);
+      print(order);
+      if (order['customer'].isEmpty && order['master'].isEmpty && order['removed'].isEmpty && order['added'].isEmpty && order['accessories'].isEmpty && order['custom'].isEmpty && order['stockbalances'].isEmpty && order['orderdata'].isEmpty) {
+        print("no order");
+        return;
+      }
+
+      fillTheOrder(order);
+      hideLoadButton = true;
+      hideChooseOrder = true;
+    }, onError: (e) => print("error"));
+
+  }
+
+  fillTheOrder(order) {
+//    order_id = order['master'][0]['order_idx'];
+//    client_id = order['master'][0]['client_idx'];
+
+    store_name = order['customer'][0]['storeName'];
+    last_name = order['customer'][0]['lastName'];
+    first_name = order['customer'][0]['firstName'];
+    address = order['customer'][0]['address'];
+    city = order['customer'][0]['city'];
+    state = order['customer'][0]['state'];
+    zip = order['customer'][0]['zip'];
+    phone = order['customer'][0]['phone'];
+    email = order['customer'][0]['email'];
+    orderID = order['master'][0]['order_idx'];
+    tier = order['master'][0]['tier'];
+    for (var ring in order['added']) {
+      orderList.add(tierData.where((Ring element) => element.SKU == ring['SKU'] && element.finish == ring['finish']).first);
+    }
+    for (var ring in order['accessories']) {
+      orderList.add(tierData.where((Ring element) => element.SKU == ring['SKU'] && element.finish == ring['finish']).first);
+    }
+    for (var ring in order['custom']) {
+      typedSkus.add({
+        "SKU": ring['sku'],
+        "finish": ring['finish'],
+        "price": ring['price']
+      });
+    }
+    for (var ring in order['stockbalances']) {
+      stockBalances.add({
+        "id": ring['id'],
+        "price": ring['price']
+      });
+    }
+    terms = order['orderdata'][0]['terms'];
+    notes = order['orderdata'][0]['notes'];
+    calculateOrderTotal();
+  }
+
+  cancelLoadOrder() {
+    hideChooseOrder = true;
+  }
+
+  cancelSubmit() {
+    hideSubmitButton = false;
+    hideReview = true;
+    hideOrder = false;
+  }
+
+
+
+  filterCustomer() {
+    // TODO put order names into class
+    orders = orderNames.where((Order element) => element.name.contains(customerSearchData)).toList();
   }
 }
 

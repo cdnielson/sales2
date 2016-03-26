@@ -44,17 +44,25 @@
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
+        Date: {{ date }}<br>
+        <h4>Order:</h4>
+        <paper-button raised (click)="hideImages = !hideImages">Show/Hide Images</paper-button>
+        <br>
         <div *ngFor="#ring of orderList">
-            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}}
+            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}} <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" [hidden]="hideImages"/>
         </div>
+        <hr>
         <paper-checkbox checked (change)="showHideExistingPartner()">Existing Partner</paper-checkbox>
         <div [hidden]="hidePartnerSearch">
-            <paper-input (keyup.enter)="findPartners()" [(ngModel)]="partnerSearchData" label="Search for partner" alwaysFloatLabel="true"></paper-input>
-            <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 100%; height: 200px; overflow: scroll;" *ngFor="#partner of partners">
-                <span (click)="partnerSelected(partner.client_idx)">{{ partner.store_name }} - {{ partner.address }}</span>
+            <paper-input (keyup.enter)="findPartners()" [(ngModel)]="partnerSearchData" label="Search for partner" alwaysFloatLabel="true" ngDefaultControl></paper-input>
+            <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 100%; height: 200px; overflow: scroll;">
+                <input [(ngModel)]="customerSearchData" type="text" (click)="filterCustomer()"/>
+                <div class="layout vertical" *ngFor="#partner of partners" (click)="partnerSelected(partner.client_idx)">
+                    {{ partner.store_name }} - {{ partner.address }}
+                </div>
             </div>
         </div>
-        <div class="layout vertical">
+        <form is="iron-form" class="layout vertical">
             <paper-input alwaysFloatLabel="true" required="true" label="Order Name" [(ngModel)]="order_name" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Store Name" [(ngModel)]="store_name" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Last Name" [(ngModel)]="last_name" ngDefaultControl></paper-input>
@@ -67,7 +75,7 @@
             <paper-input alwaysFloatLabel="true" required="true" label="Email" [(ngModel)]="email" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Terms" [(ngModel)]="terms" ngDefaultControl></paper-input>
             <paper-button (click)="saveOrderToPhp()">Submit and Sign Order</paper-button>
-        </div>
+        </form>
     </div>
 
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
@@ -118,9 +126,9 @@
                 <div class="horizontal layout center-justified center">
                     <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton">Review</paper-button>
                 </div>
-                <div class="horizontal layout center-justified center" [hidden]="hideButtons">
-                    <paper-button raised (click)="cancelSubmit" ngDefaultControl>Back</paper-button>
-                    <paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>
+                <div class="horizontal layout center-justified center" [hidden]="!hideSubmitButton">
+                    <paper-button raised (click)="cancelSubmit()" ngDefaultControl>Back</paper-button>
+                    <!--<paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>-->
                 </div>
                 <div class="horizontal layout center-justified center" [hidden]="hideOtherButtons">
                     <paper-button raised recenteringTouch="true" (click)="back()" ngDefaultControl>Back</paper-button>
@@ -138,6 +146,17 @@
                     <paper-button raised recenteringTouch="true" (click)="loadFromPHP()" style="font-size: small;"
                                   [hidden]="hideLoadButton" type="button" ngDefaultControl>Load Order
                     </paper-button>
+                </div>
+
+                <div [hidden]="hideChooseOrder" style="width: 100%; border: 1px solid black;">
+                    <h2>Select the order you want to load:</h2>
+                    <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; overflow: scroll; height: 200px;">
+                        <paper-list-box #listOfOrders *ngFor="#order of orders" attr-for-selected="value">
+                            <paper-item (click)="chooseOrder(order['id'])">{{ order['id'] }} - {{ order['name'] }}</paper-item>
+                        </paper-list-box>
+                    </div>
+                    <paper-button (click)="loadOrder()">Load</paper-button>
+                    <paper-button (click)="cancelLoadOrder()">Cancel</paper-button>
                 </div>
 
                 <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser?.username}}</h3>
@@ -171,7 +190,7 @@
                         <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
                     </div>
                     <div *ngFor="#balance of stockBalances">
-                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }} - ${{ balance['price'] }}
+                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: -${{ balance['price'] }}
                     </div>
                     <div *ngFor="#item of typedSkus">
                         <span (click)="killCustom(item['SKU'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
@@ -243,7 +262,7 @@
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customSku" label="SKU" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customFinish" label="Finish" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customPrice" label="Price" ngDefaultControl></paper-input>
-            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>
+            <!--<paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>-->
             <paper-button raised (click)="handleCustomSkuForm()">Submit</paper-button>
         </form>
     </paper-dialog>
@@ -277,6 +296,7 @@
             <paper-button raised (click)="handleChangeView('Elysium')">Elysium Rings</paper-button>
             <!--<paper-button raised (click)="handleChangeView('other')">Other Rings</paper-button>-->
     </paper-dialog>
+
 </div>
 
 
