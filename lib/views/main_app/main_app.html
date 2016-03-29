@@ -1,4 +1,7 @@
-<style>
+<style is="custom-style">
+    :root {
+        --paper-tabs-selection-bar-color: blue;
+    }
     .menu-item {
         font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
     }
@@ -18,7 +21,7 @@
 <div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
     <div class="layout vertical center">
         <h2 class="center-justified">Please Enter Your PIN</h2>
-        <input [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
+        <input #pininput [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
         <div class="layout horizontal wrap center-justified" style="width: 350px;">
             <button (click)="handleLoginButton('7')" class="loginButton">7</button>
             <button (click)="handleLoginButton('8')" class="loginButton">8</button>
@@ -40,10 +43,25 @@
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
+        Date: {{ date }}<br>
+        <h4>Order:</h4>
+        <paper-button raised (click)="hideImages = !hideImages" style="margin-bottom: 20px;">Show/Hide Images</paper-button>
+
         <div *ngFor="#ring of orderList">
-            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}}
+            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}} <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" [hidden]="hideImages"/>
         </div>
-        <div class="layout vertical">
+        <hr>
+        <paper-checkbox checked (change)="showHideExistingPartner()">Existing Partner</paper-checkbox>
+        <div [hidden]="hidePartnerSearch">
+            <span class="horizontal layout no-wrap"><paper-input (keyup.enter)="findPartners()" [(ngModel)]="partnerSearchData" label="Search for partner" alwaysFloatLabel="true" ngDefaultControl></paper-input><paper-icon-button icon="search" (click)="findPartners()"></paper-icon-button></span>
+            <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 90%; height: 200px; overflow: scroll; padding-left: 5%;">
+                <!--Search: <input [(ngModel)]="customerSearchData" type="text" (click)="filterCustomer()"/>-->
+                <div class="layout vertical" *ngFor="#partner of partners" (click)="partnerSelected(partner?.client_idx)" [ngStyle]="{'background': partner?.selected}" style="padding: 5px;">
+                    {{ partner?.store_name }} - {{ partner?.address }}
+                </div>
+            </div>
+        </div>
+        <form is="iron-form" class="layout vertical">
             <paper-input alwaysFloatLabel="true" required="true" label="Order Name" [(ngModel)]="order_name" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Store Name" [(ngModel)]="store_name" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Last Name" [(ngModel)]="last_name" ngDefaultControl></paper-input>
@@ -56,14 +74,16 @@
             <paper-input alwaysFloatLabel="true" required="true" label="Email" [(ngModel)]="email" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" label="Terms" [(ngModel)]="terms" ngDefaultControl></paper-input>
             <paper-button (click)="saveOrderToPhp()">Submit and Sign Order</paper-button>
-        </div>
+        </form>
     </div>
 
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
-        SEARCH: <input [(ngModel)]="searchData" (keyup)="filterSearchData(searchData)"/>
-        <!--<div class="layout horizontal center-justified flex wrap">-->
-            <!--<div *ngFor="#ring of ringsDisplayed" style="width: 200px; box-shadow: 3px 3px 3px grey; padding:5px;" (click)="addRing(ring.id)">
+        SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><paper-icon-button icon="search" (click)="filterSearchData(searchData)"></paper-icon-button>
+
+
+        <div class="layout horizontal center-justified flex wrap">
+            <div *ngFor="#ring of paginationList[currentPage]" style="width: 200px; padding:5px; box-shadow: 3px 3px 3px grey; word-wrap: break-word;" [ngStyle]="{'border': ring.added}" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -73,12 +93,26 @@
                     {{ring?.combo}} {{ring?.combo2}}
                     <paper-input [(ngModel)]="ring.notes" ngDefaultControl label="Notes"></paper-input>
                 </div>
-            </div>-->
+            </div>
 
-            <ring-view [ringData]="ringsDisplayed" [fireUpdate]="fireIronResize" style="width: 100%;"></ring-view>
+            <!--<ring-view [ringData]="ringsDisplayed" [fireUpdate]="fireIronResize" style="width: 100%;"></ring-view>-->
 
 
-        <!--</div>-->
+        </div>
+        <div class="layout vertical center">
+            <span style="color:gray; margin-bottom: -15px; margin-top: 20px;"><iron-icon icon="chevron-left"></iron-icon>drag to view more<iron-icon icon="chevron-right"></iron-icon></span>
+            <div class="layout horizontal center-justified">
+
+                <paper-button (click)="changePage('prev')"><iron-icon icon="chevron-left"></iron-icon>Previous Page</paper-button>
+                <paper-tabs #thepage scrollable="true" style="width: 500px;" selected="0" align-bottom hideScrollButtons>
+                    <paper-tab *ngFor="#page of paginationList; #i = index" (click)="goToPage(i)">
+                        {{i + 1}}
+                    </paper-tab>
+                </paper-tabs>
+                <paper-button (click)="changePage('next')">Next Page<iron-icon icon="chevron-right"></iron-icon></paper-button>
+
+            </div>
+        </div>
     </div>
     <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
 
@@ -91,9 +125,9 @@
                 <div class="horizontal layout center-justified center">
                     <paper-button raised recenteringTouch="true" (click)="submitOrder()" [hidden]="hideSubmitButton">Review</paper-button>
                 </div>
-                <div class="horizontal layout center-justified center" [hidden]="hideButtons">
-                    <paper-button raised (click)="cancelSubmit" ngDefaultControl>Back</paper-button>
-                    <paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>
+                <div class="horizontal layout center-justified center" [hidden]="!hideSubmitButton">
+                    <paper-button raised (click)="cancelSubmit()" ngDefaultControl>Back</paper-button>
+                    <!--<paper-button raised (click)="continueSubmit" ngDefaultControl>Continue</paper-button>-->
                 </div>
                 <div class="horizontal layout center-justified center" [hidden]="hideOtherButtons">
                     <paper-button raised recenteringTouch="true" (click)="back()" ngDefaultControl>Back</paper-button>
@@ -113,6 +147,19 @@
                     </paper-button>
                 </div>
 
+                <div [hidden]="hideChooseOrder" style="width: 100%; border: 1px solid black;">
+                    <h2>Select the order you want to load:</h2>
+                    <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; overflow: scroll; height: 200px;">
+                        <paper-list-box #listOfOrders *ngFor="#order of orders" attr-for-selected="value">
+                            <paper-item (click)="chooseOrder(order.id)">{{ order.id }} - {{ order.name }}</paper-item>
+                        </paper-list-box>
+                    </div>
+                    <div class="layout horizontal center-justified">
+                        <paper-button raised (click)="loadOrder()">Load</paper-button>
+                        <paper-button raised (click)="cancelLoadOrder()">Cancel</paper-button>
+                    </div>
+                </div>
+
                 <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser?.username}}</h3>
                 <div [hidden]="hideMenus">
                     <!--main menu on the left (or right) for selecting view-->
@@ -120,7 +167,7 @@
                         <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
                         <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
                         <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
-                            <input id="barcodeinput" placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                            <input #barcodeinput placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
                         </div>
                         <div [hidden]="hideBarcodeLastScanned" class="vertical layout center-justified">
                             <span style="font-size: small;">recently added from barcode scan:</span>
@@ -144,7 +191,7 @@
                         <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
                     </div>
                     <div *ngFor="#balance of stockBalances">
-                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }} - ${{ balance['price'] }}
+                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: -${{ balance['price'] }}
                     </div>
                     <div *ngFor="#item of typedSkus">
                         <span (click)="killCustom(item['SKU'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
@@ -163,11 +210,11 @@
             <h2>Select the Tier you want to add</h2>
             <div class="horizontal layout center-justified">
 
-                <paper-button raised (click)="addTier(1)">Tier 1</paper-button>
-                <paper-button raised (click)="addTier(2)">Tier 2</paper-button>
-                <paper-button raised (click)="addTier(3)">Tier 3</paper-button>
-                <paper-button raised (click)="addTier(4)">Tier 4</paper-button>
-                <paper-button raised (click)="addTier(5)">Tier 4 Guarantee*</paper-button>
+                <paper-button raised (click)="addTier('1')">Tier 1</paper-button>
+                <paper-button raised (click)="addTier('2')">Tier 2</paper-button>
+                <paper-button raised (click)="addTier('3')">Tier 3</paper-button>
+                <paper-button raised (click)="addTier('4')">Tier 4</paper-button>
+                <paper-button raised (click)="addTier('5')">Tier 4 Guarantee*</paper-button>
             </div>
             <div class="horizontal layout center-justified">
                 <paper-button raised dialog-dismiss>Cancel</paper-button>
@@ -200,7 +247,8 @@
         <p>Note: This will add the collection rings individually.<br>
             To add a single combo item use the barcode scan ID or search for the single item.</p>
             <div class="horizontal layout center-justified">
-                <paper-button raised (click)="addCombo('core_collection')">Core Collection</paper-button>
+                <paper-button raised (click)="addCombo('core_collection')">Core Collection (one item)</paper-button>
+                <paper-button raised (click)="addCombo('CORE56')">Core Collection (each ring)</paper-button>
                 <paper-button raised (click)="addCombo('basics_a')">Basics A</paper-button>
                 <paper-button raised (click)="addCombo('basics_b')">Basics B</paper-button>
                 <paper-button raised (click)="addCombo('engraved_set_a')">Engraved Set A</paper-button>
@@ -216,7 +264,7 @@
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customSku" label="SKU" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customFinish" label="Finish" ngDefaultControl></paper-input>
             <paper-input alwaysFloatLabel="true" required="true" [(ngModel)]="customPrice" label="Price" ngDefaultControl></paper-input>
-            <paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>
+            <!--<paper-input alwaysFloatLabel="true" type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl></paper-input>-->
             <paper-button raised (click)="handleCustomSkuForm()">Submit</paper-button>
         </form>
     </paper-dialog>
@@ -228,6 +276,31 @@
             <paper-button raised (click)="handleStockBalanceForm(sb.value)">Submit</paper-button>
         </form>
     </paper-dialog>
+
+    <paper-dialog [opened]="openChangeView">
+        <h2>What items would you like to view</h2>
+            <paper-button raised (click)="handleChangeView('all')">All Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('accessories')">Accessories</paper-button>
+            <paper-button raised (click)="handleChangeView('core')">Core Collection</paper-button>
+            <paper-button raised (click)="handleChangeView('tier1')">Tier 1 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier2')">Tier 2 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier3')">Tier 3 Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('tier4')">Tier 4 Rings</paper-button>
+            <!--<paper-button raised (click)="handleChangeView('Meteorite')">Meteorite Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Camo')">Camo Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Titanium')">Titanium Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Damascus')">Damascus Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Zirconium')">Zirconium Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Hard Wood')">Hard Wood Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Mokume')">Mokume Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Precious Metal')">Precious Metal Rings</paper-button>
+            <paper-button raised (click)="handleChangeView('Elysium')">Elysium Rings</paper-button>-->
+            <!--<paper-button raised (click)="handleChangeView('other')">Other Rings</paper-button>-->
+    </paper-dialog>
+
 </div>
 
 
