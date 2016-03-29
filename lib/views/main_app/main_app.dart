@@ -25,9 +25,9 @@ import 'dart:convert';
 import 'dart:async';
 
 import '../../model/rings.dart';
-import '../../model/swatches.dart';
+//import '../../model/swatches.dart';
 import '../../model/users.dart';
-import '../../model/combos.dart';
+//import '../../model/combos.dart';
 import '../../model/clients.dart';
 import '../../model/orders.dart';
 
@@ -48,8 +48,8 @@ class MainApp {
   @ViewChild("pininput") var pinInput;
   @ViewChild("thepage") var thePage;
   @ViewChild("listOfOrders") var listOfOrders;
-  String get pathToRingsData => "data/rings.json";
-  String get pathToRingsDataPhp => "data/tiers.php";
+//  String get pathToRingsData => "data/rings.json";
+  String get pathToRingsData => "data/tiers.php";
   String get pathToPartnerData => "data/getClient.php";
   String get pathToLoginData => "data/users.json";
   String get pathToPhpAdd => "data/salesadd.php";
@@ -74,7 +74,7 @@ class MainApp {
   bool addATierOpened = false;
   bool addAComboOpened = false;
   bool guaranteed = false;
-  int tier = 0;
+  String tier = "0";
 
 
   //buttons
@@ -151,11 +151,7 @@ class MainApp {
 
   ngAfterViewInit() {
     // viewChild is set
-
-
-    // TODO add search icon to search for partners
-    // TODO order name not loading with order load
-    // TODO change shadow color of added rings to red
+    // TODO loading order is making something null
   }
 
   MainApp(Logger this.log) {
@@ -233,30 +229,43 @@ class MainApp {
   void searchForBarcode() {
     int ring = int.parse(barcodeFieldData);
     addRing(ring);
-    lastScanned = tierData.where((Ring element) => element.id == int.parse(barcodeFieldData)).first;
-    lastScannedImage = pathToImages + "rings/thumbnails/" + lastScanned.image;
-    hideBarcodeLastScanned = false;
+    lastScanned = tierData.firstWhere((Ring element) => element.id == int.parse(barcodeFieldData), orElse: () => null);
+    if (lastScanned != null) {
+      lastScannedImage = pathToImages + "rings/thumbnails/" + lastScanned.image;
+      hideBarcodeLastScanned = false;
+    }
     barcodeFieldData = "";
   }
 
   void addRing(ring) {
-    Ring currentRing = tierData.where((Ring element) => element.id == ring).first;
+    Ring currentRing = tierData.firstWhere((Ring element) => element.id == ring, orElse: () => null);
+    if (currentRing == null) {
+      return;
+    }
     if (orderList.contains(currentRing)) {
       orderList.remove(currentRing);
+      currentRing.added = "none";
     } else {
       orderList.add(currentRing);
+      currentRing.added = "1px solid red";
     }
     log.info(orderList);
     calculateOrderTotal();
     hideBarcodeLastScanned = true;
+    hideLoadButton = true;
   }
 
   void filterSearchData(data) {
 
     // TODO if it doesn't find anything don't cause an error
     String upData = data.toUpperCase();
-    ringsDisplayed = tierData.where((Ring element) => element.id.toString().toUpperCase().contains(upData) || element.SKU.toUpperCase().contains(upData) || element.finish.toUpperCase().contains(upData)).toList();
-    setUpPagination();
+    try {
+      ringsDisplayed = tierData.where((Ring element) => element.id.toString().toUpperCase().contains(upData) || element.SKU.toUpperCase().contains(upData) || element.finish.toUpperCase().contains(upData)).toList();
+      setUpPagination();
+    } catch(exception, stackTrace) {
+      print(exception);
+      print(stackTrace);
+    }
   }
 
   void calculateOrderTotal() {
@@ -291,7 +300,7 @@ class MainApp {
     addAComboOpened = true;
   }
 
-  void addTier(int tierSelected) {
+  void addTier(String tierSelected) {
     orderList.removeWhere((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4);
     guaranteed = false;
     tier = tierSelected;
@@ -300,6 +309,8 @@ class MainApp {
 
     for (Ring ring in tierList) {
       orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
     }
     calculateOrderTotal();
     addATierOpened = false;
@@ -308,18 +319,18 @@ class MainApp {
   List<Ring> getTier(tier) {
     List<Ring> tierList;
     switch (tier) {
-      case 0: tierList = [];
+      case '0': tierList = [];
       break;
-      case 1: tierList = tierData.where((Ring element) => element.tier == 1).toList();
+      case '1': tierList = tierData.where((Ring element) => element.tier == 1).toList();
       break;
-      case 2: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
+      case '2': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
       break;
-      case 3: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList();
+      case '3': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList();
       break;
-      case 4: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
+      case '4': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
       guaranteed = false;
       break;
-      case 5: tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
+      case '5': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
       guaranteed = true;
       break;
     }
@@ -327,14 +338,22 @@ class MainApp {
   }
 
   void addCombo(String combo) {
+    if(combo == "core_collection") {
+      orderList.add(tierData.where((Ring element) => element.SKU == "CORE_COLLECTION").first);
+    }
+
 
     List<Ring> comboList = tierData.where((Ring element) => element.combo == combo).toList();
     List<Ring> comboList2 = tierData.where((Ring element) => element.combo2 == combo).toList();
     for (Ring ring in comboList) {
       orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
     }
     for (Ring ring in comboList2) {
       orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
     }
     calculateOrderTotal();
     addAComboOpened = false;
@@ -377,6 +396,7 @@ class MainApp {
   }
 
   setUpOrderToSend() {
+    print(orderList);
 
     for (Ring r in orderList) {
 
@@ -399,6 +419,7 @@ class MainApp {
       }
     }
     List<Ring> tierList = getTier(tier);
+    print("tierList $tierList");
     for (Ring r in tierList) {
       Ring missing = checkIfMissing(r);
       if (missing != null) {
@@ -409,6 +430,7 @@ class MainApp {
         });
       }
     }
+    print("here!!");
 
     log.info("accessories $accessories");
     log.info("added $added");
@@ -453,6 +475,7 @@ class MainApp {
       "notes" : notes
     };
 
+    // TODO input custom displays
     Map customDisplay = {};
     //print("Last Name that will be uploaded is:" + customerInfo["lastName"]);
     /*if (customDisplayAdded == true) {
@@ -486,19 +509,18 @@ class MainApp {
     HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
       //print(obj);
     }).then((HttpRequest val) {
-      //print('The response that gets the ID is: ${val.responseText}');
       print(val.responseText);
       showSignature = true;
       hideMain = true;
       orderID = JSON.decode(val.responseText).toString();
     }, onError: (e) => print("error"));
   }
+
   openAddACustomSku() {
     openCustomSku = true;
   }
 
   handleCustomSkuForm() {
-
     typedSkus.add({
       "SKU": customSku,
       "finish": customFinish,
@@ -545,11 +567,13 @@ class MainApp {
     ringsDisplayed = [];
     switch(item) {
       case "all": ringsDisplayed = tierData; break;
+      case "accessories": ringsDisplayed = tierData.where((Ring element) => element.tier == 22).toList(); break;
       case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); break;
       case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
       case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
       case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
-      /*case "other": ringsDisplayed = tierData.where((Ring element) =>
+      case "core": ringsDisplayed = tierData.where((Ring element) => element.SKU == "CORE_COLLECTION" || element.SKU == "core_collection_discount").toList(); break;
+    /*case "other": ringsDisplayed = tierData.where((Ring element) =>
         element.category[0] == "Fable" ||
         element.category[0] == "Ceramic" ||
         element.category[0] == "Stainless Steel" ||
@@ -574,7 +598,6 @@ class MainApp {
         }
       }
     }
-
     return toAdd;
   }
 
@@ -617,6 +640,10 @@ class MainApp {
     zip = currentPartner.zip;
     phone = currentPartner.phone;
     email = currentPartner.email;
+    for(var p in partners) {
+      p.selected = "none";
+    }
+    currentPartner.selected = "lightblue";
   }
 
   loadFromPHP() {
@@ -668,9 +695,6 @@ class MainApp {
   }
 
   fillTheOrder(order) {
-//    order_id = order['master'][0]['order_idx'];
-//    client_id = order['master'][0]['client_idx'];
-
     store_name = order['customer'][0]['storeName'];
     last_name = order['customer'][0]['lastName'];
     first_name = order['customer'][0]['firstName'];
@@ -682,6 +706,7 @@ class MainApp {
     email = order['customer'][0]['email'];
     orderID = order['master'][0]['order_idx'];
     tier = order['master'][0]['tier'];
+    order_name = order['master'][0]['order_name'];
     for (var ring in order['added']) {
       orderList.add(tierData.where((Ring element) => element.SKU == ring['SKU'] && element.finish == ring['finish']).first);
     }
@@ -704,6 +729,32 @@ class MainApp {
     terms = order['orderdata'][0]['terms'];
     notes = order['orderdata'][0]['notes'];
     calculateOrderTotal();
+    store_name = checkForNull(store_name);
+    last_name = checkForNull(last_name);
+    first_name = checkForNull(first_name);
+    address = checkForNull(address);
+    city = checkForNull(city);
+    state = checkForNull(state);
+    zip = checkForNull(zip);
+    phone = checkForNull(phone);
+    email = checkForNull(email);
+    orderID = checkForNull(orderID);
+
+    order_name = checkForNull(order_name);
+    terms = checkForNull(terms);
+    notes = checkForNull(notes);
+    print(order_name);
+    if (tier == null) {
+      tier = "0";
+    }
+  }
+
+  String checkForNull(data) {
+      if (data == null) {
+        return "";
+      } else {
+        return data;
+      }
   }
 
   cancelLoadOrder() {

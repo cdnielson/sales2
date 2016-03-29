@@ -42,7 +42,7 @@ class Client {
       map["email"]);
 
   @override String toString() => "$store_name";
-  bool selected = false;
+  String selected = "none";
 }
 
 
