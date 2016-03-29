@@ -17,9 +17,7 @@ final AppMode appMode = window.location.host.contains('localhost') ? AppMode.Dev
 
 final OpaqueToken AppNameToken = new OpaqueToken("AppNameToken");
 
-main() async {
-  await initPolymer();
-
+main() {
   bootstrap(MainApp, [
     provide(AppNameToken, useValue: APP_NAME),
     provide(AppMode, useValue: appMode),
