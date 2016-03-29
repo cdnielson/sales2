@@ -64,6 +64,100 @@
 
 </div>
 <div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
+    <div [hidden]="!addATierOpened" class="pop-up">
+
+        <h2>Select the Tier you want to add</h2>
+        <div class="horizontal layout center-justified">
+
+            <button (click)="addTier('1')">Tier 1</button>
+            <button (click)="addTier('2')">Tier 2</button>
+            <button (click)="addTier('3')">Tier 3</button>
+            <button (click)="addTier('4')">Tier 4</button>
+            <button (click)="addTier('5')">Tier 4 Guarantee*</button>
+        </div>
+        <div class="horizontal layout center-justified">
+            <button raised dialog-dismiss>Cancel</button>
+        </div>
+        <div>
+
+            <h2>Guaranteed Sale Program</h2>
+            <p><b>Offer:</b>
+            <p>1. If a store purchases a Tier 4 and The Knot, Lashbrook will guarantee at least a one-time turn of the investment during the first year that they have the product in the case.  If the store fails to sell $15,000, at wholesale, from the case and/or in special orders, Lashbrook will buy back product in an amount equal to the shortfall.
+                <br>2. Total Investment:   $14,997
+                <br>3. 30/60/90 (Three payments of $4999)
+                <br>4. No substitutions to the Tier 4.
+                <br>5. No stock balancing, unless initiated by Lashbrook, during the first year.</p>
+
+            <p><b>The following requirements must be met in order to qualify for buyback:</b>
+                <br>1. Payment terms must be met within a 10 day grace period.
+                <br>2. Store personnel must do Lashbrook training within 30 days of receipt of merchandise.
+                <br>3. Store must provide the information necessary for proper Knot promotion within ten business days of each request.
+                <br>4. Product must be properly displayed.
+                <br>5. Store will have 60 days from end of 12 month period to notify us that they want a buyback.</p>
+
+            <p><b>Lashbrook buyback commitment:</b>
+                <br>1. If conditions are met, Lashbrook will buy back the Lashbrook product that the jeweler chooses, also with 30/60/90 terms.  For example, if a jeweler sells only $9,000 at wholesale during the first year, he may choose $6000 of product to sell back and Lashbrook will pay $2000/month for three months.</p>
+        </div>
+    </div>
+    <div [hidden]="!addAComboOpened" class="pop-up">
+        <h2>Select the Collection you want to add</h2>
+        <p>Note: This will add the collection rings individually.<br>
+            To add a single combo item use the barcode scan ID or search for the single item.</p>
+        <div class="horizontal layout center-justified">
+            <button (click)="addCombo('core_collection')">Core Collection (one item)</button>
+            <button (click)="addCombo('CORE56')">Core Collection (each ring)</button>
+            <button (click)="addCombo('basics_a')">Basics A</button>
+            <button (click)="addCombo('basics_b')">Basics B</button>
+            <button (click)="addCombo('engraved_set_a')">Engraved Set A</button>
+            <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
+            <button (click)="addCombo('elysium')">Elysium 8</button>
+            <button (click)="addCombo('elysium2')">Elysium 5</button>
+        </div>
+    </div>
+
+    <div [hidden]="!openCustomSku" class="pop-up">
+        <h2>Add a Custom SKU</h2>
+        <form id="customForm" method="post">
+            <input [(ngModel)]="customSku" label="SKU" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customFinish" label="Finish" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customPrice" label="Price" ngDefaultControl type="text"/>
+            <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
+            <button (click)="handleCustomSkuForm()">Submit</button>
+        </form>
+    </div>
+
+    <div [hidden]="!openStockBalances" class="pop-up">
+        <h2>Add a Stock Balance</h2>
+        <form id="sbForm" method="post">
+            <input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
+            <button (click)="handleStockBalanceForm(sb.value)">Submit</button>
+        </form>
+    </div>
+
+    <div [hidden]="!openChangeView" class="pop-up">
+        <h2>What items would you like to view</h2>
+        <button (click)="handleChangeView('all')">All Rings</button>
+        <button (click)="handleChangeView('accessories')">Accessories</button>
+        <button (click)="handleChangeView('core')">Core Collection</button>
+        <button (click)="handleChangeView('tier1')">Tier 1 Rings</button>
+        <button (click)="handleChangeView('tier2')">Tier 2 Rings</button>
+        <button (click)="handleChangeView('tier3')">Tier 3 Rings</button>
+        <button (click)="handleChangeView('tier4')">Tier 4 Rings</button>
+        <!--<button (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
+        <button (click)="handleChangeView('Camo')">Camo Rings</button>
+        <button (click)="handleChangeView('Titanium')">Titanium Rings</button>
+        <button (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</button>
+        <button (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</button>
+        <button (click)="handleChangeView('Damascus')">Damascus Rings</button>
+        <button (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</button>
+        <button (click)="handleChangeView('Zirconium')">Zirconium Rings</button>
+        <button (click)="handleChangeView('Hard Wood')">Hard Wood Rings</button>
+        <button (click)="handleChangeView('Mokume')">Mokume Rings</button>
+        <button (click)="handleChangeView('Precious Metal')">Precious Metal Rings</button>
+        <button (click)="handleChangeView('Elysium')">Elysium Rings</button>
+        <button (click)="handleChangeView('other')">Other Rings</button>-->
+    </div>
+
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
         Date: {{ date }}<br>
         <h4>Order:</h4>
@@ -221,99 +315,7 @@
         </div>
 
     </div>
-    <div [hidden]="!addATierOpened" class="pop-up">
 
-        <h2>Select the Tier you want to add</h2>
-        <div class="horizontal layout center-justified">
-
-            <button (click)="addTier('1')">Tier 1</button>
-            <button (click)="addTier('2')">Tier 2</button>
-            <button (click)="addTier('3')">Tier 3</button>
-            <button (click)="addTier('4')">Tier 4</button>
-            <button (click)="addTier('5')">Tier 4 Guarantee*</button>
-        </div>
-        <div class="horizontal layout center-justified">
-            <button raised dialog-dismiss>Cancel</button>
-        </div>
-        <div>
-
-            <h2>Guaranteed Sale Program</h2>
-            <p><b>Offer:</b>
-            <p>1. If a store purchases a Tier 4 and The Knot, Lashbrook will guarantee at least a one-time turn of the investment during the first year that they have the product in the case.  If the store fails to sell $15,000, at wholesale, from the case and/or in special orders, Lashbrook will buy back product in an amount equal to the shortfall.
-                <br>2. Total Investment:   $14,997
-                <br>3. 30/60/90 (Three payments of $4999)
-                <br>4. No substitutions to the Tier 4.
-                <br>5. No stock balancing, unless initiated by Lashbrook, during the first year.</p>
-
-            <p><b>The following requirements must be met in order to qualify for buyback:</b>
-                <br>1. Payment terms must be met within a 10 day grace period.
-                <br>2. Store personnel must do Lashbrook training within 30 days of receipt of merchandise.
-                <br>3. Store must provide the information necessary for proper Knot promotion within ten business days of each request.
-                <br>4. Product must be properly displayed.
-                <br>5. Store will have 60 days from end of 12 month period to notify us that they want a buyback.</p>
-
-            <p><b>Lashbrook buyback commitment:</b>
-                <br>1. If conditions are met, Lashbrook will buy back the Lashbrook product that the jeweler chooses, also with 30/60/90 terms.  For example, if a jeweler sells only $9,000 at wholesale during the first year, he may choose $6000 of product to sell back and Lashbrook will pay $2000/month for three months.</p>
-        </div>
-    </div>
-    <div [hidden]="!addAComboOpened" class="pop-up">
-            <h2>Select the Collection you want to add</h2>
-        <p>Note: This will add the collection rings individually.<br>
-            To add a single combo item use the barcode scan ID or search for the single item.</p>
-            <div class="horizontal layout center-justified">
-                <button (click)="addCombo('core_collection')">Core Collection (one item)</button>
-                <button (click)="addCombo('CORE56')">Core Collection (each ring)</button>
-                <button (click)="addCombo('basics_a')">Basics A</button>
-                <button (click)="addCombo('basics_b')">Basics B</button>
-                <button (click)="addCombo('engraved_set_a')">Engraved Set A</button>
-                <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
-                <button (click)="addCombo('elysium')">Elysium 8</button>
-                <button (click)="addCombo('elysium2')">Elysium 5</button>
-            </div>
-    </div>
-
-    <div [hidden]="!openCustomSku" class="pop-up">
-        <h2>Add a Custom SKU</h2>
-        <form id="customForm" method="post">
-            <input [(ngModel)]="customSku" label="SKU" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customFinish" label="Finish" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customPrice" label="Price" ngDefaultControl type="text"/>
-            <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
-            <button (click)="handleCustomSkuForm()">Submit</button>
-        </form>
-    </div>
-
-    <div [hidden]="!openStockBalances" class="pop-up">
-        <h2>Add a Stock Balance</h2>
-        <form id="sbForm" method="post">
-            <input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
-            <button (click)="handleStockBalanceForm(sb.value)">Submit</button>
-        </form>
-    </div>
-
-    <div [hidden]="!openChangeView" class="pop-up">
-        <h2>What items would you like to view</h2>
-            <button (click)="handleChangeView('all')">All Rings</button>
-            <button (click)="handleChangeView('accessories')">Accessories</button>
-            <button (click)="handleChangeView('core')">Core Collection</button>
-            <button (click)="handleChangeView('tier1')">Tier 1 Rings</button>
-            <button (click)="handleChangeView('tier2')">Tier 2 Rings</button>
-            <button (click)="handleChangeView('tier3')">Tier 3 Rings</button>
-            <button (click)="handleChangeView('tier4')">Tier 4 Rings</button>
-            <!--<button (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
-            <button (click)="handleChangeView('Camo')">Camo Rings</button>
-            <button (click)="handleChangeView('Titanium')">Titanium Rings</button>
-            <button (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</button>
-            <button (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</button>
-            <button (click)="handleChangeView('Damascus')">Damascus Rings</button>
-            <button (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</button>
-            <button (click)="handleChangeView('Zirconium')">Zirconium Rings</button>
-            <button (click)="handleChangeView('Hard Wood')">Hard Wood Rings</button>
-            <button (click)="handleChangeView('Mokume')">Mokume Rings</button>
-            <button (click)="handleChangeView('Precious Metal')">Precious Metal Rings</button>
-            <button (click)="handleChangeView('Elysium')">Elysium Rings</button>
-            <button (click)="handleChangeView('other')">Other Rings</button>-->
-    </div>
 
 </div>
 
