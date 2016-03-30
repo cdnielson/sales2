@@ -1,17 +1,12 @@
-name: sales2
+name: Sales2_2
+description: A Dart app that uses Angular 2
 version: 0.0.1
-description: An Angular 2 Dart application -- Sales 2.0
-
 environment:
   sdk: '>=1.13.0 <2.0.0'
-
 dependencies:
-  angular2: ^2.0.0-beta.12
+  angular2: 2.0.0-beta.12
   browser: ^0.10.0
-  logging: any
-  intl: any
-  lawndart: any
-
+  dart_to_js_script_rewriter: ^1.0.1
 transformers:
 - angular2:
     platform_directives:
@@ -19,9 +14,4 @@ transformers:
     platform_pipes:
     - 'package:angular2/common.dart#COMMON_PIPES'
     entry_points: web/main.dart
-- $dart2js:
-    $include: '**/*.bootstrap.initialize.dart'
-    minify: true
-    commandLineOptions:
-    - --trust-type-annotations
-    - --trust-primitives
+- dart_to_js_script_rewriter
