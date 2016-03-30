@@ -41,7 +41,7 @@
     }
 </style>
 
-<div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+<div class="layout horizontal center-justified" style="height: 100vh; width: 100vw; background-color: #003053; color: white;" [hidden]="hideLogIn">
     <div class="layout vertical center">
         <h2 class="center-justified">Please Enter Your PIN</h2>
         <input #pininput [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
@@ -60,7 +60,7 @@
     </div>
 </div>
 
-<div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
+<div class="layout horizontal center-justified" style="height: 100vh; width: 100vw;" *ngIf="showSignature">
     <iframe id="iframe" width="100%" height="100%" [src]="pathToSignature + 'sign.php?id=' + orderID" seamless="true"></iframe>
 
 </div>
