@@ -1,0 +1,326 @@
+<style is="custom-style">
+    .menu-item {
+        font-size: larger; padding-bottom: 5px; border-bottom: 1px lightblue dotted;
+    }
+    .loginButton {
+        width: 100px;
+        height: 100px;
+        background: transparent;
+        color: white;
+        box-shadow: 3px 3px 3px grey;
+        padding:5px;
+        border: none;
+        border-radius: 10px;
+        font-size: x-large;
+    }
+    .pop-up {
+        position: absolute;
+        top: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 10000;
+        border: 1px solid black;
+        background: white;
+    }
+    button {
+        border: none;
+        background: white;
+        font-size: larger;
+        color: black;
+        box-shadow: 2px 2px 2px grey;
+        padding: 2px;
+        margin: 4px;
+        cursor: pointer;
+    }
+    .search-button {
+        width: 20px;
+        height: 20px;
+    }
+    .pagination-button {
+        box-shadow: none;
+    }
+</style>
+
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%; background-color: #003053; color: white;" [hidden]="hideLogIn">
+    <div class="layout vertical center">
+        <h2 class="center-justified">Please Enter Your PIN</h2>
+        <input #pininput [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
+        <div class="layout horizontal wrap center-justified" style="width: 350px;">
+            <button (click)="handleLoginButton('7')" class="loginButton">7</button>
+            <button (click)="handleLoginButton('8')" class="loginButton">8</button>
+            <button (click)="handleLoginButton('9')" class="loginButton">9</button>
+            <button (click)="handleLoginButton('4')" class="loginButton">4</button>
+            <button (click)="handleLoginButton('5')" class="loginButton">5</button>
+            <button (click)="handleLoginButton('6')" class="loginButton">6</button>
+            <button (click)="handleLoginButton('3')" class="loginButton">3</button>
+            <button (click)="handleLoginButton('2')" class="loginButton">2</button>
+            <button (click)="handleLoginButton('1')" class="loginButton">1</button>
+            <button (click)="handleLoginButton('0')" class="loginButton">0</button>
+        </div>
+    </div>
+</div>
+
+<div class="layout horizontal center-justified" style="height: 100%; width: 100%;" *ngIf="showSignature">
+    <iframe id="iframe" width="100%" height="100%" [src]="pathToSignature + 'sign.php?id=' + orderID" seamless="true"></iframe>
+
+</div>
+<div class="layout horizontal end-justified" style="height:100%;" [hidden]="hideMain">
+    <div [hidden]="!addATierOpened" class="pop-up">
+
+        <h2>Select the Tier you want to add</h2>
+        <div class="horizontal layout center-justified">
+
+            <button (click)="addTier('1')">Tier 1</button>
+            <button (click)="addTier('2')">Tier 2</button>
+            <button (click)="addTier('3')">Tier 3</button>
+            <button (click)="addTier('4')">Tier 4</button>
+            <button (click)="addTier('5')">Tier 4 Guarantee*</button>
+        </div>
+        <div class="horizontal layout center-justified">
+            <button raised dialog-dismiss>Cancel</button>
+        </div>
+        <div>
+
+            <h2>Guaranteed Sale Program</h2>
+            <p><b>Offer:</b>
+            <p>1. If a store purchases a Tier 4 and The Knot, Lashbrook will guarantee at least a one-time turn of the investment during the first year that they have the product in the case.  If the store fails to sell $15,000, at wholesale, from the case and/or in special orders, Lashbrook will buy back product in an amount equal to the shortfall.
+                <br>2. Total Investment:   $14,997
+                <br>3. 30/60/90 (Three payments of $4999)
+                <br>4. No substitutions to the Tier 4.
+                <br>5. No stock balancing, unless initiated by Lashbrook, during the first year.</p>
+
+            <p><b>The following requirements must be met in order to qualify for buyback:</b>
+                <br>1. Payment terms must be met within a 10 day grace period.
+                <br>2. Store personnel must do Lashbrook training within 30 days of receipt of merchandise.
+                <br>3. Store must provide the information necessary for proper Knot promotion within ten business days of each request.
+                <br>4. Product must be properly displayed.
+                <br>5. Store will have 60 days from end of 12 month period to notify us that they want a buyback.</p>
+
+            <p><b>Lashbrook buyback commitment:</b>
+                <br>1. If conditions are met, Lashbrook will buy back the Lashbrook product that the jeweler chooses, also with 30/60/90 terms.  For example, if a jeweler sells only $9,000 at wholesale during the first year, he may choose $6000 of product to sell back and Lashbrook will pay $2000/month for three months.</p>
+        </div>
+    </div>
+    <div [hidden]="!addAComboOpened" class="pop-up">
+        <h2>Select the Collection you want to add</h2>
+        <p>Note: This will add the collection rings individually.<br>
+            To add a single combo item use the barcode scan ID or search for the single item.</p>
+        <div class="horizontal layout center-justified">
+            <button (click)="addCombo('core_collection')">Core Collection (one item)</button>
+            <button (click)="addCombo('CORE56')">Core Collection (each ring)</button>
+            <button (click)="addCombo('basics_a')">Basics A</button>
+            <button (click)="addCombo('basics_b')">Basics B</button>
+            <button (click)="addCombo('engraved_set_a')">Engraved Set A</button>
+            <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
+            <button (click)="addCombo('elysium')">Elysium 8</button>
+            <button (click)="addCombo('elysium2')">Elysium 5</button>
+        </div>
+    </div>
+
+    <div [hidden]="!openCustomSku" class="pop-up">
+        <h2>Add a Custom SKU</h2>
+        <form id="customForm" method="post">
+            <input [(ngModel)]="customSku" label="SKU" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customFinish" label="Finish" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customPrice" label="Price" ngDefaultControl type="text"/>
+            <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
+            <button (click)="handleCustomSkuForm()">Submit</button>
+        </form>
+    </div>
+
+    <div [hidden]="!openStockBalances" class="pop-up">
+        <h2>Add a Stock Balance</h2>
+        <form id="sbForm" method="post">
+            <input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
+            <button (click)="handleStockBalanceForm(sb.value)">Submit</button>
+        </form>
+    </div>
+
+    <div [hidden]="!openChangeView" class="pop-up">
+        <h2>What items would you like to view</h2>
+        <button (click)="handleChangeView('all')">All Rings</button>
+        <button (click)="handleChangeView('accessories')">Accessories</button>
+        <button (click)="handleChangeView('core')">Core Collection</button>
+        <button (click)="handleChangeView('tier1')">Tier 1 Rings</button>
+        <button (click)="handleChangeView('tier2')">Tier 2 Rings</button>
+        <button (click)="handleChangeView('tier3')">Tier 3 Rings</button>
+        <button (click)="handleChangeView('tier4')">Tier 4 Rings</button>
+        <!--<button (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
+        <button (click)="handleChangeView('Camo')">Camo Rings</button>
+        <button (click)="handleChangeView('Titanium')">Titanium Rings</button>
+        <button (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</button>
+        <button (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</button>
+        <button (click)="handleChangeView('Damascus')">Damascus Rings</button>
+        <button (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</button>
+        <button (click)="handleChangeView('Zirconium')">Zirconium Rings</button>
+        <button (click)="handleChangeView('Hard Wood')">Hard Wood Rings</button>
+        <button (click)="handleChangeView('Mokume')">Mokume Rings</button>
+        <button (click)="handleChangeView('Precious Metal')">Precious Metal Rings</button>
+        <button (click)="handleChangeView('Elysium')">Elysium Rings</button>
+        <button (click)="handleChangeView('other')">Other Rings</button>-->
+    </div>
+
+    <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
+        Date: {{ date }}<br>
+        <h4>Order:</h4>
+        <button (click)="hideImages = !hideImages" style="margin-bottom: 20px;">Show/Hide Images</button>
+
+        <div *ngFor="#ring of orderList">
+            {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}} <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" [hidden]="hideImages"/>
+        </div>
+        <hr>
+        <input type="checkbox" checked (change)="showHideExistingPartner()"/>Existing Partner
+        <div [hidden]="hidePartnerSearch">
+            <div class="horizontal layout no-wrap">
+                <input type="text"(keyup.enter)="findPartners()" [(ngModel)]="partnerSearchData" placeholder="Search for partner"/><img class="search-button" [src]="search" (click)="findPartners()"/>
+            </div>
+            <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 90%; height: 200px; overflow: scroll; padding-left: 5%;">
+                <!--Search: <input [(ngModel)]="customerSearchData" type="text" (click)="filterCustomer()"/>-->
+                <div class="layout vertical" *ngFor="#partner of partners" (click)="partnerSelected(partner?.client_idx)" [ngStyle]="{'background': partner?.selected}" style="padding: 5px;">
+                    {{ partner?.store_name }} - {{ partner?.address }}
+                </div>
+            </div>
+        </div>
+        <form class="layout vertical">
+            <input type="text" placeholder="Order Name" [(ngModel)]="order_name" ngDefaultControl/>
+            <input type="text" placeholder="Store Name" [(ngModel)]="store_name" ngDefaultControl/>
+            <input type="text" placeholder="Last Name" [(ngModel)]="last_name" ngDefaultControl/>
+            <input type="text" placeholder="First Name" [(ngModel)]="first_name" ngDefaultControl/>
+            <input type="text" placeholder="Address" [(ngModel)]="address" ngDefaultControl/>
+            <input type="text" placeholder="City" [(ngModel)]="city" ngDefaultControl/>
+            <input type="text" placeholder="State" [(ngModel)]="state" ngDefaultControl/>
+            <input type="text" placeholder="Zip" [(ngModel)]="zip" ngDefaultControl/>
+            <input type="text" placeholder="Phone" [(ngModel)]="phone" ngDefaultControl/>
+            <input type="text" placeholder="Email" [(ngModel)]="email" ngDefaultControl/>
+            <input type="text" placeholder="Terms" [(ngModel)]="terms" ngDefaultControl/>
+            <button (click)="saveOrderToPhp()">Submit and Sign Order</button>
+        </form>
+    </div>
+
+    <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
+        <!--move to ring component-->
+        SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><img class="search-button" [src]="search" (click)="filterSearchData(searchData)"/>
+        <div class="layout horizontal center-justified flex wrap">
+            <div *ngFor="#ring of paginationList[currentPage]" style="width: 200px; padding:5px; box-shadow: 3px 3px 3px grey; word-wrap: break-word;" [ngStyle]="{'border': ring.added}" (click)="addRing(ring.id)">
+                <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
+                <div class="vertical layout center-justified" [id]="ring.id">
+                    Category:{{ring.category}}<br>
+                    SKU:{{ring.SKU}}<br>
+                    Finish:{{ring.finish}}<br>
+                    Price:${{ring.price}} ({{ring.tier}} - {{ring.id}})<br>
+                    {{ring?.combo}} {{ring?.combo2}}
+                    <input [(ngModel)]="ring.notes" ngDefaultControl label="Notes" type="text"/>
+                </div>
+            </div>
+        </div>
+        <div class="layout vertical center">
+            <span style="color:gray; margin-top: 20px;">< drag to view more ></span>
+            <div class="layout horizontal center-justified">
+
+                <button (click)="changePage('prev')">< Previous Page</button>
+                <div style="width:500px; overflow: scroll;" class="horizontal layout no-wrap">
+
+                    <button class="pagination-button" *ngFor="#page of paginationList; #i = index" (click)="goToPage(i)" style="width:20px;">
+                        {{i + 1}}
+                    </button>
+                </div>
+                <button (click)="changePage('next')">Next Page ></button>
+
+            </div>
+        </div>
+    </div>
+    <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
+
+        <div id="headerPanel" style="overflow: scroll;" class="vertical layout">
+            <dive id="drawer-header" style="background-color: #003053;" horizontal layout center-justified>
+                <img [src]="pathToImages + 'lashbrook.jpg'" style="width: 150px;"/>
+            </dive>
+            <!--button section-->
+            <div id="menuContent">
+                <div class="horizontal layout center-justified center">
+                    <button (click)="submitOrder()" [hidden]="hideSubmitButton">Review</button>
+                </div>
+                <div class="horizontal layout center-justified center" [hidden]="!hideSubmitButton">
+                    <button (click)="cancelSubmit()" ngDefaultControl>Back</button>
+                </div>
+                <div class="horizontal layout center-justified center" [hidden]="hideOtherButtons">
+                    <button (click)="back()" ngDefaultControl>Back</button>
+                    <button (click)="signatureSubmit()" ngDefaultControl>Submit and
+                        Sign Order
+                    </button>
+                </div>
+                <div style="margin-top: 7px; margin-bottom: 5px;" class="horizontal layout center-justified">
+                    <textarea rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
+                </div>
+                <div style="border-top: 1px solid black; padding-top: 5px;" class="horizontal layout around-justified">
+                    <button style="font-size: small;" [hidden]="hideSaveButton"
+                            (click)="openSaveOrderDialog" ngDefaultControl>Save Order
+                    </button>
+                    <button (click)="loadFromPHP()" style="font-size: small;"
+                            [hidden]="hideLoadButton" type="button" ngDefaultControl>Load Order
+                    </button>
+                </div>
+
+                <div [hidden]="hideChooseOrder" style="width: 100%; border: 1px solid black;">
+                    <h2>Select the order you want to load:</h2>
+                    <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; overflow: scroll; height: 200px;">
+                        <div #listOfOrders *ngFor="#order of orders">
+                            <div (click)="chooseOrder(order.id)">{{ order.id }} - {{ order.name }}</div>
+                        </div>
+                    </div>
+                    <div class="layout horizontal center-justified">
+                        <button (click)="loadOrder()">Load</button>
+                        <button (click)="cancelLoadOrder()">Cancel</button>
+                    </div>
+                </div>
+
+                <h3 class="horizontal layout center-justified" style="font-size: medium;">Rep: {{currentUser?.username}}</h3>
+                <div [hidden]="hideMenus">
+                    <!--main menu on the left (or right) for selecting view-->
+                    <div class="menu-item">
+                        <h3 icon="" label="Barcode Scan" style="margin: 0; padding: 0;">Barcode Scan</h3>
+                        <span style="font-size: x-small; margin-top: -50px; padding: 0;">Ensure your cursor is in the field below to scan</span>
+                        <div class="horizontal layout center-justified" style="margin-top: 10px; font-size: x-large;">
+                            <input #barcodeinput placeholder="barcode scan..." (keyup.enter)="searchForBarcode()" [(ngModel)]="barcodeFieldData" type="text" style="font-size: x-large;">
+                        </div>
+                        <div [hidden]="hideBarcodeLastScanned" class="vertical layout center-justified">
+                            <span style="font-size: small;">recently added from barcode scan:</span>
+                            <span style="font-size: small;">{{lastScanned?.SKU}} - {{lastScanned?.finish}} - ${{lastScanned?.price}}</span>
+                            <img [src]="lastScannedImage" style="width: 100%;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="vertical layout">
+                    <button (click)="openAddATier()">ADD A TIER</button>
+                    <button (click)="openAddACombo()">ADD A COLLECTION</button>
+                    <button (click)="openAddACustomSku()">ADD A CUSTOM SKU</button>
+                    <button (click)="openAddAStockBalance()">ADD A STOCK BALANCE</button>
+                    <button (click)="changeView()">CHANGE VIEW</button>
+                </div>
+
+                <!--Order Data-->
+                <div style="margin-top:10px; border-top: 1px dotted lightblue">
+                    Order:
+                    <div *ngFor="#ring of orderList" style="padding-left:10px;">
+                        <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                    </div>
+                    <div *ngFor="#balance of stockBalances">
+                        <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: -${{ balance['price'] }}
+                    </div>
+                    <div *ngFor="#item of typedSkus">
+                        <span (click)="killCustom(item['SKU'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
+                    </div>
+
+                    <h3>
+                        Subtotal: ${{subTotal}}
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
