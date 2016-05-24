@@ -123,6 +123,14 @@ class AppComponent {
 
   String customerSearchData = "";
 
+  String myString = "";
+
+  void myFunction() {
+    String myString = "";
+    print(myString);
+    print(this.myString);
+  }
+
   ngAfterViewInit() {
     // viewChild is set
     // TODO loading order is making something null
@@ -275,6 +283,10 @@ class AppComponent {
   }
 
   void addTier(String tierSelected) {
+    if (tierSelected == 'cancel') {
+      addATierOpened = false;
+      return;
+    }
     orderList.removeWhere((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4);
     guaranteed = false;
     tier = tierSelected;
@@ -312,6 +324,10 @@ class AppComponent {
   }
 
   void addCombo(String combo) {
+    if(combo == "cancel") {
+      addAComboOpened = false;
+      return;
+    }
     if(combo == "core_collection") {
       orderList.add(tierData.where((Ring element) => element.SKU == "CORE_COLLECTION").first);
     }
@@ -319,12 +335,36 @@ class AppComponent {
 
     List<Ring> comboList = tierData.where((Ring element) => element.combo == combo).toList();
     List<Ring> comboList2 = tierData.where((Ring element) => element.combo2 == combo).toList();
+    List<Ring> comboList3 = tierData.where((Ring element) => element.combo3 == combo).toList();
+    List<Ring> comboList4 = tierData.where((Ring element) => element.combo4 == combo).toList();
+    List<Ring> comboList5 = tierData.where((Ring element) => element.combo5 == combo).toList();
+    List<Ring> comboList6 = tierData.where((Ring element) => element.combo6 == combo).toList();
     for (Ring ring in comboList) {
       orderList.add(ring);
       ring.added = "1px solid red";
       hideLoadButton = true;
     }
     for (Ring ring in comboList2) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
+    for (Ring ring in comboList3) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
+    for (Ring ring in comboList4) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
+    for (Ring ring in comboList5) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
+    for (Ring ring in comboList6) {
       orderList.add(ring);
       ring.added = "1px solid red";
       hideLoadButton = true;
@@ -483,7 +523,7 @@ class AppComponent {
 
     HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
       //print(obj);
-    }).then((HttpRequest val) {
+    }).then((val) {
       print(val.responseText);
       showSignature = true;
       hideMain = true;
@@ -495,7 +535,11 @@ class AppComponent {
     openCustomSku = true;
   }
 
-  handleCustomSkuForm() {
+  handleCustomSkuForm(method) {
+    if (method == "cancel") {
+      openCustomSku = false;
+      return;
+    }
     typedSkus.add({
       "SKU": customSku,
       "finish": customFinish,
@@ -515,6 +559,10 @@ class AppComponent {
   }
 
   handleStockBalanceForm(price) {
+    if (price == "cancel") {
+      openStockBalances = false;
+      return;
+    }
     int sbId = stockBalances.length + 1;
     stockBalances.add({
       'id' : sbId,
@@ -741,8 +789,6 @@ class AppComponent {
     hideReview = true;
     hideOrder = false;
   }
-
-
 
   filterCustomer() {
     // TODO put order names into class
