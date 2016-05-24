@@ -14,10 +14,12 @@
         font-size: x-large;
     }
     .pop-up {
-        position: absolute;
-        top: 5%;
-        margin-left: auto;
-        margin-right: auto;
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%,-50%);
         z-index: 10000;
         border: 1px solid black;
         background: white;
@@ -77,7 +79,7 @@
             <button (click)="addTier('5')">Tier 4 Guarantee*</button>
         </div>
         <div class="horizontal layout center-justified">
-            <button raised dialog-dismiss>Cancel</button>
+            <button (click)="addTier('cancel')">Cancel</button>
         </div>
         <div>
 
@@ -113,25 +115,29 @@
             <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
             <button (click)="addCombo('elysium')">Elysium 8</button>
             <button (click)="addCombo('elysium2')">Elysium 5</button>
+            <button (click)="addCombo('cancel')">Cancel</button>
         </div>
     </div>
 
     <div [hidden]="!openCustomSku" class="pop-up">
         <h2>Add a Custom SKU</h2>
         <form id="customForm" method="post">
-            <input [(ngModel)]="customSku" label="SKU" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customFinish" label="Finish" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customPrice" label="Price" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customSku" placeholder="SKU" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customFinish" placeholder="Finish" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customPrice" placeholder="Price" ngDefaultControl type="text"/>
             <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
-            <button (click)="handleCustomSkuForm()">Submit</button>
+            <br>
+            <button (click)="handleCustomSkuForm('submit')">Submit</button>
+            <button (click)="handleCustomSkuForm('cancel')">Cancel</button>
         </form>
     </div>
 
     <div [hidden]="!openStockBalances" class="pop-up">
         <h2>Add a Stock Balance</h2>
         <form id="sbForm" method="post">
-            <input alwaysFloatLabel="true" required="true" #sb label="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
+            <input alwaysFloatLabel="true" required="true" #sb placeholder="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
             <button (click)="handleStockBalanceForm(sb.value)">Submit</button>
+            <button (click)="handleStockBalanceForm('cancel')">Cancel</button>
         </form>
     </div>
 
