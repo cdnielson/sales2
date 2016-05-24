@@ -332,13 +332,10 @@ class AppComponent {
       orderList.add(tierData.where((Ring element) => element.SKU == "CORE_COLLECTION").first);
     }
 
-
     List<Ring> comboList = tierData.where((Ring element) => element.combo == combo).toList();
     List<Ring> comboList2 = tierData.where((Ring element) => element.combo2 == combo).toList();
     List<Ring> comboList3 = tierData.where((Ring element) => element.combo3 == combo).toList();
-    List<Ring> comboList4 = tierData.where((Ring element) => element.combo4 == combo).toList();
-    List<Ring> comboList5 = tierData.where((Ring element) => element.combo5 == combo).toList();
-    List<Ring> comboList6 = tierData.where((Ring element) => element.combo6 == combo).toList();
+
     for (Ring ring in comboList) {
       orderList.add(ring);
       ring.added = "1px solid red";
@@ -354,21 +351,7 @@ class AppComponent {
       ring.added = "1px solid red";
       hideLoadButton = true;
     }
-    for (Ring ring in comboList4) {
-      orderList.add(ring);
-      ring.added = "1px solid red";
-      hideLoadButton = true;
-    }
-    for (Ring ring in comboList5) {
-      orderList.add(ring);
-      ring.added = "1px solid red";
-      hideLoadButton = true;
-    }
-    for (Ring ring in comboList6) {
-      orderList.add(ring);
-      ring.added = "1px solid red";
-      hideLoadButton = true;
-    }
+
     calculateOrderTotal();
     addAComboOpened = false;
   }

@@ -11,10 +11,6 @@ class Ring {
   final String combo;
   final String combo2;
   final String combo3;
-  final String combo4;
-  final String combo5;
-  final String combo6;
-
 
   Ring(
       List this.category,
@@ -26,10 +22,7 @@ class Ring {
       String _id,
       String this.combo,
       String this.combo2,
-      String this.combo3,
-      String this.combo4,
-      String this.combo5,
-      String this.combo6)
+      String this.combo3)
   {
     this.price = num.parse(_price);
     this.tier = int.parse(_tier);
@@ -46,10 +39,7 @@ class Ring {
       map["id"],
       map["combo"],
       map["combo2"],
-      map["combo3"],
-      map["combo4"],
-      map["combo5"],
-      map["combo6"]);
+      map["combo3"]);
 
   @override String toString() => "$SKU";
 
