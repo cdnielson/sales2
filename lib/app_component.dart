@@ -211,44 +211,54 @@ class AppComponent {
   void searchForBarcode() {
     int ring = int.parse(barcodeFieldData);
 
-    if (ring == 100001) {
+    if (ring == 100000) {
       addCombo('basics_a');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100001) {
+      addCombo('basics_b');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100002) {
-      addCombo('basics_b');
+      addCombo('engraved_set_a');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100003) {
-      addCombo('engraved_set_a');
+      addCombo('hardwood_10');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100004) {
-      addCombo('hardwood_10');
-      return;
-    }
-    if (ring == 100005) {
       addCombo('elysium_8');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100006) {
       addCombo('GUARANTEED');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100007) {
       addCombo('BASICS');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100008) {
       addCombo('EXCLUSIVITY');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100009) {
-      addCombo('elysium_5');
+      addCombo('elysium_6');
+      barcodeFieldData = "";
       return;
     }
     if (ring == 100010) {
-      addCombo('elysium_6');
+      addCombo('elysium_5');
+      barcodeFieldData = "";
       return;
     }
 
