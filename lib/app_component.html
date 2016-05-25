@@ -112,14 +112,14 @@
             <button (click)="addCombo('CORE56')">Core Collection (each ring)</button>
             <button (click)="addCombo('GUARANTEED')">Guaranteed Collection</button>
             <button (click)="addCombo('BASICS')">Basics Collection</button>
-            <button (click)="addCombo('EXPANDED')">Expanded Collection</button>
             <button (click)="addCombo('EXCLUSIVITY')">Exclusivity Collection</button>
             <button (click)="addCombo('basics_a')">Basics A</button>
             <button (click)="addCombo('basics_b')">Basics B</button>
             <button (click)="addCombo('engraved_set_a')">Engraved Set A</button>
             <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
-            <button (click)="addCombo('elysium')">Elysium 8</button>
-            <button (click)="addCombo('elysium2')">Elysium 5</button>
+            <button (click)="addCombo('elysium_8')">Elysium 8</button>
+            <button (click)="addCombo('elysium_5')">Elysium 5</button>
+            <button (click)="addCombo('elysium_6')">Elysium 6</button>
             <button (click)="addCombo('cancel')">Cancel</button>
         </div>
     </div>
@@ -127,9 +127,9 @@
     <div [hidden]="!openCustomSku" class="pop-up">
         <h2>Add a Custom SKU</h2>
         <form id="customForm" method="post">
-            <input [(ngModel)]="customSku" placeholder="SKU" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customFinish" placeholder="Finish" ngDefaultControl type="text"/>
-            <input [(ngModel)]="customPrice" placeholder="Price" ngDefaultControl type="text"/>
+            <input [(ngModel)]="customSku" placeholder="SKU" type="text"/>
+            <input [(ngModel)]="customFinish" placeholder="Finish" type="text"/>
+            <input [(ngModel)]="customPrice" placeholder="Price" type="text"/>
             <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
             <br>
             <button (click)="handleCustomSkuForm('submit')">Submit</button>
@@ -324,7 +324,7 @@
                         <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: ${{ balance['price'] }}
                     </div>
                     <div *ngFor="#item of typedSkus">
-                        <span (click)="killCustom(item['sku'], item['finish'])">X</span> - {{ item['SKU'] }} - {{ item['finish'] }} - ${{ item['price'] }}
+                        <span (click)="killCustom(item['sku'], item['finish'])">X</span> - {{ item['sku'] }} - {{ item['finish'] }} - ${{ item['price'] }}
                     </div>
 
                     <h3>

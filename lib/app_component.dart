@@ -210,6 +210,48 @@ class AppComponent {
 
   void searchForBarcode() {
     int ring = int.parse(barcodeFieldData);
+
+    if (ring == 100001) {
+      addCombo('basics_a');
+      return;
+    }
+    if (ring == 100002) {
+      addCombo('basics_b');
+      return;
+    }
+    if (ring == 100003) {
+      addCombo('engraved_set_a');
+      return;
+    }
+    if (ring == 100004) {
+      addCombo('hardwood_10');
+      return;
+    }
+    if (ring == 100005) {
+      addCombo('elysium_8');
+      return;
+    }
+    if (ring == 100006) {
+      addCombo('GUARANTEED');
+      return;
+    }
+    if (ring == 100007) {
+      addCombo('BASICS');
+      return;
+    }
+    if (ring == 100008) {
+      addCombo('EXCLUSIVITY');
+      return;
+    }
+    if (ring == 100009) {
+      addCombo('elysium_5');
+      return;
+    }
+    if (ring == 100010) {
+      addCombo('elysium_6');
+      return;
+    }
+
     addRing(ring);
     lastScanned = tierData.firstWhere((Ring element) => element.id == int.parse(barcodeFieldData), orElse: () => null);
     if (lastScanned != null) {
