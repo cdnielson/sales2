@@ -123,6 +123,14 @@ class AppComponent {
 
   String customerSearchData = "";
 
+  String myString = "";
+
+  void myFunction() {
+    String myString = "";
+    print(myString);
+    print(this.myString);
+  }
+
   ngAfterViewInit() {
     // viewChild is set
     // TODO loading order is making something null
@@ -277,7 +285,7 @@ class AppComponent {
   }
 
   void addTier(String tierSelected) {
-    if (tierSelected == "cancel") {
+    if (tierSelected == 'cancel') {
       addATierOpened = false;
       return;
     }
@@ -318,13 +326,18 @@ class AppComponent {
   }
 
   void addCombo(String combo) {
+    if(combo == "cancel") {
+      addAComboOpened = false;
+      return;
+    }
     if(combo == "core_collection") {
       orderList.add(tierData.where((Ring element) => element.SKU == "CORE_COLLECTION").first);
     }
 
-
     List<Ring> comboList = tierData.where((Ring element) => element.combo == combo).toList();
     List<Ring> comboList2 = tierData.where((Ring element) => element.combo2 == combo).toList();
+    List<Ring> comboList3 = tierData.where((Ring element) => element.combo3 == combo).toList();
+
     for (Ring ring in comboList) {
       orderList.add(ring);
       ring.added = "1px solid red";
@@ -335,6 +348,12 @@ class AppComponent {
       ring.added = "1px solid red";
       hideLoadButton = true;
     }
+    for (Ring ring in comboList3) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
+
     calculateOrderTotal();
     addAComboOpened = false;
   }
@@ -491,7 +510,7 @@ class AppComponent {
 
     HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
       //print(obj);
-    }).then((HttpRequest val) {
+    }).then((val) {
       print(val.responseText);
       showSignature = true;
       hideMain = true;
@@ -503,7 +522,11 @@ class AppComponent {
     openCustomSku = true;
   }
 
-  handleCustomSkuForm() {
+  handleCustomSkuForm(method) {
+    if (method == "cancel") {
+      openCustomSku = false;
+      return;
+    }
     typedSkus.add({
       "sku": customSku,
       "finish": customFinish,
@@ -523,6 +546,10 @@ class AppComponent {
   }
 
   handleStockBalanceForm(String price) {
+    if (price == "cancel") {
+      openStockBalances = false;
+      return;
+    }
     int sbId = stockBalances.length + 1;
     int negPrice = int.parse(price) * -1;
     print(negPrice);
@@ -755,8 +782,6 @@ class AppComponent {
     hideReview = true;
     hideOrder = false;
   }
-
-
 
   filterCustomer() {
     // TODO put order names into class
