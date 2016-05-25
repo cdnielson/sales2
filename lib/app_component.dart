@@ -223,6 +223,7 @@ class AppComponent {
       orderList.add(currentRing);
       currentRing.added = "1px solid red";
     }
+    print(orderList);
 //    log.info(orderList);
     calculateOrderTotal();
     hideBarcodeLastScanned = true;
@@ -260,8 +261,9 @@ class AppComponent {
 
     // add the SB prices
     price = 0;
+
     for (Map item in stockBalances) {
-      price -= int.parse(item["price"]);
+      price += item["price"];
     }
     subTotal += price;
   }
@@ -275,6 +277,10 @@ class AppComponent {
   }
 
   void addTier(String tierSelected) {
+    if (tierSelected == "cancel") {
+      addATierOpened = false;
+      return;
+    }
     orderList.removeWhere((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4);
     guaranteed = false;
     tier = tierSelected;
@@ -364,9 +370,14 @@ class AppComponent {
       hideOrder = true;
       hideReview = false;
       hideSubmitButton = true;
+
+      accessories.clear();
+      added.clear();
+      removedFromTier.clear();
+
       setUpOrderToSend();
     } else {
-      // TODO create a message
+      window.alert("Please add a display");
     }
   }
 
@@ -405,11 +416,8 @@ class AppComponent {
         });
       }
     }
-    print("here!!");
 
-//    log.info("accessories $accessories");
-//    log.info("added $added");
-//    log.info("removed from tier $removedFromTier");
+
   }
 
   Ring checkIfMissing(ring) {
@@ -497,7 +505,7 @@ class AppComponent {
 
   handleCustomSkuForm() {
     typedSkus.add({
-      "SKU": customSku,
+      "sku": customSku,
       "finish": customFinish,
       "price": customPrice
     });
@@ -514,11 +522,13 @@ class AppComponent {
     openStockBalances = true;
   }
 
-  handleStockBalanceForm(price) {
+  handleStockBalanceForm(String price) {
     int sbId = stockBalances.length + 1;
+    int negPrice = int.parse(price) * -1;
+    print(negPrice);
     stockBalances.add({
       'id' : sbId,
-      'price' : price
+      'price' : negPrice
     });
     openStockBalances = false;
     calculateOrderTotal();
@@ -530,7 +540,7 @@ class AppComponent {
   }
 
   killCustom(sku, finish) {
-    typedSkus.removeWhere((Map element) => element['SKU'] == sku && element['finish'] == finish);
+    typedSkus.removeWhere((Map element) => element['sku'] == sku && element['finish'] == finish);
     calculateOrderTotal();
   }
 
@@ -647,6 +657,10 @@ class AppComponent {
 
   chooseOrder(id) {
     orderSelected = id;
+    for (Order o in orders) {
+      o.selected = "none";
+    }
+    orders.where((Order element) => element.id == id).first.selected = "yellow";
   }
 
   loadOrder() {
@@ -690,7 +704,7 @@ class AppComponent {
     }
     for (var ring in order['custom']) {
       typedSkus.add({
-        "SKU": ring['sku'],
+        "sku": ring['sku'],
         "finish": ring['finish'],
         "price": ring['price']
       });

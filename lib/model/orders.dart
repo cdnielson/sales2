@@ -10,6 +10,8 @@ class Order {
 
   @override String toString() => "$name";
 
+  String selected = "none";
+
 }
 
 
