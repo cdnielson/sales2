@@ -49,16 +49,16 @@
         <h2 class="center-justified">Please Enter Your PIN</h2>
         <input #pininput [(ngModel)]="pin" type="password" (keyup)="handlePin()" style="width:200px;"/>
         <div class="layout horizontal wrap center-justified" style="width: 350px;">
-            <button (click)="handleLoginButton('7')" class="loginButton">7</button>
-            <button (click)="handleLoginButton('8')" class="loginButton">8</button>
-            <button (click)="handleLoginButton('9')" class="loginButton">9</button>
-            <button (click)="handleLoginButton('4')" class="loginButton">4</button>
-            <button (click)="handleLoginButton('5')" class="loginButton">5</button>
-            <button (click)="handleLoginButton('6')" class="loginButton">6</button>
-            <button (click)="handleLoginButton('3')" class="loginButton">3</button>
-            <button (click)="handleLoginButton('2')" class="loginButton">2</button>
-            <button (click)="handleLoginButton('1')" class="loginButton">1</button>
-            <button (click)="handleLoginButton('0')" class="loginButton">0</button>
+            <button class="btn btn-default" (click)="handleLoginButton('7')" class="loginButton">7</button>
+            <button class="btn btn-default" (click)="handleLoginButton('8')" class="loginButton">8</button>
+            <button class="btn btn-default" (click)="handleLoginButton('9')" class="loginButton">9</button>
+            <button class="btn btn-default" (click)="handleLoginButton('4')" class="loginButton">4</button>
+            <button class="btn btn-default" (click)="handleLoginButton('5')" class="loginButton">5</button>
+            <button class="btn btn-default" (click)="handleLoginButton('6')" class="loginButton">6</button>
+            <button class="btn btn-default" (click)="handleLoginButton('3')" class="loginButton">3</button>
+            <button class="btn btn-default" (click)="handleLoginButton('2')" class="loginButton">2</button>
+            <button class="btn btn-default" (click)="handleLoginButton('1')" class="loginButton">1</button>
+            <button class="btn btn-default" (click)="handleLoginButton('0')" class="loginButton">0</button>
         </div>
     </div>
 </div>
@@ -73,14 +73,14 @@
         <h2>Select the Tier you want to add</h2>
         <div class="horizontal layout center-justified">
 
-            <button (click)="addTier('1')">Tier 1</button>
-            <button (click)="addTier('2')">Tier 2</button>
-            <button (click)="addTier('3')">Tier 3</button>
-            <button (click)="addTier('4')">Tier 4</button>
-            <button (click)="addTier('5')">Tier 4 Guarantee*</button>
+            <button class="btn btn-default" (click)="addTier('1')">Tier 1</button>
+            <button class="btn btn-default" (click)="addTier('2')">Tier 2</button>
+            <button class="btn btn-default" (click)="addTier('3')">Tier 3</button>
+            <button class="btn btn-default" (click)="addTier('4')">Tier 4</button>
+            <button class="btn btn-default" (click)="addTier('5')">Tier 4 Guarantee*</button>
         </div>
         <div class="horizontal layout center-justified">
-            <button (click)="addTier('cancel')">Cancel</button>
+            <button class="btn btn-default" (click)="addTier('cancel')">Cancel</button>
         </div>
         <div>
 
@@ -108,19 +108,19 @@
         <p>Note: This will add the collection rings individually.<br>
             To add a single combo item use the barcode scan ID or search for the single item.</p>
         <div class="horizontal layout center-justified">
-            <button (click)="addCombo('core_collection')">Core Collection (one item)</button>
-            <button (click)="addCombo('CORE56')">Core Collection (each ring)</button>
-            <button (click)="addCombo('GUARANTEED')">Guaranteed Collection</button>
-            <button (click)="addCombo('BASICS')">Basics Collection</button>
-            <button (click)="addCombo('EXCLUSIVITY')">Exclusivity Collection</button>
-            <button (click)="addCombo('basics_a')">Basics A</button>
-            <button (click)="addCombo('basics_b')">Basics B</button>
-            <button (click)="addCombo('engraved_set_a')">Engraved Set A</button>
-            <button (click)="addCombo('hardwood_10')">Hardwood 10</button>
-            <button (click)="addCombo('elysium_8')">Elysium 8</button>
-            <button (click)="addCombo('elysium_5')">Elysium 5</button>
-            <button (click)="addCombo('elysium_6')">Elysium 6</button>
-            <button (click)="addCombo('cancel')">Cancel</button>
+            <button class="btn btn-default" (click)="addCombo('core_collection')">Core Collection (one item)</button>
+            <button class="btn btn-default" (click)="addCombo('CORE56')">Core Collection (each ring)</button>
+            <button class="btn btn-default" (click)="addCombo('GUARANTEED')">Guaranteed Collection</button>
+            <button class="btn btn-default" (click)="addCombo('BASICS')">Basics Collection</button>
+            <button class="btn btn-default" (click)="addCombo('EXCLUSIVITY')">Exclusivity Collection</button>
+            <button class="btn btn-default" (click)="addCombo('basics_a')">Basics A</button>
+            <button class="btn btn-default" (click)="addCombo('basics_b')">Basics B</button>
+            <button class="btn btn-default" (click)="addCombo('engraved_set_a')">Engraved Set A</button>
+            <button class="btn btn-default" (click)="addCombo('hardwood_10')">Hardwood 10</button>
+            <button class="btn btn-default" (click)="addCombo('elysium_8')">Elysium 8</button>
+            <button class="btn btn-default" (click)="addCombo('elysium_5')">Elysium 5</button>
+            <button class="btn btn-default" (click)="addCombo('elysium_6')">Elysium 6</button>
+            <button class="btn btn-default" (click)="addCombo('cancel')">Cancel</button>
         </div>
     </div>
 
@@ -132,8 +132,8 @@
             <input [(ngModel)]="customPrice" placeholder="Price" type="text"/>
             <!--<input type="text" [(ngModel)]="customNote" label="Notes" ngDefaultControl/>-->
             <br>
-            <button (click)="handleCustomSkuForm('submit')">Submit</button>
-            <button (click)="handleCustomSkuForm('cancel')">Cancel</button>
+            <button class="btn btn-default" (click)="handleCustomSkuForm('submit')">Submit</button>
+            <button class="btn btn-default" (click)="handleCustomSkuForm('cancel')">Cancel</button>
         </form>
     </div>
 
@@ -141,47 +141,47 @@
         <h2>Add a Stock Balance</h2>
         <form id="sbForm" method="post">
             <input alwaysFloatLabel="true" required="true" #sb placeholder="Amount" ngDefaultControls (keyup.enter)="handleStockBalanceForm(sb.value)" type="text"/>
-            <button (click)="handleStockBalanceForm(sb.value)">Submit</button>
-            <button (click)="handleStockBalanceForm('cancel')">Cancel</button>
+            <button class="btn btn-default" (click)="handleStockBalanceForm(sb.value)">Submit</button>
+            <button class="btn btn-default" (click)="handleStockBalanceForm('cancel')">Cancel</button>
         </form>
     </div>
 
     <div [hidden]="!openChangeView" class="pop-up">
         <h2>What items would you like to view</h2>
-        <button (click)="handleChangeView('all')">All Rings</button>
-        <button (click)="handleChangeView('accessories')">Accessories</button>
-        <button (click)="handleChangeView('core')">Core Collection</button>
-        <button (click)="handleChangeView('tier1')">Tier 1 Rings</button>
-        <button (click)="handleChangeView('tier2')">Tier 2 Rings</button>
-        <button (click)="handleChangeView('tier3')">Tier 3 Rings</button>
-        <button (click)="handleChangeView('tier4')">Tier 4 Rings</button>
-        <!--<button (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
-        <button (click)="handleChangeView('Camo')">Camo Rings</button>
-        <button (click)="handleChangeView('Titanium')">Titanium Rings</button>
-        <button (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</button>
-        <button (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</button>
-        <button (click)="handleChangeView('Damascus')">Damascus Rings</button>
-        <button (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</button>
-        <button (click)="handleChangeView('Zirconium')">Zirconium Rings</button>
-        <button (click)="handleChangeView('Hard Wood')">Hard Wood Rings</button>
-        <button (click)="handleChangeView('Mokume')">Mokume Rings</button>
-        <button (click)="handleChangeView('Precious Metal')">Precious Metal Rings</button>
-        <button (click)="handleChangeView('Elysium')">Elysium Rings</button>
-        <button (click)="handleChangeView('other')">Other Rings</button>-->
+        <button class="btn btn-default" (click)="handleChangeView('all')">All Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('accessories')">Accessories</button>
+        <button class="btn btn-default" (click)="handleChangeView('core')">Core Collection</button>
+        <button class="btn btn-default" (click)="handleChangeView('tier1')">Tier 1 Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('tier2')">Tier 2 Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('tier3')">Tier 3 Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('tier4')">Tier 4 Rings</button>
+        <!--<button class="btn btn-default" (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Camo')">Camo Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Titanium')">Titanium Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Carbon Fiber')">Carbon Fiber Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Cobalt Chrome')">Cobalt Chrome Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Damascus')">Damascus Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Tungsten Ceramic')">Tungsten Ceramic Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Zirconium')">Zirconium Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Hard Wood')">Hard Wood Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Mokume')">Mokume Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Precious Metal')">Precious Metal Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('Elysium')">Elysium Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('other')">Other Rings</button>-->
     </div>
 
     <div [hidden]="hideReview" style="overflow:scroll; height: 100%; width: 100%">
         Date: {{ date }}<br>
         <h4>Order:</h4>
-        <button (click)="hideImages = !hideImages" style="margin-bottom: 20px;">Show/Hide Images</button>
+        <button class="btn btn-default" (click)="hideImages = !hideImages" style="margin-bottom: 20px;">Show/Hide Images</button>
 
-        <div *ngFor="#ring of orderList">
+        <div *ngFor="let ring of orderList">
             {{ring.SKU}} - {{ring.finish}} - ${{ring.price}} Notes: {{ring.notes}} <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" [hidden]="hideImages"/>
         </div>
-        <div *ngFor="#ring of typedSkus">
+        <div *ngFor="let ring of typedSkus">
             {{ring['sku']}} - {{ring['finish']}} - ${{ring['price']}}
         </div>
-        <div *ngFor="#balance of stockBalances">
+        <div *ngFor="let balance of stockBalances">
             {{balance['id']}}: ${{balance['price']}}
         </div>
         <hr>
@@ -192,7 +192,7 @@
             </div>
             <div [hidden]="hideExistingPartners" style="border: 1px solid black; width: 90%; height: 200px; overflow: scroll; padding-left: 5%;">
                 <!--Search: <input [(ngModel)]="customerSearchData" type="text" (click)="filterCustomer()"/>-->
-                <div class="layout vertical" *ngFor="#partner of partners" (click)="partnerSelected(partner?.client_idx)" [ngStyle]="{'background': partner?.selected}" style="padding: 5px;">
+                <div class="layout vertical" *ngFor="let partner of partners" (click)="partnerSelected(partner?.client_idx)" [ngStyle]="{'background': partner?.selected}" style="padding: 5px;">
                     {{ partner?.store_name }} - {{ partner?.address }}
                 </div>
             </div>
@@ -209,7 +209,7 @@
             <input type="text" placeholder="Phone" [(ngModel)]="phone" ngDefaultControl/>
             <input type="text" placeholder="Email" [(ngModel)]="email" ngDefaultControl/>
             <input type="text" placeholder="Terms" [(ngModel)]="terms" ngDefaultControl/>
-            <button (click)="saveOrderToPhp()">Submit and Sign Order</button>
+            <button class="btn btn-default" (click)="saveOrderToPhp()">Submit and Sign Order</button>
         </form>
     </div>
 
@@ -217,7 +217,7 @@
         <!--move to ring component-->
         SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><img class="search-button" [src]="search" (click)="filterSearchData(searchData)"/>
         <div class="layout horizontal center-justified flex wrap">
-            <div *ngFor="#ring of paginationList[currentPage]" style="width: 200px; padding:5px; box-shadow: 3px 3px 3px grey; word-wrap: break-word;" [ngStyle]="{'border': ring.added}" (click)="addRing(ring.id)">
+            <div *ngFor="let ring of paginationList[currentPage]" style="width: 200px; padding:5px; box-shadow: 3px 3px 3px grey; word-wrap: break-word;" [ngStyle]="{'border': ring.added}" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
                 <div class="vertical layout center-justified" [id]="ring.id">
                     Category:{{ring.category}}<br>
@@ -233,14 +233,14 @@
             <span style="color:gray; margin-top: 20px;">< drag to view more ></span>
             <div class="layout horizontal center-justified">
 
-                <button (click)="changePage('prev')">< Previous Page</button>
+                <button class="btn btn-default" (click)="changePage('prev')">< Previous Page</button>
                 <div style="width:500px; overflow: scroll;" class="horizontal layout no-wrap">
 
-                    <button class="pagination-button" *ngFor="#page of paginationList; #i = index" (click)="goToPage(i)" style="width:20px;">
+                    <button class="btn btn-default pagination-button" *ngFor="let page of paginationList; let i = index" (click)="goToPage(i)" style="width:20px;">
                         {{i + 1}}
                     </button>
                 </div>
-                <button (click)="changePage('next')">Next Page ></button>
+                <button class="btn btn-default" (click)="changePage('next')">Next Page ></button>
 
             </div>
         </div>
@@ -254,14 +254,14 @@
             <!--button section-->
             <div id="menuContent">
                 <div class="horizontal layout center-justified center">
-                    <button (click)="submitOrder()" [hidden]="hideSubmitButton">Review</button>
+                    <button class="btn btn-default" (click)="submitOrder()" [hidden]="hideSubmitButton">Review</button>
                 </div>
                 <div class="horizontal layout center-justified center" [hidden]="!hideSubmitButton">
-                    <button (click)="cancelSubmit()" ngDefaultControl>Back</button>
+                    <button class="btn btn-default" (click)="cancelSubmit()" ngDefaultControl>Back</button>
                 </div>
                 <div class="horizontal layout center-justified center" [hidden]="hideOtherButtons">
-                    <button (click)="back()" ngDefaultControl>Back</button>
-                    <button (click)="signatureSubmit()" ngDefaultControl>Submit and
+                    <button class="btn btn-default" (click)="back()" ngDefaultControl>Back</button>
+                    <button class="btn btn-default" (click)="signatureSubmit()" ngDefaultControl>Submit and
                         Sign Order
                     </button>
                 </div>
@@ -269,10 +269,10 @@
                     <textarea rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
                 </div>
                 <div style="border-top: 1px solid black; padding-top: 5px;" class="horizontal layout around-justified">
-                    <button style="font-size: small;" [hidden]="hideSaveButton"
+                    <button class="btn btn-default" style="font-size: small;" [hidden]="hideSaveButton"
                             (click)="openSaveOrderDialog" ngDefaultControl>Save Order
                     </button>
-                    <button (click)="loadFromPHP()" style="font-size: small;"
+                    <button class="btn btn-default" (click)="loadFromPHP()" style="font-size: small;"
                             [hidden]="hideLoadButton" type="button" ngDefaultControl>Load Order
                     </button>
                 </div>
@@ -280,13 +280,13 @@
                 <div [hidden]="hideChooseOrder" style="width: 100%; border: 1px solid black;">
                     <h2>Select the order you want to load:</h2>
                     <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; overflow: scroll; height: 200px;">
-                        <div #listOfOrders *ngFor="#order of orders">
+                        <div #listOfOrders *ngFor="let order of orders">
                             <div (click)="chooseOrder(order.id)" [ngStyle]="{'background': order.selected}">{{ order.id }} - {{ order.name }}</div>
                         </div>
                     </div>
                     <div class="layout horizontal center-justified">
-                        <button (click)="loadOrder()">Load</button>
-                        <button (click)="cancelLoadOrder()">Cancel</button>
+                        <button class="btn btn-default" (click)="loadOrder()">Load</button>
+                        <button class="btn btn-default" (click)="cancelLoadOrder()">Cancel</button>
                     </div>
                 </div>
 
@@ -307,23 +307,23 @@
                     </div>
                 </div>
                 <div class="vertical layout">
-                    <button (click)="openAddATier()">ADD A TIER</button>
-                    <button (click)="openAddACombo()">ADD A COLLECTION</button>
-                    <button (click)="openAddACustomSku()">ADD A CUSTOM SKU</button>
-                    <button (click)="openAddAStockBalance()">ADD A STOCK BALANCE</button>
-                    <button (click)="changeView()">CHANGE VIEW</button>
+                    <button class="btn btn-default" (click)="openAddATier()">ADD A TIER</button>
+                    <button class="btn btn-default" (click)="openAddACombo()">ADD A COLLECTION</button>
+                    <button class="btn btn-default" (click)="openAddACustomSku()">ADD A CUSTOM SKU</button>
+                    <button class="btn btn-default" (click)="openAddAStockBalance()">ADD A STOCK BALANCE</button>
+                    <button class="btn btn-default" (click)="changeView()">CHANGE VIEW</button>
                 </div>
 
                 <!--Order Data-->
                 <div style="margin-top:10px; border-top: 1px dotted lightblue">
                     Order:
-                    <div *ngFor="#ring of orderList" style="padding-left:10px;">
+                    <div *ngFor="let ring of orderList" style="padding-left:10px;">
                         <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
                     </div>
-                    <div *ngFor="#balance of stockBalances">
+                    <div *ngFor="let balance of stockBalances">
                         <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: ${{ balance['price'] }}
                     </div>
-                    <div *ngFor="#item of typedSkus">
+                    <div *ngFor="let item of typedSkus">
                         <span (click)="killCustom(item['sku'], item['finish'])">X</span> - {{ item['sku'] }} - {{ item['finish'] }} - ${{ item['price'] }}
                     </div>
 

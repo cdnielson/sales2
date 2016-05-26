@@ -12,7 +12,6 @@ import 'model/users.dart';
 import 'model/clients.dart';
 import 'model/orders.dart';
 
-
 @Component(selector: 'my-app', templateUrl: 'app_component.html')
 class AppComponent {
 
@@ -291,11 +290,13 @@ class AppComponent {
   }
 
   void filterSearchData(data) {
-
-    // TODO if it doesn't find anything don't cause an error
     String upData = data.toUpperCase();
+    List<Ring> ringsDisplayedTemp = ringsDisplayed;
     try {
       ringsDisplayed = tierData.where((Ring element) => element.id.toString().toUpperCase().contains(upData) || element.SKU.toUpperCase().contains(upData) || element.finish.toUpperCase().contains(upData)).toList();
+      if(ringsDisplayed.isEmpty) {
+        ringsDisplayed = ringsDisplayedTemp;
+      }
       setUpPagination();
     } catch(exception, stackTrace) {
       print(exception);
@@ -836,7 +837,6 @@ class AppComponent {
   }
 
   filterCustomer() {
-    // TODO put order names into class
     orders = orderNames.where((Order element) => element.name.contains(customerSearchData)).toList();
   }
 
