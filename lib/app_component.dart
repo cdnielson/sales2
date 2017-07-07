@@ -6,8 +6,10 @@ import 'dart:html';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'model/rings.dart';
+
 //import 'model/swatches.dart';
 import 'model/users.dart';
+
 //import 'model/combos.dart';
 import 'model/clients.dart';
 import 'model/orders.dart';
@@ -20,17 +22,28 @@ class AppComponent {
   @ViewChild("pininput") var pinInput;
   @ViewChild("thepage") var thePage;
   @ViewChild("listOfOrders") var listOfOrders;
+
 //  String get pathToRingsData => "data/rings.json";
   String get pathToRingsData => "data/tiers.php";
+
   String get pathToPartnerData => "data/getClient.php";
+
   String get pathToLoginData => "data/users.json";
+
   String get pathToPhpAdd => "data/salesadd.php";
+
   String get pathToLoadOrders => "data/getOrderList.php";
+
   String get pathToLoadOrder => "data/getOrderIdx.php";
+
   String get logoPath => "images/lbrook.jpg";
+
   String get pathToImages => "images/";
+
   String get pathToThumbnails => "images/";
+
   String get pathToSignature => "signature/";
+
   String get search => "images/search.png";
   List<Ring> orderList = [];
   List<Ring> tierData = [];
@@ -92,6 +105,7 @@ class AppComponent {
   bool openStockBalances = false;
   bool openChangeView = false;
   String pin = "";
+  bool showClearAll = false;
 
   Ring lastScanned;
 
@@ -101,6 +115,12 @@ class AppComponent {
   DateTime now = new DateTime.now();
   String date;
   String lastScannedImage = "";
+  bool subscribed = true;
+
+  test(subscribe) {
+    //why is this the opposite of what it should be?
+    subscribed = subscribe;
+  }
 
 /*  @reflectable
   bool fireIronResize = false;*/
@@ -140,10 +160,19 @@ class AppComponent {
 
     HttpRequest.getString(pathToRingsData).then(ringsLoaded);
     HttpRequest.getString(pathToLoginData).then(setLogins);
-    HttpRequest.getString(pathToPartnerData).then(setPartners);
+
+
+//    HttpRequest.getString(pathToPartnerData).then(setPartners);
+    HttpRequest.request(pathToPartnerData, method: 'POST',
+        mimeType: 'application/json',
+        sendData: "securitypasshere").catchError((obj) {
+      //print(obj);
+    }).then((val) {
+      setPartners(val.responseText);
+    }, onError: (e) => print("error"));
+
     DateFormat dateFormatter = new DateFormat("yyyy-MM-dd");
     date = dateFormatter.format(now);
-
   }
 
   void ringsLoaded(data) {
@@ -162,7 +191,8 @@ class AppComponent {
     paginationList = [[]];
 
     int ringListLength = ringsDisplayed.length;
-    int numberOfLists = int.parse(((ringListLength / 20) - .5).toStringAsFixed(0));
+    int numberOfLists = int.parse(
+        ((ringListLength / 20) - .5).toStringAsFixed(0));
     if (numberOfLists <= 1) {
       paginationList.add(ringsDisplayed);
       paginationList.removeWhere((List element) => element.isEmpty);
@@ -176,9 +206,9 @@ class AppComponent {
     }
 
 
-    for (int n = 0; n < numberOfLists ; n++) {
+    for (int n = 0; n < numberOfLists; n++) {
       List<Ring> theList = [];
-      for (int i = start; i <= end ; i++) {
+      for (int i = start; i <= end; i++) {
         theList.add(ringsDisplayed[i]);
       }
       paginationList.add(theList);
@@ -188,29 +218,30 @@ class AppComponent {
         end += 20;
       } else {
         start = ringsInListMinusRemainder;
-        end = ringListLength -1;
+        end = ringListLength - 1;
       }
     }
 
     paginationList.removeWhere((List element) => element.isEmpty);
-
   }
 
   void setLogins(data) {
     List<Map> mapList = JSON.decode(data);
-    loginData = mapList.map((Map element) => new User.fromMap(element)).toList();
+    loginData =
+        mapList.map((Map element) => new User.fromMap(element)).toList();
   }
 
   void setPartners(data) {
     List<Map> mapList = JSON.decode(data);
-    allPartners = mapList.map((Map element) => new Client.fromMap(element)).toList();
+    allPartners =
+        mapList.map((Map element) => new Client.fromMap(element)).toList();
 //    print(allPartners);
   }
 
   void searchForBarcode() {
     int ring = int.parse(barcodeFieldData);
 
-    if (ring == 100000) {
+    /* if (ring == 100000) {
       addCombo('basics_a');
       barcodeFieldData = "";
       return;
@@ -229,7 +260,7 @@ class AppComponent {
       addCombo('hardwood_10');
       barcodeFieldData = "";
       return;
-    }
+    }*/
     if (ring == 100004) {
       addCombo('elysium_8');
       barcodeFieldData = "";
@@ -261,8 +292,141 @@ class AppComponent {
       return;
     }
 
+
+    if (ring == 100011) {
+      addCombo('PERSONALIZED');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100012) {
+      addCombo('HW6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100013) {
+      addCombo('HW9');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100014) {
+      addCombo('CC14');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100015) {
+      addCombo('DS6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100016) {
+      addCombo('DS13');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100017) {
+      addCombo('DS19');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100018) {
+      addCombo('MET6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100019) {
+      addCombo('MET13');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100020) {
+      addCombo('');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100021) {
+      addCombo('CF5');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100022) {
+      addCombo('CF6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100023) {
+      addCombo('ZIRC5');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100024) {
+      addCombo('ZIRC13');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100025) {
+      addCombo('PS3');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100026) {
+      addCombo('PS5');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100027) {
+      addCombo('PS11');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100028) {
+      addCombo('CARVED6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100029) {
+      addCombo('CARVED10');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100030) {
+      addCombo('INLAYS6');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100031) {
+      addCombo('INLAYS13');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100032) {
+      addCombo('INLAYS18');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100033) {
+      addCombo('TCR10');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100034) {
+      addCombo('SPORTS');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100035) {
+      addCombo('SQUARE3');
+      barcodeFieldData = "";
+      return;
+    }
+    if (ring == 100036) {
+      addCombo('SQUARE10');
+      barcodeFieldData = "";
+      return;
+    }
+
     addRing(ring);
-    lastScanned = tierData.firstWhere((Ring element) => element.id == int.parse(barcodeFieldData), orElse: () => null);
+    lastScanned = tierData.firstWhere((Ring element) => element.id ==
+        int.parse(barcodeFieldData), orElse: () => null);
     if (lastScanned != null) {
       lastScannedImage = pathToImages + "rings/thumbnails/" + lastScanned.image;
       hideBarcodeLastScanned = false;
@@ -271,7 +435,8 @@ class AppComponent {
   }
 
   void addRing(ring) {
-    Ring currentRing = tierData.firstWhere((Ring element) => element.id == ring, orElse: () => null);
+    Ring currentRing = tierData.firstWhere((Ring element) => element.id == ring,
+        orElse: () => null);
     if (currentRing == null) {
       return;
     }
@@ -293,12 +458,16 @@ class AppComponent {
     String upData = data.toUpperCase();
     List<Ring> ringsDisplayedTemp = ringsDisplayed;
     try {
-      ringsDisplayed = tierData.where((Ring element) => element.id.toString().toUpperCase().contains(upData) || element.SKU.toUpperCase().contains(upData) || element.finish.toUpperCase().contains(upData)).toList();
-      if(ringsDisplayed.isEmpty) {
+      ringsDisplayed = tierData.where((Ring element) =>
+      element.id.toString()
+          .toUpperCase()
+          .contains(upData) || element.SKU.toUpperCase().contains(upData) ||
+          element.finish.toUpperCase().contains(upData)).toList();
+      if (ringsDisplayed.isEmpty) {
         ringsDisplayed = ringsDisplayedTemp;
       }
       setUpPagination();
-    } catch(exception, stackTrace) {
+    } catch (exception, stackTrace) {
       print(exception);
       print(stackTrace);
     }
@@ -306,10 +475,10 @@ class AppComponent {
 
   void calculateOrderTotal() {
     subTotal = 0;
-    for(Ring ring in orderList) {
+    for (Ring ring in orderList) {
       subTotal += ring.price;
     }
-    if(guaranteed) {
+    if (guaranteed) {
       subTotal += 844;
     }
 
@@ -342,7 +511,9 @@ class AppComponent {
       addATierOpened = false;
       return;
     }
-    orderList.removeWhere((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4);
+    orderList.removeWhere((Ring element) =>
+    element.tier == 1 || element.tier == 2 || element.tier == 3 ||
+        element.tier == 4);
     guaranteed = false;
     tier = tierSelected;
 
@@ -360,38 +531,59 @@ class AppComponent {
   List<Ring> getTier(tier) {
     List<Ring> tierList;
     switch (tier) {
-      case '0': tierList = [];
-      break;
-      case '1': tierList = tierData.where((Ring element) => element.tier == 1).toList();
-      break;
-      case '2': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList();
-      break;
-      case '3': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList();
-      break;
-      case '4': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
-      guaranteed = false;
-      break;
-      case '5': tierList = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList();
-      guaranteed = true;
-      break;
+      case '0':
+        tierList = [];
+        break;
+      case '1':
+        tierList = tierData.where((Ring element) => element.tier == 1).toList();
+        break;
+      case '2':
+        tierList = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2).toList();
+        break;
+      case '3':
+        tierList = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2 || element.tier == 3).toList();
+        break;
+      case '4':
+        tierList = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2 || element.tier == 3 || element.tier == 4)
+            .toList();
+        guaranteed = false;
+        break;
+      case '5':
+        tierList = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2 || element.tier == 3 || element.tier == 4)
+            .toList();
+        guaranteed = true;
+        break;
     }
     return tierList;
   }
 
   void addCombo(String combo) {
-    if(combo == "cancel") {
+    if (combo == "cancel") {
       addAComboOpened = false;
       return;
     }
-    if(combo == "core_collection") {
-      orderList.add(tierData.where((Ring element) => element.SKU == "CORE_COLLECTION").first);
+    if (combo == "MY STYLE") {
+      orderList.add(tierData
+          .where((Ring element) => element.SKU == "MY STYLE")
+          .first);
     }
 
-    List<Ring> comboList = tierData.where((Ring element) => element.combo == combo).toList();
-    List<Ring> comboList2 = tierData.where((Ring element) => element.combo2 == combo).toList();
-    List<Ring> comboList3 = tierData.where((Ring element) => element.combo3 == combo).toList();
-    List<Ring> comboList4 = tierData.where((Ring element) => element.combo4 == combo).toList();
-    List<Ring> comboList5 = tierData.where((Ring element) => element.combo5 == combo).toList();
+    List<Ring> comboList = tierData.where((Ring element) =>
+    element.combo == combo).toList();
+    List<Ring> comboList2 = tierData.where((Ring element) =>
+    element.combo2 == combo).toList();
+    List<Ring> comboList3 = tierData.where((Ring element) =>
+    element.combo3 == combo).toList();
+    List<Ring> comboList4 = tierData.where((Ring element) =>
+    element.combo4 == combo).toList();
+    List<Ring> comboList5 = tierData.where((Ring element) =>
+    element.combo5 == combo).toList();
+    List<Ring> comboList6 = tierData.where((Ring element) =>
+    element.combo6 == combo).toList();
 
     for (Ring ring in comboList) {
       orderList.add(ring);
@@ -418,6 +610,11 @@ class AppComponent {
       ring.added = "1px solid red";
       hideLoadButton = true;
     }
+    for (Ring ring in comboList6) {
+      orderList.add(ring);
+      ring.added = "1px solid red";
+      hideLoadButton = true;
+    }
 
     calculateOrderTotal();
     addAComboOpened = false;
@@ -433,12 +630,12 @@ class AppComponent {
 
   handlePin() {
     for (User user in loginData) {
-      if(pin == user.pin) {
+      if (pin == user.pin) {
         currentUser = user;
         login();
       }
     }
-    if(pin.length == 4) {
+    if (pin.length == 4) {
       pin = "";
     }
   }
@@ -469,22 +666,21 @@ class AppComponent {
     print(orderList);
 
     for (Ring r in orderList) {
-
       if (r.tier == 22) {
         accessories.add({
-          "SKU" : r.SKU,
-          "finish" : r.finish,
-          "price" : r.price,
-          "notes" : r.notes
+          "SKU": r.SKU,
+          "finish": r.finish,
+          "price": r.price,
+          "notes": r.notes
         });
       }
 
       if (r.tier != 22) {
         added.add({
-          "SKU" : r.SKU,
-          "finish" : r.finish,
-          "price" : r.price,
-          "notes" : r.notes
+          "SKU": r.SKU,
+          "finish": r.finish,
+          "price": r.price,
+          "notes": r.notes
         });
       }
     }
@@ -494,14 +690,12 @@ class AppComponent {
       Ring missing = checkIfMissing(r);
       if (missing != null) {
         removedFromTier.add({
-          "SKU" : missing.SKU,
-          "finish" : missing.finish,
-          "price" : missing.price
+          "SKU": missing.SKU,
+          "finish": missing.finish,
+          "price": missing.price
         });
       }
     }
-
-
   }
 
   Ring checkIfMissing(ring) {
@@ -525,21 +719,22 @@ class AppComponent {
     }
 
     customerInfo = {
-      "client_idx" : "none",
-      "checked" : checked,
-      "storeName" : store_name,
-      "lastName" : last_name,
-      "firstName" : first_name,
-      "address" : address,
-      "city" : city,
-      "state" : state,
-      "zip" : zip,
-      "phone" : phone,
-      "email" : email
+      "client_idx": "none",
+      "checked": checked,
+      "storeName": store_name,
+      "lastName": last_name,
+      "firstName": first_name,
+      "address": address,
+      "city": city,
+      "state": state,
+      "zip": zip,
+      "phone": phone,
+      "email": email
     };
     orderData = {
-      "terms" : terms,
-      "notes" : notes
+      "terms": terms,
+      "notes": notes,
+      "newsletter": subscribed
     };
 
     // TODO input custom displays
@@ -555,25 +750,27 @@ class AppComponent {
 
     var data =
     {
-      "completed" : completed,
-      "date" : date,
-      "customer_info" : customerInfo,
-      "order_data" : orderData,
-      "order_name" : order_name,
-      "tier" : tier,
-      "rings_removed" : removedFromTier,
-      "rings_added" : added,
-      "accessories" : accessories,
-      "customrings" : typedSkus,
-      "stockbalances" : stockBalances,
-      "rep" : currentUser.username,
-      "new" : 1,
-      "display" : customDisplay
+      "completed": completed,
+      "date": date,
+      "customer_info": customerInfo,
+      "order_data": orderData,
+      "order_name": order_name,
+      "tier": tier,
+      "rings_removed": removedFromTier,
+      "rings_added": added,
+      "accessories": accessories,
+      "customrings": typedSkus,
+      "stockbalances": stockBalances,
+      "rep": currentUser.username,
+      "new": 1,
+      "display": customDisplay
     };
 
     var datasend = JSON.encode(data);
 
-    HttpRequest.request(pathToPhpAdd, method: 'POST', mimeType: 'application/json', sendData: datasend).catchError((obj) {
+    HttpRequest.request(pathToPhpAdd, method: 'POST',
+        mimeType: 'application/json',
+        sendData: datasend).catchError((obj) {
       //print(obj);
     }).then((val) {
       print(val.responseText);
@@ -619,8 +816,8 @@ class AppComponent {
     int negPrice = int.parse(price) * -1;
     print(negPrice);
     stockBalances.add({
-      'id' : sbId,
-      'price' : negPrice
+      'id': sbId,
+      'price': negPrice
     });
     openStockBalances = false;
     calculateOrderTotal();
@@ -632,7 +829,8 @@ class AppComponent {
   }
 
   killCustom(sku, finish) {
-    typedSkus.removeWhere((Map element) => element['sku'] == sku && element['finish'] == finish);
+    typedSkus.removeWhere((Map element) =>
+    element['sku'] == sku && element['finish'] == finish);
     calculateOrderTotal();
   }
 
@@ -642,14 +840,36 @@ class AppComponent {
 
   handleChangeView(item) {
     ringsDisplayed = [];
-    switch(item) {
-      case "all": ringsDisplayed = tierData; break;
-      case "accessories": ringsDisplayed = tierData.where((Ring element) => element.tier == 22).toList(); break;
-      case "tier1": ringsDisplayed = tierData.where((Ring element) => element.tier == 1).toList(); break;
-      case "tier2": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2).toList(); break;
-      case "tier3": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3).toList(); break;
-      case "tier4": ringsDisplayed = tierData.where((Ring element) => element.tier == 1 || element.tier == 2 || element.tier == 3 || element.tier == 4).toList(); break;
-      case "core": ringsDisplayed = tierData.where((Ring element) => element.SKU == "CORE_COLLECTION" || element.SKU == "core_collection_discount").toList(); break;
+    switch (item) {
+      case "all":
+        ringsDisplayed = tierData;
+        break;
+      case "accessories":
+        ringsDisplayed =
+            tierData.where((Ring element) => element.tier == 22).toList();
+        break;
+      case "tier1":
+        ringsDisplayed =
+            tierData.where((Ring element) => element.tier == 1).toList();
+        break;
+      case "tier2":
+        ringsDisplayed = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2).toList();
+        break;
+      case "tier3":
+        ringsDisplayed = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2 || element.tier == 3).toList();
+        break;
+      case "tier4":
+        ringsDisplayed = tierData.where((Ring element) => element.tier == 1 ||
+            element.tier == 2 || element.tier == 3 || element.tier == 4)
+            .toList();
+        break;
+      case "core":
+        ringsDisplayed =
+            tierData.where((Ring element) => element.SKU == "CORE_COLLECTION" ||
+                element.SKU == "core_collection_discount").toList();
+        break;
     /*case "other": ringsDisplayed = tierData.where((Ring element) =>
         element.category[0] == "Fable" ||
         element.category[0] == "Ceramic" ||
@@ -659,7 +879,8 @@ class AppComponent {
         element.category[0] == "Goodyear" ||
         element.category[0] == "King's Camo"
       ); break;*/
-      default: ringsDisplayed.addAll(addRingToDisplay(item));
+      default:
+        ringsDisplayed.addAll(addRingToDisplay(item));
     }
 
     setUpPagination();
@@ -684,7 +905,7 @@ class AppComponent {
         currentPage -= 1;
       }
     }
-    if  (direction == "next") {
+    if (direction == "next") {
       if (currentPage < paginationList.length - 1) {
         currentPage += 1;
       }
@@ -697,7 +918,8 @@ class AppComponent {
   }
 
   findPartners() {
-    partners = allPartners.where((Client element) => element.store_name.contains(partnerSearchData)).toList();
+    partners = allPartners.where((Client element) =>
+        element.store_name.toLowerCase().contains(partnerSearchData.toLowerCase())).toList();
     hideExistingPartners = false;
   }
 
@@ -707,7 +929,9 @@ class AppComponent {
 
   partnerSelected(idx) {
     hideExistingPartners = false;
-    Client currentPartner = allPartners.where((Client element) => element.client_idx == idx).first;
+    Client currentPartner = allPartners
+        .where((Client element) => element.client_idx == idx)
+        .first;
     store_name = currentPartner.store_name;
     last_name = currentPartner.last_name;
     first_name = currentPartner.first_name;
@@ -717,7 +941,7 @@ class AppComponent {
     zip = currentPartner.zip;
     phone = currentPartner.phone;
     email = currentPartner.email;
-    for(var p in partners) {
+    for (var p in partners) {
       p.selected = "none";
     }
     currentPartner.selected = "lightblue";
@@ -728,9 +952,9 @@ class AppComponent {
   }
 
   orderLoaded(data) {
-
     List<Map> mapList = JSON.decode(data);
-    orderNames = mapList.map((Map element) => new Order.fromMap(element)).toList();
+    orderNames =
+        mapList.map((Map element) => new Order.fromMap(element)).toList();
     print(orderNames);
     // TODO can probably simplify this
 //    orderNames.sort((Order a, Order b) => a.id.compareTo(b.id));
@@ -752,18 +976,26 @@ class AppComponent {
     for (Order o in orders) {
       o.selected = "none";
     }
-    orders.where((Order element) => element.id == id).first.selected = "yellow";
+    orders
+        .where((Order element) => element.id == id)
+        .first
+        .selected = "yellow";
   }
 
   loadOrder() {
     var data = JSON.encode(orderSelected);
-    HttpRequest.request(pathToLoadOrder, method: 'POST', mimeType: 'application/json', sendData: data).catchError((obj) {
+    HttpRequest.request(pathToLoadOrder, method: 'POST',
+        mimeType: 'application/json',
+        sendData: data).catchError((obj) {
       //print(obj);
     }).then((HttpRequest val) {
       //print('response: ${val.responseText}');
       var order = JSON.decode(val.responseText);
       print(order);
-      if (order['customer'].isEmpty && order['master'].isEmpty && order['removed'].isEmpty && order['added'].isEmpty && order['accessories'].isEmpty && order['custom'].isEmpty && order['stockbalances'].isEmpty && order['orderdata'].isEmpty) {
+      if (order['customer'].isEmpty && order['master'].isEmpty &&
+          order['removed'].isEmpty && order['added'].isEmpty &&
+          order['accessories'].isEmpty && order['custom'].isEmpty &&
+          order['stockbalances'].isEmpty && order['orderdata'].isEmpty) {
         print("no order");
         return;
       }
@@ -772,7 +1004,6 @@ class AppComponent {
       hideLoadButton = true;
       hideChooseOrder = true;
     }, onError: (e) => print("error"));
-
   }
 
   fillTheOrder(order) {
@@ -789,10 +1020,16 @@ class AppComponent {
     tier = order['master'][0]['tier'];
     order_name = order['master'][0]['order_name'];
     for (var ring in order['added']) {
-      orderList.add(tierData.where((Ring element) => element.SKU == ring['SKU'] && element.finish == ring['finish']).first);
+      orderList.add(tierData
+          .where((Ring element) =>
+      element.SKU == ring['SKU'] && element.finish == ring['finish'])
+          .first);
     }
     for (var ring in order['accessories']) {
-      orderList.add(tierData.where((Ring element) => element.SKU == ring['SKU'] && element.finish == ring['finish']).first);
+      orderList.add(tierData
+          .where((Ring element) =>
+      element.SKU == ring['SKU'] && element.finish == ring['finish'])
+          .first);
     }
     for (var ring in order['custom']) {
       typedSkus.add({
@@ -849,7 +1086,23 @@ class AppComponent {
   }
 
   filterCustomer() {
-    orders = orderNames.where((Order element) => element.name.contains(customerSearchData)).toList();
+    orders = orderNames.where((Order element) =>
+        element.name.contains(customerSearchData)).toList();
   }
+
+  clearAll() {
+    for(Ring order in orderList) {
+      order.added = "none";
+    }
+    orderList = [];
+    stockBalances = [];
+    typedSkus = [];
+    hideBarcodeLastScanned = true;
+    added = [];
+    accessories = [];
+    showClearAll = false;
+
+  }
+
 
 }

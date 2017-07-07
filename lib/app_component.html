@@ -107,16 +107,47 @@
         <h2>Select the Collection you want to add</h2>
         <p>Note: This will add the collection rings individually.<br>
             To add a single combo item use the barcode scan ID or search for the single item.</p>
-        <div class="horizontal layout center-justified">
-            <button class="btn btn-default" (click)="addCombo('core_collection')">Core Collection (one item)</button>
-            <button class="btn btn-default" (click)="addCombo('CORE56')">Core Collection (each ring)</button>
-            <button class="btn btn-default" (click)="addCombo('GUARANTEED')">Guaranteed Collection</button>
-            <button class="btn btn-default" (click)="addCombo('BASICS')">Basics Collection</button>
-            <button class="btn btn-default" (click)="addCombo('EXCLUSIVITY')">Exclusivity Collection</button>
-            <button class="btn btn-default" (click)="addCombo('basics_a')">Basics A</button>
-            <button class="btn btn-default" (click)="addCombo('basics_b')">Basics B</button>
-            <button class="btn btn-default" (click)="addCombo('engraved_set_a')">Engraved Set A</button>
-            <button class="btn btn-default" (click)="addCombo('hardwood_10')">Hardwood 10</button>
+        <div class="horizontal layout center-justified wrap">
+            <button class="btn btn-default" (click)="addCombo('MY STYLE')">My Style (one item)</button>
+            <button class="btn btn-default" (click)="addCombo('CORE56')">My Style (each ring)</button>
+            <button class="btn btn-default" (click)="addCombo('GUARANTEED')">The Upgrade</button>
+            <button class="btn btn-default" (click)="addCombo('BASICS')">The Essentials</button>
+            <button class="btn btn-default" (click)="addCombo('EXCLUSIVITY')">The All-In</button>
+
+
+
+            <button class="btn btn-default" (click)="addCombo('PERSONALIZED')">Personalized</button>
+            <button class="btn btn-default" (click)="addCombo('HW6')">Hardwood 6</button>
+            <button class="btn btn-default" (click)="addCombo('HW9')">Hardwood 9</button>
+            <button class="btn btn-default" (click)="addCombo('CC14')">Cobalt Chrome 14</button>
+            <button class="btn btn-default" (click)="addCombo('DS6')">Damascus Steel 6</button>
+            <button class="btn btn-default" (click)="addCombo('DS13')">Damascus Steel 13</button>
+            <button class="btn btn-default" (click)="addCombo('DS19')">Damascus Steel 19</button>
+            <button class="btn btn-default" (click)="addCombo('MET6')">Meteorite 6</button>
+            <button class="btn btn-default" (click)="addCombo('MET13')">Meteorite 13</button>
+            <button class="btn btn-default" (click)="addCombo('CF5')">Carbon Fiber 5</button>
+            <button class="btn btn-default" (click)="addCombo('CF6')">Carbon Fiber 6</button>
+            <button class="btn btn-default" (click)="addCombo('ZIRC5')">Zirconium 5</button>
+            <button class="btn btn-default" (click)="addCombo('ZIRC13')">Zirconium 13</button>
+            <button class="btn btn-default" (click)="addCombo('PS3')">Precious Stones 3</button>
+            <button class="btn btn-default" (click)="addCombo('PS5')">Precious Stones 5</button>
+            <button class="btn btn-default" (click)="addCombo('PS11')">Precious Stones 11</button>
+            <button class="btn btn-default" (click)="addCombo('CARVED6')">Carved 6</button>
+            <button class="btn btn-default" (click)="addCombo('CARVED10')">Carved 10</button>
+            <button class="btn btn-default" (click)="addCombo('INLAYS6')">Inlays 6</button>
+            <button class="btn btn-default" (click)="addCombo('INLAYS13')">Inlays 13</button>
+            <button class="btn btn-default" (click)="addCombo('INLAYS18')">Inlays 18</button>
+            <button class="btn btn-default" (click)="addCombo('TCR10')">Tungsten Ceramic 10</button>
+            <button class="btn btn-default" (click)="addCombo('SPORTS')">Sports</button>
+            <button class="btn btn-default" (click)="addCombo('SQUARE3')">Square 3</button>
+            <button class="btn btn-default" (click)="addCombo('SQUARE10')">Square 10</button>
+
+
+
+            <!--<button class="btn btn-default" (click)="addCombo('basics_a')">Basics A</button>-->
+            <!--<button class="btn btn-default" (click)="addCombo('basics_b')">Basics B</button>-->
+            <!--<button class="btn btn-default" (click)="addCombo('engraved_set_a')">Engraved Set A</button>-->
+            <!--<button class="btn btn-default" (click)="addCombo('hardwood_10')">Hardwood 10</button>-->
             <button class="btn btn-default" (click)="addCombo('elysium_8')">Elysium 8</button>
             <button class="btn btn-default" (click)="addCombo('elysium_5')">Elysium 5</button>
             <button class="btn btn-default" (click)="addCombo('elysium_6')">Elysium 6</button>
@@ -146,15 +177,22 @@
         </form>
     </div>
 
+    <div [hidden]="!showClearAll" class="pop-up">
+        <h2>Clear All Items From Order</h2>
+        <p>Are you Sure?</p>
+        <button (click)="clearAll()">Yes</button>
+        <button (click)="showClearAll = false">No</button>
+    </div>
+
     <div [hidden]="!openChangeView" class="pop-up">
         <h2>What items would you like to view</h2>
         <button class="btn btn-default" (click)="handleChangeView('all')">All Rings</button>
         <button class="btn btn-default" (click)="handleChangeView('accessories')">Accessories</button>
         <button class="btn btn-default" (click)="handleChangeView('core')">Core Collection</button>
-        <button class="btn btn-default" (click)="handleChangeView('tier1')">Tier 1 Rings</button>
+        <!--<button class="btn btn-default" (click)="handleChangeView('tier1')">Tier 1 Rings</button>
         <button class="btn btn-default" (click)="handleChangeView('tier2')">Tier 2 Rings</button>
         <button class="btn btn-default" (click)="handleChangeView('tier3')">Tier 3 Rings</button>
-        <button class="btn btn-default" (click)="handleChangeView('tier4')">Tier 4 Rings</button>
+        <button class="btn btn-default" (click)="handleChangeView('tier4')">Tier 4 Rings</button>-->
         <!--<button class="btn btn-default" (click)="handleChangeView('Meteorite')">Meteorite Rings</button>
         <button class="btn btn-default" (click)="handleChangeView('Camo')">Camo Rings</button>
         <button class="btn btn-default" (click)="handleChangeView('Titanium')">Titanium Rings</button>
@@ -208,6 +246,10 @@
             <input type="text" placeholder="Zip" [(ngModel)]="zip" ngDefaultControl/>
             <input type="text" placeholder="Phone" [(ngModel)]="phone" ngDefaultControl/>
             <input type="text" placeholder="Email" [(ngModel)]="email" ngDefaultControl/>
+            <!--TODO hook this into the backend-->
+            <span class="layout horizontal">
+                <input type="checkbox" #subscribe checked (change)="test(subscribe.checked)"/>Subscribe to Newsletter with this email address
+            </span>
             <input type="text" placeholder="Terms" [(ngModel)]="terms" ngDefaultControl/>
             <button class="btn btn-default" (click)="saveOrderToPhp()">Submit and Sign Order</button>
         </form>
@@ -215,7 +257,8 @@
 
     <div id="main-window" style="overflow:scroll; height: 100%; width: 100%" [hidden]="hideOrder">
         <!--move to ring component-->
-        SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><img class="search-button" [src]="search" (click)="filterSearchData(searchData)"/>
+
+        <!--SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><img class="search-button" [src]="search" (click)="filterSearchData(searchData)"/>-->
         <div class="layout horizontal center-justified flex wrap">
             <div *ngFor="let ring of paginationList[currentPage]" style="width: 200px; padding:5px; box-shadow: 3px 3px 3px grey; word-wrap: break-word;" [ngStyle]="{'border': ring.added}" (click)="addRing(ring.id)">
                 <img [src]="pathToImages + 'rings/thumbnails/' + ring.image" style="width:100%;"/>
@@ -248,9 +291,9 @@
     <div id="menu" style="width: 400px; height: 100%; border-left: 1px solid black">
 
         <div id="headerPanel" style="overflow: scroll;" class="vertical layout">
-            <dive id="drawer-header" style="background-color: #003053;" horizontal layout center-justified>
+            <div id="drawer-header" style="background-color: #003053;" horizontal layout center-justified>
                 <img [src]="pathToImages + 'lashbrook.jpg'" style="width: 150px;"/>
-            </dive>
+            </div>
             <!--button section-->
             <div id="menuContent">
                 <div class="horizontal layout center-justified center">
@@ -265,10 +308,11 @@
                         Sign Order
                     </button>
                 </div>
-                <div style="margin-top: 7px; margin-bottom: 5px;" class="horizontal layout center-justified">
+                <div style="margin-top: 7px; margin-bottom: 5px; padding-bottom: 5px; border-bottom: 1px solid black;" class="horizontal layout center-justified">
                     <textarea rows="4" cols="30" placeholder="Notes" id="notes" [(ngModel)]="notes"></textarea>
                 </div>
-                <div style="border-top: 1px solid black; padding-top: 5px;" class="horizontal layout around-justified">
+                SEARCH: <input [(ngModel)]="searchData" (keyup.enter)="filterSearchData(searchData)"/><img class="search-button" [src]="search" (click)="filterSearchData(searchData)"/>
+                <div style="padding-top: 5px;" class="horizontal layout around-justified">
                     <button class="btn btn-default" style="font-size: small;" [hidden]="hideSaveButton"
                             (click)="openSaveOrderDialog" ngDefaultControl>Save Order
                     </button>
@@ -276,6 +320,7 @@
                             [hidden]="hideLoadButton" type="button" ngDefaultControl>Load Order
                     </button>
                 </div>
+
 
                 <div [hidden]="hideChooseOrder" style="width: 100%; border: 1px solid black;">
                     <h2>Select the order you want to load:</h2>
@@ -307,7 +352,7 @@
                     </div>
                 </div>
                 <div class="vertical layout">
-                    <button class="btn btn-default" (click)="openAddATier()">ADD A TIER</button>
+                    <!--<button class="btn btn-default" (click)="openAddATier()">ADD A TIER</button>-->
                     <button class="btn btn-default" (click)="openAddACombo()">ADD A COLLECTION</button>
                     <button class="btn btn-default" (click)="openAddACustomSku()">ADD A CUSTOM SKU</button>
                     <button class="btn btn-default" (click)="openAddAStockBalance()">ADD A STOCK BALANCE</button>
@@ -318,13 +363,17 @@
                 <div style="margin-top:10px; border-top: 1px dotted lightblue">
                     Order:
                     <div *ngFor="let ring of orderList" style="padding-left:10px;">
-                        <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - ${{ ring.price }}
+                        <span (click)="addRing(ring.id)">X</span> - {{ ring.SKU }} - {{ring.finish}} - ${{ ring.price }}
                     </div>
                     <div *ngFor="let balance of stockBalances">
                         <span (click)="killSb(balance['id'])">X</span> - {{ balance['id'] }}: ${{ balance['price'] }}
                     </div>
                     <div *ngFor="let item of typedSkus">
                         <span (click)="killCustom(item['sku'], item['finish'])">X</span> - {{ item['sku'] }} - {{ item['finish'] }} - ${{ item['price'] }}
+                    </div>
+
+                    <div>
+                        <button (click)="showClearAll = true">Clear All</button>
                     </div>
 
                     <h3>
